@@ -1,0 +1,1 @@
+const CACHE="aibs-v1";self.addEventListener("install",e=>{self.skipWaiting()});self.addEventListener("fetch",e=>{if(e.request.url.includes("anthropic"))return;e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)))});
