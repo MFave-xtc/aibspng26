@@ -630,13 +630,60 @@
       <div class="screen-body">
 
         <div class="settings-section">
-          <div class="settings-title">Claude API</div>
-          <div class="field-group">
-            <div class="field-label">Anthropic API Key</div>
-            <input type="password" class="input-field" id="api-key-input" placeholder="sk-ant-api03-..." oninput="saveApiKey(this.value)">
+          <div class="settings-title">AI Provider</div>
+
+          <!-- Provider Toggle -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:14px;">
+            <button id="provider-anthropic" onclick="setProvider('anthropic')" style="padding:12px;border:1px solid rgba(201,168,76,0.3);border-radius:10px 4px 4px 10px;background:var(--gold);color:var(--black);font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;">
+              Anthropic
+            </button>
+            <button id="provider-openrouter" onclick="setProvider('openrouter')" style="padding:12px;border:1px solid rgba(255,255,255,0.06);border-radius:4px 10px 10px 4px;background:var(--card2);color:var(--grey);font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;">
+              OpenRouter
+            </button>
           </div>
-          <div class="api-key-display" id="api-key-display">Not configured — enter key above</div>
-          <div style="margin-top:10px;">
+
+          <!-- Anthropic Section -->
+          <div id="anthropic-section">
+            <div class="field-group">
+              <div class="field-label">Anthropic API Key</div>
+              <input type="password" class="input-field" id="api-key-input"
+                placeholder="sk-ant-api03-..."
+                oninput="saveApiKey(this.value)">
+            </div>
+            <div class="api-key-display" id="api-key-display">Not configured — enter key above</div>
+            <div class="card card-gold" style="margin-top:10px;padding:14px;">
+              <div class="label">Get Your Key</div>
+              <div style="font-size:12px;color:rgba(245,240,232,0.6);line-height:1.7;">
+                1. Go to console.anthropic.com<br>
+                2. Sign in → API Keys → Create Key<br>
+                3. Requires billing — Kina Bank may block<br>
+                4. Call bank to enable international transactions
+              </div>
+            </div>
+          </div>
+
+          <!-- OpenRouter Section -->
+          <div id="openrouter-section" style="display:none;">
+            <div class="field-group">
+              <div class="field-label">OpenRouter API Key</div>
+              <input type="password" class="input-field" id="or-key-input"
+                placeholder="sk-or-v1-..."
+                oninput="saveOrKey(this.value)">
+            </div>
+            <div class="api-key-display" id="or-key-display">Not configured — enter key above</div>
+            <div class="card card-gold" style="margin-top:10px;padding:14px;">
+              <div class="label">Get OpenRouter Key — Easier for PNG</div>
+              <div style="font-size:12px;color:rgba(245,240,232,0.6);line-height:1.7;">
+                1. Go to <strong>openrouter.ai</strong><br>
+                2. Sign up with Google account<br>
+                3. Go to Keys → Create Key<br>
+                4. Add credits — accepts more card types<br>
+                5. Uses same Claude Sonnet model
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top:12px;">
             <button class="btn btn-outline" onclick="testApiKey()">Test Connection</button>
           </div>
         </div>
@@ -742,8 +789,10 @@
 <script>
 // ─── STATE ───────────────────────────────────────
 const S = {
-  apiKey: localStorage.getItem('aibs_key') || '',
-  drafts: parseInt(localStorage.getItem('aibs_drafts') || '0')
+  apiKey:   localStorage.getItem('aibs_key') || '',
+  orKey:    localStorage.getItem('aibs_or_key') || '',
+  provider: localStorage.getItem('aibs_provider') || 'anthropic',
+  drafts:   parseInt(localStorage.getItem('aibs_drafts') || '0')
 };
 
 let deferredInstall = null;
@@ -756,6 +805,17 @@ function switchScreen(name) {
   document.getElementById('nav-' + name).classList.add('active');
 }
 
+// ─── PROVIDER SWITCH ─────────────────────────────
+function setProvider(p) {
+  S.provider = p;
+  localStorage.setItem('aibs_provider', p);
+  document.getElementById('provider-anthropic').classList.toggle('active', p === 'anthropic');
+  document.getElementById('provider-openrouter').classList.toggle('active', p === 'openrouter');
+  document.getElementById('anthropic-section').style.display = p === 'anthropic' ? 'block' : 'none';
+  document.getElementById('openrouter-section').style.display = p === 'openrouter' ? 'block' : 'none';
+  updateStatus();
+}
+
 // ─── API KEY ──────────────────────────────────────
 function saveApiKey(v) {
   S.apiKey = v;
@@ -766,13 +826,24 @@ function saveApiKey(v) {
     : 'Not configured — enter key above';
 }
 
+function saveOrKey(v) {
+  S.orKey = v;
+  localStorage.setItem('aibs_or_key', v);
+  updateStatus();
+  document.getElementById('or-key-display').textContent = v
+    ? v.slice(0, 18) + '••••••••••••'
+    : 'Not configured — enter key above';
+}
+
 function updateStatus() {
-  const dot  = document.getElementById('status-dot');
-  const text = document.getElementById('status-text');
-  const badge= document.getElementById('status-badge');
-  if (S.apiKey) {
+  const dot   = document.getElementById('status-dot');
+  const text  = document.getElementById('status-text');
+  const badge = document.getElementById('status-badge');
+  const activeKey = S.provider === 'anthropic' ? S.apiKey : S.orKey;
+  const label = S.provider === 'anthropic' ? 'Anthropic Claude' : 'OpenRouter';
+  if (activeKey) {
     dot.className = 'status-dot connected';
-    text.textContent = 'Claude API configured — ready';
+    text.textContent = label + ' configured — ready';
     badge.textContent = 'ONLINE';
   } else {
     dot.className = 'status-dot pending';
@@ -782,17 +853,27 @@ function updateStatus() {
 }
 
 async function testApiKey() {
-  if (!S.apiKey) { showToast('Enter API key in Settings first'); return; }
-  showToast('Testing...');
+  const activeKey = S.provider === 'anthropic' ? S.apiKey : S.orKey;
+  if (!activeKey) { showToast('Enter API key in Settings first'); return; }
+  showToast('Testing connection...');
   try {
-    const r = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-api-key': S.apiKey, 'anthropic-version': '2023-06-01' },
-      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 20, messages: [{ role: 'user', content: 'Reply: AIBS online' }] })
-    });
-    showToast(r.ok ? '✓ API connected' : 'API error — check key');
+    let r;
+    if (S.provider === 'anthropic') {
+      r = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-api-key': S.apiKey, 'anthropic-version': '2023-06-01' },
+        body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 20, messages: [{ role: 'user', content: 'Reply: AIBS online' }] })
+      });
+    } else {
+      r = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + S.orKey, 'HTTP-Referer': 'https://mfave-xtc.github.io/aibspng26/', 'X-Title': 'AIBS Mobile Agent' },
+        body: JSON.stringify({ model: 'anthropic/claude-sonnet-4', max_tokens: 20, messages: [{ role: 'user', content: 'Reply: AIBS online' }] })
+      });
+    }
+    showToast(r.ok ? '✓ Connected successfully' : 'Error — check your key');
     if (r.ok) updateStatus();
-  } catch { showToast('Connection failed'); }
+  } catch { showToast('Connection failed — check internet'); }
 }
 
 // ─── PROPOSAL GENERATOR ──────────────────────────
@@ -811,8 +892,9 @@ async function generateProposal() {
   const contact = document.getElementById('client-contact').value.trim();
   const tl      = document.getElementById('timeline').value;
 
+  const activeKey = S.provider === 'anthropic' ? S.apiKey : S.orKey;
   if (!client || !svcKey) { showToast('Enter client name and service'); return; }
-  if (!S.apiKey) { showToast('Add API key in Settings'); switchScreen('settings'); return; }
+  if (!activeKey) { showToast('Add API key in Settings'); switchScreen('settings'); return; }
 
   const out = document.getElementById('proposal-output');
   const btn = document.getElementById('copy-btn');
@@ -822,14 +904,7 @@ async function generateProposal() {
 
   const svc = SVC[svcKey];
 
-  try {
-    const r = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-api-key': S.apiKey, 'anthropic-version': '2023-06-01' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        system: `You are the AIBS Proposal Engine under Genesis Creation Blueprint v4.3.
+  const systemPrompt = `You are the AIBS Proposal Engine under Genesis Creation Blueprint v4.3.
 AIBS (AI Bridge Solutions PNG) — independent ICT advisory. IPA: 116407435.
 Owner: Mariosu Fave, 21 years PNG ICT experience.
 Contact: md.aibspng@gmail.com | +675 7197 8592 | Sec 126 Lot 37 Kanage St, Moresby NE, NCD 1121.
@@ -844,27 +919,70 @@ Output a concise Genesis v4.3 proposal draft with:
 - Next Steps
 - Assumptions: ASSUMPTION-A1, A2...
 - Confidence tags: [CONFIRMED] [ASSUMED] [UNVERIFIED]
-Professional PNG tone. No filler. Mobile-readable.`,
-        messages: [{ role: 'user', content: `Client: ${client}
+Professional PNG tone. No filler. Mobile-readable.`;
+
+  const userMsg = `Client: ${client}
 Service: ${svc.name}
 Scope: ${scope || 'Standard scope'}
 Contact: ${contact || 'TBC'}
 Timeline: ${tl}
 Price: ${svc.price}
-Delivery: ${svc.time}` }]
-      })
-    });
+Delivery: ${svc.time}`;
 
-    const d = await r.json();
-    if (d.content?.[0]?.text) {
+  try {
+    let r, text;
+
+    if (S.provider === 'anthropic') {
+      r = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': S.apiKey,
+          'anthropic-version': '2023-06-01'
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000,
+          system: systemPrompt,
+          messages: [{ role: 'user', content: userMsg }]
+        })
+      });
+      const d = await r.json();
+      text = d.content?.[0]?.text;
+
+    } else {
+      // OpenRouter
+      r = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + S.orKey,
+          'HTTP-Referer': 'https://mfave-xtc.github.io/aibspng26/',
+          'X-Title': 'AIBS Mobile Agent'
+        },
+        body: JSON.stringify({
+          model: 'anthropic/claude-sonnet-4',
+          max_tokens: 1000,
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: userMsg }
+          ]
+        })
+      });
+      const d = await r.json();
+      text = d.choices?.[0]?.message?.content;
+    }
+
+    if (text) {
       out.className = 'output-box visible';
-      out.textContent = d.content[0].text;
+      out.textContent = text;
       btn.style.display = 'flex';
       S.drafts++;
       localStorage.setItem('aibs_drafts', S.drafts);
       document.getElementById('draft-count').textContent = S.drafts;
       showToast('Draft generated ✓');
-    } else throw new Error('No content');
+    } else throw new Error('No content returned');
+
   } catch(e) {
     out.className = 'output-box visible';
     out.textContent = 'Error generating draft.\nCheck API key in Settings and internet connection.\n\n' + e.message;
@@ -960,6 +1078,14 @@ if ('serviceWorker' in navigator) {
     document.getElementById('api-key-input').value = S.apiKey;
     document.getElementById('api-key-display').textContent = S.apiKey.slice(0,18) + '••••••••••••';
   }
+
+  if (S.orKey) {
+    document.getElementById('or-key-input').value = S.orKey;
+    document.getElementById('or-key-display').textContent = S.orKey.slice(0,18) + '••••••••••••';
+  }
+
+  // Restore provider toggle state
+  setProvider(S.provider);
 
   document.getElementById('draft-count').textContent = S.drafts;
   updateStatus();
