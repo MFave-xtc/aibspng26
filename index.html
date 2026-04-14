@@ -401,6 +401,14 @@
   /* ─── COMING SOON QUICK ACTIONS ─── */
   .qa-soon { opacity: 0.42; position: relative; }
   .qa-soon::after { content: 'Phase 2'; position: absolute; top: 8px; right: 8px; font-family: var(--mono); font-size: 7px; letter-spacing: 0.12em; text-transform: uppercase; background: var(--grey2); color: var(--grey); padding: 2px 7px; border-radius: 4px; pointer-events: none; }
+
+  /* ─── STUDIO SUB-TABS ─── */
+  .studio-tabs { display: flex; gap: 6px; margin-bottom: 18px; overflow-x: auto; padding-bottom: 2px; }
+  .studio-tabs::-webkit-scrollbar { display: none; }
+  .studio-tab { flex-shrink: 0; padding: 8px 14px; border: 1px solid rgba(255,255,255,0.06); border-radius: 20px; background: var(--card); font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+  .studio-tab.active { background: var(--gold-dim); border-color: rgba(201,168,76,0.25); color: var(--gold); }
+  .studio-panel { display: none; }
+  .studio-panel.active { display: block; animation: screenIn 0.22s cubic-bezier(0.23,1,0.32,1) both; }
 </style>
 </head>
 <body>
@@ -461,13 +469,13 @@
             <div class="qa-icon qa-blue">📁</div>
             <div><div class="qa-title">Document Vault</div><div class="qa-sub">Templates</div></div>
           </div>
-          <div class="quick-action qa-soon" onclick="showToast('Gmail triage — coming in Phase 2')">
+          <div class="quick-action" onclick="goToStudio('email')">
             <div class="qa-icon qa-green">📧</div>
-            <div><div class="qa-title">Email Triage</div><div class="qa-sub">Coming Soon</div></div>
+            <div><div class="qa-title">Email Drafter</div><div class="qa-sub">Cold outreach</div></div>
           </div>
-          <div class="quick-action qa-soon" onclick="showToast('LinkedIn studio — coming in Phase 2')">
-            <div class="qa-icon qa-red">💡</div>
-            <div><div class="qa-title">LinkedIn Post</div><div class="qa-sub">Coming Soon</div></div>
+          <div class="quick-action" onclick="goToStudio('linkedin')">
+            <div class="qa-icon qa-red">📱</div>
+            <div><div class="qa-title">LinkedIn Post</div><div class="qa-sub">Content studio</div></div>
           </div>
         </div>
 
@@ -479,64 +487,224 @@
       </div>
     </div>
 
-    <!-- ═══ PROPOSAL DRAFTER ═══ -->
+    <!-- ═══ AI STUDIO ═══ -->
     <div class="screen" id="screen-drafter">
       <div class="screen-header">
-        <div class="header-eyebrow">Genesis Blueprint v4.3</div>
-        <div class="header-title">Proposal <em>Drafter</em></div>
+        <div class="header-eyebrow">AIBS Content & Proposals</div>
+        <div class="header-title">AI <em>Studio</em></div>
       </div>
       <div class="screen-body">
-        <div class="phase-zero-badge">⬡ Phase Zero — Mandatory Intake</div>
 
-        <div class="field-group">
-          <div class="field-label">Client Name</div>
-          <input type="text" class="input-field" id="client-name" placeholder="e.g. Pacific Trading Ltd">
+        <!-- Studio sub-tabs -->
+        <div class="studio-tabs">
+          <button class="studio-tab active" data-tab="proposal" onclick="switchStudio('proposal')">⬡ Proposal</button>
+          <button class="studio-tab" data-tab="linkedin" onclick="switchStudio('linkedin')">📱 LinkedIn</button>
+          <button class="studio-tab" data-tab="email" onclick="switchStudio('email')">📧 Email</button>
+          <button class="studio-tab" data-tab="sales" onclick="switchStudio('sales')">🎯 Sales</button>
         </div>
 
-        <div class="field-group">
-          <div class="field-label">Service</div>
-          <select class="input-field" id="service-type">
-            <option value="">Select service...</option>
-            <option value="governance">AI Document & Compliance Pack</option>
-            <option value="acs">ACS Skills Assessment Pathway</option>
-            <option value="m365">Microsoft 365 Health Check</option>
-            <option value="retainer">Governance-as-a-Service Retainer</option>
-            <option value="cctv">CCTV / ELV Design Service</option>
-          </select>
-        </div>
+        <!-- ── Proposal Panel ── -->
+        <div class="studio-panel active" id="panel-proposal">
+          <div class="phase-zero-badge">⬡ Phase Zero — Mandatory Intake</div>
 
-        <div class="field-group">
-          <div class="field-label">Scope Notes</div>
-          <textarea class="input-field" id="scope-notes" rows="4" placeholder="Key requirements, number of policies, site details, special considerations..."></textarea>
-        </div>
+          <div class="field-group">
+            <div class="field-label">Client Name</div>
+            <input type="text" class="input-field" id="client-name" placeholder="e.g. Pacific Trading Ltd">
+          </div>
 
-        <div class="field-group">
-          <div class="field-label">Client Contact</div>
-          <input type="text" class="input-field" id="client-contact" placeholder="Name, title, email">
-        </div>
+          <div class="field-group">
+            <div class="field-label">Service</div>
+            <select class="input-field" id="service-type">
+              <option value="">Select service...</option>
+              <option value="governance">AI Document & Compliance Pack</option>
+              <option value="acs">ACS Skills Assessment Pathway</option>
+              <option value="m365">Microsoft 365 Health Check</option>
+              <option value="retainer">Governance-as-a-Service Retainer</option>
+              <option value="cctv">CCTV / ELV Design Service</option>
+            </select>
+          </div>
 
-        <div class="field-group">
-          <div class="field-label">Delivery Preference</div>
-          <select class="input-field" id="timeline">
-            <option value="standard">Standard (14 days)</option>
-            <option value="express">Express (7 days)</option>
-            <option value="urgent">Urgent (3 days — surcharge applies)</option>
-            <option value="custom">Custom — specify in scope notes</option>
-          </select>
-        </div>
+          <div class="field-group">
+            <div class="field-label">Scope Notes</div>
+            <textarea class="input-field" id="scope-notes" rows="4" placeholder="Key requirements, number of policies, site details, special considerations..."></textarea>
+          </div>
 
-        <div style="margin-bottom:16px;">
-          <button class="btn btn-gold" onclick="generateProposal()">⬡ Generate Genesis Draft</button>
-        </div>
+          <div class="field-group">
+            <div class="field-label">Client Contact</div>
+            <input type="text" class="input-field" id="client-contact" placeholder="Name, title, email">
+          </div>
 
-        <div class="output-box" id="proposal-output"></div>
-        <button class="copy-btn" id="copy-btn" onclick="copyProposal()">⎘ Copy Draft to Clipboard</button>
+          <div class="field-group">
+            <div class="field-label">Delivery Preference</div>
+            <select class="input-field" id="timeline">
+              <option value="standard">Standard (14 days)</option>
+              <option value="express">Express (7 days)</option>
+              <option value="urgent">Urgent (3 days — surcharge applies)</option>
+              <option value="custom">Custom — specify in scope notes</option>
+            </select>
+          </div>
 
-        <div class="divider"></div>
-        <div class="card card-gold">
-          <div class="label">Genesis v4.3 Governance</div>
-          <div style="font-size:12px;color:rgba(245,240,232,0.6);line-height:1.7;">Every draft includes Phase Zero intake, assumption register, confidence tags, and Covenant Scan checklist. No bypass. No filler.</div>
-        </div>
+          <div style="margin-bottom:16px;">
+            <button class="btn btn-gold" onclick="generateProposal()">⬡ Generate Genesis Draft</button>
+          </div>
+
+          <div class="output-box" id="proposal-output"></div>
+          <button class="copy-btn" id="copy-btn" onclick="copyProposal()">⎘ Copy Draft to Clipboard</button>
+
+          <div class="divider"></div>
+          <div class="card card-gold">
+            <div class="label">Genesis v4.3 Governance</div>
+            <div style="font-size:12px;color:rgba(245,240,232,0.6);line-height:1.7;">Every draft includes Phase Zero intake, assumption register, confidence tags, and Covenant Scan checklist. No bypass. No filler.</div>
+          </div>
+        </div><!-- /panel-proposal -->
+
+        <!-- ── LinkedIn Panel ── -->
+        <div class="studio-panel" id="panel-linkedin">
+          <div class="phase-zero-badge">📱 Social Content — LinkedIn</div>
+
+          <div class="field-group">
+            <div class="field-label">Post Topic / Idea</div>
+            <textarea class="input-field" id="li-topic" rows="3" placeholder="e.g. Why PNG businesses need ICT governance policies before AI adoption..."></textarea>
+          </div>
+
+          <div class="field-group">
+            <div class="field-label">Target Audience</div>
+            <input type="text" class="input-field" id="li-audience" placeholder="e.g. PNG IT managers, government department heads">
+          </div>
+
+          <div class="field-group">
+            <div class="field-label">Post Goal</div>
+            <select class="input-field" id="li-goal">
+              <option value="authority">Build authority / thought leadership</option>
+              <option value="lead">Generate leads / enquiries</option>
+              <option value="awareness">Brand awareness for AIBS</option>
+              <option value="engage">Spark engagement / conversation</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <div class="field-label">Tone</div>
+            <select class="input-field" id="li-tone">
+              <option value="professional">Professional & authoritative</option>
+              <option value="conversational">Conversational & approachable</option>
+              <option value="story">Story-driven / personal</option>
+              <option value="insightful">Data-driven / insightful</option>
+            </select>
+          </div>
+
+          <div style="margin-bottom:16px;">
+            <button class="btn btn-gold" onclick="generateLinkedIn()">📱 Generate LinkedIn Post</button>
+          </div>
+
+          <div class="output-box" id="linkedin-output"></div>
+          <button class="copy-btn" id="li-copy-btn" onclick="copyContent('linkedin-output')">⎘ Copy Post to Clipboard</button>
+
+          <div class="divider"></div>
+          <div class="card card-gold">
+            <div class="label">Social Content Skill</div>
+            <div style="font-size:12px;color:rgba(245,240,232,0.6);line-height:1.7;">Powered by the social-content skill from coreyhaines31/marketingskills. Creates LinkedIn posts for AIBS brand voice and PNG business context.</div>
+          </div>
+        </div><!-- /panel-linkedin -->
+
+        <!-- ── Email Panel ── -->
+        <div class="studio-panel" id="panel-email">
+          <div class="phase-zero-badge">📧 Cold Email Drafter</div>
+
+          <div class="field-group">
+            <div class="field-label">Recipient Role / Organisation</div>
+            <input type="text" class="input-field" id="em-recipient" placeholder="e.g. IT Manager, Pacific Trading Ltd">
+          </div>
+
+          <div class="field-group">
+            <div class="field-label">Service to Pitch</div>
+            <select class="input-field" id="em-service">
+              <option value="">Select service...</option>
+              <option value="governance">AI Document & Compliance Pack</option>
+              <option value="acs">ACS Skills Assessment Pathway</option>
+              <option value="m365">Microsoft 365 Health Check</option>
+              <option value="retainer">Governance-as-a-Service Retainer</option>
+              <option value="cctv">CCTV / ELV Design Service</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <div class="field-label">Context / Hook (optional)</div>
+            <textarea class="input-field" id="em-context" rows="3" placeholder="Any trigger, event, or specific problem you noticed about this prospect..."></textarea>
+          </div>
+
+          <div class="field-group">
+            <div class="field-label">Email Goal</div>
+            <select class="input-field" id="em-goal">
+              <option value="meeting">Book a discovery call</option>
+              <option value="proposal">Request to send a proposal</option>
+              <option value="intro">Introduction / awareness only</option>
+            </select>
+          </div>
+
+          <div style="margin-bottom:16px;">
+            <button class="btn btn-gold" onclick="generateEmail()">📧 Draft Cold Email</button>
+          </div>
+
+          <div class="output-box" id="email-output"></div>
+          <button class="copy-btn" id="em-copy-btn" onclick="copyContent('email-output')">⎘ Copy Email to Clipboard</button>
+
+          <div class="divider"></div>
+          <div class="card card-gold">
+            <div class="label">Cold Email Skill</div>
+            <div style="font-size:12px;color:rgba(245,240,232,0.6);line-height:1.7;">Powered by the cold-email skill from coreyhaines31/marketingskills. Writes human-sounding outreach that avoids AI clichés. One clear ask per email.</div>
+          </div>
+        </div><!-- /panel-email -->
+
+        <!-- ── Sales Panel ── -->
+        <div class="studio-panel" id="panel-sales">
+          <div class="phase-zero-badge">🎯 Sales Enablement</div>
+
+          <div class="field-group">
+            <div class="field-label">Asset Type</div>
+            <select class="input-field" id="sa-type">
+              <option value="pitch">Pitch script / talk track</option>
+              <option value="objection">Objection handling doc</option>
+              <option value="onepager">One-pager / leave-behind copy</option>
+              <option value="roi">ROI justification bullet points</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <div class="field-label">Target Persona</div>
+            <input type="text" class="input-field" id="sa-persona" placeholder="e.g. Finance Director, SME owner, Government CIO">
+          </div>
+
+          <div class="field-group">
+            <div class="field-label">Service</div>
+            <select class="input-field" id="sa-service">
+              <option value="">Select service...</option>
+              <option value="governance">AI Document & Compliance Pack</option>
+              <option value="acs">ACS Skills Assessment Pathway</option>
+              <option value="m365">Microsoft 365 Health Check</option>
+              <option value="retainer">Governance-as-a-Service Retainer</option>
+              <option value="cctv">CCTV / ELV Design Service</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <div class="field-label">Top Objection (optional)</div>
+            <input type="text" class="input-field" id="sa-objection" placeholder="e.g. Too expensive, we have internal IT...">
+          </div>
+
+          <div style="margin-bottom:16px;">
+            <button class="btn btn-gold" onclick="generateSales()">🎯 Generate Sales Asset</button>
+          </div>
+
+          <div class="output-box" id="sales-output"></div>
+          <button class="copy-btn" id="sa-copy-btn" onclick="copyContent('sales-output')">⎘ Copy Asset to Clipboard</button>
+
+          <div class="divider"></div>
+          <div class="card card-gold">
+            <div class="label">Sales Enablement Skill</div>
+            <div style="font-size:12px;color:rgba(245,240,232,0.6);line-height:1.7;">Powered by the sales-enablement skill from coreyhaines31/marketingskills. Creates pitch scripts, objection docs, and leave-behinds for AIBS services.</div>
+          </div>
+        </div><!-- /panel-sales -->
+
       </div>
     </div>
 
@@ -601,6 +769,45 @@
             <div class="doc-icon" style="background:var(--red-dim)">✓</div>
             <div class="doc-info"><div class="doc-name">Covenant Scan Checklist</div><div class="doc-meta">Pre-release gate · P6</div></div>
             <div class="doc-badge badge-blue">GATE</div>
+          </div>
+
+          <div class="doc-category">Content Studio Skills</div>
+          <div class="doc-item" onclick="openDoc('skill-social')">
+            <div class="doc-icon qa-red">📱</div>
+            <div class="doc-info"><div class="doc-name">LinkedIn Post Generator</div><div class="doc-meta">social-content skill · marketingskills</div></div>
+            <div class="doc-badge badge-green">ACTIVE</div>
+          </div>
+          <div class="doc-item" onclick="openDoc('skill-email')">
+            <div class="doc-icon qa-green">📧</div>
+            <div class="doc-info"><div class="doc-name">Cold Email Drafter</div><div class="doc-meta">cold-email skill · marketingskills</div></div>
+            <div class="doc-badge badge-green">ACTIVE</div>
+          </div>
+          <div class="doc-item" onclick="openDoc('skill-sales')">
+            <div class="doc-icon" style="background:var(--blue-dim)">🎯</div>
+            <div class="doc-info"><div class="doc-name">Sales Enablement Generator</div><div class="doc-meta">sales-enablement skill · marketingskills</div></div>
+            <div class="doc-badge badge-green">ACTIVE</div>
+          </div>
+          <div class="doc-item" onclick="openDoc('skill-copywriting')">
+            <div class="doc-icon qa-gold">✏️</div>
+            <div class="doc-info"><div class="doc-name">Copywriting Assistant</div><div class="doc-meta">copywriting skill · marketingskills</div></div>
+            <div class="doc-badge badge-blue">SKILL</div>
+          </div>
+
+          <div class="doc-category">Developer Skills</div>
+          <div class="doc-item" onclick="openDoc('skill-brainstorm')">
+            <div class="doc-icon" style="background:var(--gold-dim)">💡</div>
+            <div class="doc-info"><div class="doc-name">Brainstorm & Design Gate</div><div class="doc-meta">brainstorm skill · obra/superpowers</div></div>
+            <div class="doc-badge badge-blue">SKILL</div>
+          </div>
+          <div class="doc-item" onclick="openDoc('skill-debug')">
+            <div class="doc-icon" style="background:var(--red-dim)">🔍</div>
+            <div class="doc-info"><div class="doc-name">Systematic Debugging</div><div class="doc-meta">debug skill · obra/superpowers</div></div>
+            <div class="doc-badge badge-blue">SKILL</div>
+          </div>
+          <div class="doc-item" onclick="openDoc('skill-verify')">
+            <div class="doc-icon" style="background:var(--green-dim)">✓</div>
+            <div class="doc-info"><div class="doc-name">Verification Before Completion</div><div class="doc-meta">verify skill · obra/superpowers</div></div>
+            <div class="doc-badge badge-blue">SKILL</div>
           </div>
 
           <div class="doc-category">AIBS Identity</div>
@@ -752,7 +959,7 @@
     <button class="nav-item" id="nav-drafter" onclick="switchScreen('drafter')">
       <div class="nav-dot"></div>
       <div class="nav-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M3 17.5V14l9-9 3.5 3.5-9 9H3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 5l3.5 3.5M15 19h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-      <span class="nav-label">Draft</span>
+      <span class="nav-label">Studio</span>
     </button>
     <button class="nav-item" id="nav-vault" onclick="switchScreen('vault')">
       <div class="nav-dot"></div>
@@ -790,12 +997,58 @@ const S = {
 
 let deferredInstall = null;
 
+// ─── AI API CALL (shared) ─────────────────────────
+async function callAI(systemPrompt, userMsg, maxTokens) {
+  maxTokens = maxTokens || 2000;
+  if (S.provider === 'anthropic') {
+    const r = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-api-key': S.apiKey, 'anthropic-version': '2023-06-01' },
+      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: maxTokens, system: systemPrompt, messages: [{ role: 'user', content: userMsg }] })
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error?.message || 'API error');
+    return d.content?.[0]?.text;
+  } else {
+    const r = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + S.orKey, 'HTTP-Referer': 'https://mfave-xtc.github.io/aibspng26/', 'X-Title': 'AIBS Mobile Agent' },
+      body: JSON.stringify({ model: 'anthropic/claude-sonnet-4', max_tokens: maxTokens, messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: userMsg }] })
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error?.message || 'API error');
+    return d.choices?.[0]?.message?.content;
+  }
+}
+
+// ─── COPY CONTENT (shared) ────────────────────────
+function copyContent(id) {
+  const text = document.getElementById(id).textContent;
+  navigator.clipboard?.writeText(text).then(() => showToast('Copied ✓')).catch(() => {
+    const t = document.createElement('textarea');
+    t.value = text; document.body.appendChild(t); t.select();
+    document.execCommand('copy'); document.body.removeChild(t);
+    showToast('Copied ✓');
+  });
+}
+
 // ─── NAV ─────────────────────────────────────────
 function switchScreen(name) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('screen-' + name).classList.add('active');
   document.getElementById('nav-' + name).classList.add('active');
+}
+
+// ─── STUDIO SUB-TAB SWITCH ───────────────────────
+function switchStudio(tab) {
+  document.querySelectorAll('.studio-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+  document.querySelectorAll('.studio-panel').forEach(p => p.classList.toggle('active', p.id === 'panel-' + tab));
+}
+
+function goToStudio(tab) {
+  switchScreen('drafter');
+  switchStudio(tab);
 }
 
 // ─── PROVIDER SWITCH ─────────────────────────────
@@ -993,6 +1246,165 @@ function copyProposal() {
   });
 }
 
+// ─── LINKEDIN GENERATOR ──────────────────────────
+async function generateLinkedIn() {
+  const topic    = document.getElementById('li-topic').value.trim();
+  const audience = document.getElementById('li-audience').value.trim();
+  const goal     = document.getElementById('li-goal').value;
+  const tone     = document.getElementById('li-tone').value;
+
+  const activeKey = S.provider === 'anthropic' ? S.apiKey : S.orKey;
+  if (!topic) { showToast('Enter a post topic'); return; }
+  if (!activeKey) { showToast('Add API key in Settings'); switchScreen('settings'); return; }
+
+  const out = document.getElementById('linkedin-output');
+  const btn = document.getElementById('li-copy-btn');
+  out.className = 'output-box loading visible';
+  out.innerHTML = '<div class="spinner"></div><span>Drafting LinkedIn post...</span>';
+  btn.style.display = 'none';
+
+  const goalLabels = { authority: 'build thought leadership', lead: 'generate client enquiries', awareness: 'raise AIBS brand awareness', engage: 'spark conversation and engagement' };
+  const toneLabels = { professional: 'professional and authoritative', conversational: 'conversational and approachable', story: 'story-driven and personal', insightful: 'data-driven and insightful' };
+
+  const systemPrompt = `You are a LinkedIn content expert for AIBS (AI Bridge Solutions PNG), an ICT advisory firm in Port Moresby, PNG.
+Owner: Mariosu Fave — Digitalisation & Transformational Governance Architect. 21 years PNG ICT experience.
+Services: AI Governance, ACS Skills Assessment, M365 Health Check, Governance Retainer, CCTV/ELV Design.
+
+Write a LinkedIn post that:
+- Sounds human and authentic — NOT generic AI content
+- Reflects PNG business context throughout
+- Opens with a hook, NEVER "In today's fast-paced world" or similar cliché
+- Goal: ${goalLabels[goal] || goal}
+- Tone: ${toneLabels[tone] || tone}
+- Target audience: ${audience || 'PNG business leaders and government officials'}
+- Length: 150–250 words
+- End with a subtle CTA or engaging question
+- Include 3–5 relevant hashtags on a new line at the end
+Write ONLY the post. No preamble, no "Here's your post:" intro.`;
+
+  try {
+    const text = await callAI(systemPrompt, 'Write a LinkedIn post about: ' + topic);
+    out.className = 'output-box visible';
+    out.textContent = text;
+    btn.style.display = 'flex';
+    logActivity('LinkedIn post: ' + topic.slice(0, 40), 'blue');
+    showToast('Post drafted ✓');
+  } catch(e) {
+    out.className = 'output-box visible';
+    out.textContent = 'Error generating post.\nCheck API key in Settings.\n\n' + e.message;
+  }
+}
+
+// ─── EMAIL DRAFTER ────────────────────────────────
+async function generateEmail() {
+  const recipient = document.getElementById('em-recipient').value.trim();
+  const svcKey    = document.getElementById('em-service').value;
+  const context   = document.getElementById('em-context').value.trim();
+  const goal      = document.getElementById('em-goal').value;
+
+  const activeKey = S.provider === 'anthropic' ? S.apiKey : S.orKey;
+  if (!recipient || !svcKey) { showToast('Enter recipient and select service'); return; }
+  if (!activeKey) { showToast('Add API key in Settings'); switchScreen('settings'); return; }
+
+  const out = document.getElementById('email-output');
+  const btn = document.getElementById('em-copy-btn');
+  out.className = 'output-box loading visible';
+  out.innerHTML = '<div class="spinner"></div><span>Drafting cold email...</span>';
+  btn.style.display = 'none';
+
+  const svc = SVC[svcKey];
+  const goalMap = { meeting: 'book a 20-minute discovery call', proposal: 'get permission to send a proposal', intro: 'introduce AIBS with no immediate ask' };
+
+  const systemPrompt = `You are writing a cold email on behalf of Mariosu Fave, Owner of AI Bridge Solutions PNG (AIBS).
+IPA: 116407435 | md.aibspng@gmail.com | +675 7197 8592 | Sec 126 Lot 37 Kanage St, Moresby NE, NCD 1121.
+
+Write a cold email that:
+- Sounds like a smart colleague who noticed a relevant problem — NOT a salesperson
+- Subject line: lowercase, 2–5 words, boring but curiosity-inducing (on its own line: "Subject: ...")
+- Opens with a specific observation or hook, NEVER "I hope this email finds you well"
+- 100–150 words maximum (body only, not counting subject or signature)
+- One clear, low-friction ask: ${goalMap[goal] || goal}
+- PNG business context — local, direct, professional
+- NO buzzwords (synergy, leverage, game-changer, circle back)
+- End with Mariosu Fave's full signature block
+
+Format exactly:
+Subject: [subject line]
+
+[email body]
+
+Mariosu Fave
+AI Bridge Solutions PNG
+md.aibspng@gmail.com | +675 7197 8592`;
+
+  const userMsg = `Recipient: ${recipient}
+Service to pitch: ${svc.name} (${svc.price})
+Context/hook: ${context || 'Cold outreach, no prior contact'}
+Goal: ${goalMap[goal]}`;
+
+  try {
+    const text = await callAI(systemPrompt, userMsg);
+    out.className = 'output-box visible';
+    out.textContent = text;
+    btn.style.display = 'flex';
+    logActivity('Cold email: ' + recipient.slice(0, 40), 'green');
+    showToast('Email drafted ✓');
+  } catch(e) {
+    out.className = 'output-box visible';
+    out.textContent = 'Error generating email.\nCheck API key in Settings.\n\n' + e.message;
+  }
+}
+
+// ─── SALES ENABLEMENT ─────────────────────────────
+async function generateSales() {
+  const type     = document.getElementById('sa-type').value;
+  const persona  = document.getElementById('sa-persona').value.trim();
+  const svcKey   = document.getElementById('sa-service').value;
+  const objection = document.getElementById('sa-objection').value.trim();
+
+  const activeKey = S.provider === 'anthropic' ? S.apiKey : S.orKey;
+  if (!svcKey || !persona) { showToast('Select service and enter target persona'); return; }
+  if (!activeKey) { showToast('Add API key in Settings'); switchScreen('settings'); return; }
+
+  const out = document.getElementById('sales-output');
+  const btn = document.getElementById('sa-copy-btn');
+  out.className = 'output-box loading visible';
+  out.innerHTML = '<div class="spinner"></div><span>Building sales asset...</span>';
+  btn.style.display = 'none';
+
+  const svc = SVC[svcKey];
+  const typeLabels = { pitch: 'a concise pitch script / talk track (what to say in the first 10 minutes)', objection: 'a fast-reference objection handling doc', onepager: 'post-meeting one-pager / leave-behind copy', roi: 'ROI justification bullet points for the buyer\'s boss' };
+
+  const systemPrompt = `You are a senior sales enablement writer for AIBS (AI Bridge Solutions PNG). Create materials that Mariosu Fave actually uses in client meetings — practical, specific, direct. No filler.
+
+AIBS services:
+- AI Document & Compliance Pack: K5,000–K12,000, 14 days
+- ACS Skills Assessment Pathway: K2,500–K4,000/candidate, 7 days
+- Microsoft 365 Health Check: K3,500–K8,000, 5 working days
+- Governance Retainer: K2,000–K4,000/month
+- CCTV/ELV Design: K500–K1,500, 5 working days
+
+Owner: Mariosu Fave | 21 years PNG ICT | IPA: 116407435 | md.aibspng@gmail.com | +675 7197 8592
+Context: PNG market — government departments, SOEs, banks, mining/resource companies, SMEs.
+
+Write ${typeLabels[type] || type} for the ${svc.name} service, targeted at ${persona}.${objection ? '\nKey objection to address: ' + objection : ''}
+Make it specific to PNG business culture. Mobile-readable formatting.`;
+
+  const userMsg = `Asset: ${type} | Service: ${svc.name} | Persona: ${persona}${objection ? ' | Objection: ' + objection : ''}`;
+
+  try {
+    const text = await callAI(systemPrompt, userMsg);
+    out.className = 'output-box visible';
+    out.textContent = text;
+    btn.style.display = 'flex';
+    logActivity('Sales asset: ' + type + ' — ' + svc.name.slice(0, 25), 'red');
+    showToast('Sales asset ready ✓');
+  } catch(e) {
+    out.className = 'output-box visible';
+    out.textContent = 'Error generating asset.\nCheck API key in Settings.\n\n' + e.message;
+  }
+}
+
 // ─── DOCUMENT VAULT ──────────────────────────────
 const DOCS = {
   'governance-template': { title: 'Governance Pack — Scope Template', body: 'Phase Zero intake template for the AI Document & Compliance Pack. Covers up to 8 ICT policies: Acceptable Use, Data Classification, Access Control, Incident Response, Change Management, Business Continuity, Remote Access, and Third-Party Risk. Includes client questionnaire, scope assumptions, Genesis gate evidence block, and 14-day delivery schedule.' },
@@ -1004,7 +1416,14 @@ const DOCS = {
   'tearsheet-03':        { title: 'Tear Sheet 03 — M365 Health Check', body: 'A4 single-page tear sheet. Assessment K3,500–K8,000 inc. GST. 5-day assessment. Severity-coded findings band. Microsoft certification block. File: AIBS-SS-03-M365-HealthCheck.html' },
   'genesis-master':      { title: 'Genesis Creation Blueprint v4.3', body: '7-phase governance framework (P0–P7). Phase Zero: mandatory intake, no bypass. The Covenant: TRUTH, ASSUMPTIONS, DECISIONS, OPTIONS, CONFIDENCE TIERS, NO FILLER, RISK HONESTY, SUSTAINABILITY. v4.3 additions: DRIP Matrix resource classification (P1), Buyback Rate check on senior resources. Release requires Covenant Scan CLEAR.' },
   'covenant-scan':       { title: 'Covenant Scan Checklist', body: 'Pre-release quality gate — P6. Eight checks: (1) No invented facts — every specific figure sourced, (2) All assumptions labelled A1, A2..., (3) All decisions logged DEC-01 with rationale, (4) Minimum 2 options per trade-off, (5) Confidence tags applied throughout, (6) No filler paragraphs, (7) No risk downgraded for commercial comfort, (8) Sustainability gate — 5 sub-criteria evidenced. SCAN CLEAR → release. Any fail → HOLD.' },
-  'aibs-profile':        { title: 'AIBS Company Profile', body: 'AI Bridge Solutions PNG. IPA Acc#116407435. Sec 126 Lot 37 Kanage St, Moresby NE District, NCD 1121. PO Box 2111, Port Moresby. md.aibspng@gmail.com. +675 7197 8592. Owner: Mariosu Fave — Digitalisation & Transformational Governance Architect. AIBS is INDEPENDENT — not linked to PISC Tech, Maigata Limited, or Clade IT Solutions Limited. Logo: black/red/gold bridge.' }
+  'aibs-profile':        { title: 'AIBS Company Profile', body: 'AI Bridge Solutions PNG. IPA Acc#116407435. Sec 126 Lot 37 Kanage St, Moresby NE District, NCD 1121. PO Box 2111, Port Moresby. md.aibspng@gmail.com. +675 7197 8592. Owner: Mariosu Fave — Digitalisation & Transformational Governance Architect. AIBS is INDEPENDENT — not linked to PISC Tech, Maigata Limited, or Clade IT Solutions Limited. Logo: black/red/gold bridge.' },
+  'skill-social':        { title: 'LinkedIn Post Generator', body: 'Powered by the social-content skill from coreyhaines31/marketingskills. Go to AI Studio → LinkedIn tab to use it. Generates platform-native LinkedIn posts aligned with AIBS brand voice and PNG business context. Supports authority building, lead generation, brand awareness, and engagement goals. Installed at: .claude/commands/social-content.md' },
+  'skill-email':         { title: 'Cold Email Drafter', body: 'Powered by the cold-email skill from coreyhaines31/marketingskills. Go to AI Studio → Email tab to use it. Writes short, human-sounding cold emails for AIBS outreach. Subject lines: lowercase, 2–5 words. Body: 100–150 words max. One clear ask per email. No AI clichés. Installed at: .claude/commands/cold-email.md' },
+  'skill-sales':         { title: 'Sales Enablement Generator', body: 'Powered by the sales-enablement skill from coreyhaines31/marketingskills. Go to AI Studio → Sales tab to use it. Creates pitch scripts, objection handling docs, one-pager copy, and ROI justification points for any AIBS service. Targeted by persona and PNG business context. Installed at: .claude/commands/sales-enablement.md' },
+  'skill-copywriting':   { title: 'Copywriting Assistant', body: 'Powered by the copywriting skill from coreyhaines31/marketingskills. Use via Claude Code: /copywriting. Writes and rewrites marketing copy for AIBS web pages, service descriptions, brochures, proposal cover letters, and CTAs. Principles: clarity over cleverness, specificity, benefits over features, honest messaging. Installed at: .claude/commands/copywriting.md' },
+  'skill-brainstorm':    { title: 'Brainstorm & Design Gate', body: 'Powered by the brainstorm skill from obra/superpowers. Use via Claude Code: /brainstorm. Enforces design-before-code gate. No implementation until design is presented and approved. Process: explore context → ask clarifying questions → propose 2–3 approaches → write design doc → self-review → get approval → write plan. Installed at: .claude/commands/brainstorm.md' },
+  'skill-debug':         { title: 'Systematic Debugging', body: 'Powered by the debug skill from obra/superpowers. Use via Claude Code: /debug. Enforces root-cause investigation before any fix attempt. Four phases: root cause investigation, pattern analysis, hypothesis & testing, implementation. Iron law: NO FIXES WITHOUT ROOT CAUSE FIRST. After 3 failed fixes, question architecture. Installed at: .claude/commands/debug.md' },
+  'skill-verify':        { title: 'Verification Before Completion', body: 'Powered by the verify skill from obra/superpowers. Use via Claude Code: /verify. Never claim work is complete without running fresh verification. Steps: identify command → execute → read full output → verify claim → only then report done. Previous runs, linter passes, or self-reports do not count. Installed at: .claude/commands/verify.md' }
 };
 
 function openDoc(id) {
