@@ -394,6 +394,13 @@
   /* ═══ TOAST ═══ */
   .toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--card2); border: 1px solid rgba(201,168,76,0.2); border-radius: 24px; padding: 10px 20px; font-family: var(--mono); font-size: 11px; color: var(--gold); letter-spacing: 0.1em; z-index: 999; opacity: 0; transition: all 0.3s; white-space: nowrap; pointer-events: none; }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* ─── HERO DATE ─── */
+  .hero-date { font-family: var(--mono); font-size: 10px; color: rgba(245,240,232,0.3); margin-top: -10px; margin-bottom: 16px; letter-spacing: 0.08em; }
+
+  /* ─── COMING SOON QUICK ACTIONS ─── */
+  .qa-soon { opacity: 0.42; position: relative; }
+  .qa-soon::after { content: 'Phase 2'; position: absolute; top: 8px; right: 8px; font-family: var(--mono); font-size: 7px; letter-spacing: 0.12em; text-transform: uppercase; background: var(--grey2); color: var(--grey); padding: 2px 7px; border-radius: 4px; pointer-events: none; }
 </style>
 </head>
 <body>
@@ -421,9 +428,10 @@
           <div class="hero-greeting" id="greeting">Good morning</div>
           <div class="hero-name"><em>Mariosu</em> Fave</div>
           <div class="hero-role">Digitalisation & Transformational Governance Architect</div>
+          <div class="hero-date" id="hero-date"></div>
           <div class="hero-stats">
             <div class="hero-stat">
-              <div class="hero-stat-num">3</div>
+              <div class="hero-stat-num">5</div>
               <div class="hero-stat-label">Services</div>
             </div>
             <div class="hero-stat">
@@ -453,34 +461,19 @@
             <div class="qa-icon qa-blue">📁</div>
             <div><div class="qa-title">Document Vault</div><div class="qa-sub">Templates</div></div>
           </div>
-          <div class="quick-action" onclick="showToast('Gmail triage — Phase 2')">
+          <div class="quick-action qa-soon" onclick="showToast('Gmail triage — coming in Phase 2')">
             <div class="qa-icon qa-green">📧</div>
-            <div><div class="qa-title">Email Triage</div><div class="qa-sub">Phase 2</div></div>
+            <div><div class="qa-title">Email Triage</div><div class="qa-sub">Coming Soon</div></div>
           </div>
-          <div class="quick-action" onclick="showToast('Content studio — Phase 2')">
+          <div class="quick-action qa-soon" onclick="showToast('LinkedIn studio — coming in Phase 2')">
             <div class="qa-icon qa-red">💡</div>
-            <div><div class="qa-title">LinkedIn Post</div><div class="qa-sub">Phase 2</div></div>
+            <div><div class="qa-title">LinkedIn Post</div><div class="qa-sub">Coming Soon</div></div>
           </div>
         </div>
 
         <div class="card">
           <div class="label">Activity</div>
-          <div class="activity-item">
-            <div class="activity-dot" style="background:var(--gold)"></div>
-            <div><div class="activity-text">AIBS Agent deployed to GitHub Pages</div><div class="activity-time">Today</div></div>
-          </div>
-          <div class="activity-item">
-            <div class="activity-dot" style="background:var(--green)"></div>
-            <div><div class="activity-text">3 tear sheets ready for distribution</div><div class="activity-time">Today</div></div>
-          </div>
-          <div class="activity-item">
-            <div class="activity-dot" style="background:var(--blue)"></div>
-            <div><div class="activity-text">Service Intelligence Pack published</div><div class="activity-time">Today</div></div>
-          </div>
-          <div class="activity-item">
-            <div class="activity-dot" style="background:var(--grey)"></div>
-            <div><div class="activity-text">Entity separation confirmed — AIBS standalone</div><div class="activity-time">Today</div></div>
-          </div>
+          <div id="activity-list"></div>
         </div>
 
       </div>
@@ -696,7 +689,7 @@
           </div>
           <div class="setting-row">
             <div class="setting-info"><div class="setting-name">Max Tokens</div><div class="setting-desc">Per generation</div></div>
-            <div class="setting-value">1,000</div>
+            <div class="setting-value">2,000</div>
           </div>
         </div>
 
@@ -844,7 +837,7 @@ function updateStatus() {
   if (activeKey) {
     dot.className = 'status-dot connected';
     text.textContent = label + ' configured — ready';
-    badge.textContent = 'ONLINE';
+    badge.textContent = S.provider === 'anthropic' ? 'ANTHROPIC' : 'OPENROUTER';
   } else {
     dot.className = 'status-dot pending';
     text.textContent = 'API key not configured — go to Settings';
@@ -942,7 +935,7 @@ Delivery: ${svc.time}`;
         },
         body: JSON.stringify({
           model: 'claude-sonnet-4-20250514',
-          max_tokens: 1000,
+          max_tokens: 2000,
           system: systemPrompt,
           messages: [{ role: 'user', content: userMsg }]
         })
@@ -962,7 +955,7 @@ Delivery: ${svc.time}`;
         },
         body: JSON.stringify({
           model: 'anthropic/claude-sonnet-4',
-          max_tokens: 1000,
+          max_tokens: 2000,
           messages: [
             { role: 'system', content: systemPrompt },
             { role: 'user', content: userMsg }
@@ -980,6 +973,7 @@ Delivery: ${svc.time}`;
       S.drafts++;
       localStorage.setItem('aibs_drafts', S.drafts);
       document.getElementById('draft-count').textContent = S.drafts;
+      logActivity('Proposal drafted: ' + client + ' — ' + svc.name, 'gold');
       showToast('Draft generated ✓');
     } else throw new Error('No content returned');
 
@@ -1029,6 +1023,57 @@ function filterDocs(q) {
   q = q.toLowerCase();
   document.querySelectorAll('.doc-item').forEach(el => {
     el.style.display = el.querySelector('.doc-name').textContent.toLowerCase().includes(q) ? 'flex' : 'none';
+  });
+}
+
+// ─── ACTIVITY LOG ────────────────────────────────
+const SEED_ACTIVITY = [
+  { text: 'AIBS Agent deployed to GitHub Pages', color: 'gold', time: 'Apr 14, 2026' },
+  { text: '3 tear sheets ready for distribution', color: 'green', time: 'Apr 14, 2026' },
+  { text: 'Service Intelligence Pack published', color: 'blue', time: 'Apr 14, 2026' },
+  { text: 'Entity separation confirmed — AIBS standalone', color: 'grey', time: 'Apr 14, 2026' }
+];
+
+function getActivity() {
+  try {
+    return JSON.parse(localStorage.getItem('aibs_activity') || 'null') || SEED_ACTIVITY;
+  } catch { return SEED_ACTIVITY; }
+}
+
+function logActivity(text, color) {
+  const VALID = ['gold', 'green', 'blue', 'red', 'grey'];
+  if (!VALID.includes(color)) color = 'gold';
+  const entries = getActivity();
+  const d = new Date();
+  const time = d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' });
+  entries.unshift({ text, color, time });
+  if (entries.length > 8) entries.splice(8);
+  localStorage.setItem('aibs_activity', JSON.stringify(entries));
+  renderActivity(entries);
+}
+
+function renderActivity(entries) {
+  const container = document.getElementById('activity-list');
+  if (!container) return;
+  container.innerHTML = '';
+  entries.slice(0, 5).forEach(e => {
+    const item = document.createElement('div');
+    item.className = 'activity-item';
+    const dot = document.createElement('div');
+    dot.className = 'activity-dot';
+    dot.style.background = 'var(--' + e.color + ')';
+    const info = document.createElement('div');
+    const textEl = document.createElement('div');
+    textEl.className = 'activity-text';
+    textEl.textContent = e.text;
+    const timeEl = document.createElement('div');
+    timeEl.className = 'activity-time';
+    timeEl.textContent = e.time;
+    info.appendChild(textEl);
+    info.appendChild(timeEl);
+    item.appendChild(dot);
+    item.appendChild(info);
+    container.appendChild(item);
   });
 }
 
@@ -1089,6 +1134,15 @@ if ('serviceWorker' in navigator) {
 
   document.getElementById('draft-count').textContent = S.drafts;
   updateStatus();
+
+  // Dynamic date in hero
+  const heroDate = document.getElementById('hero-date');
+  if (heroDate) {
+    heroDate.textContent = new Date().toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  }
+
+  // Render activity feed
+  renderActivity(getActivity());
 })();
 </script>
 </body>
