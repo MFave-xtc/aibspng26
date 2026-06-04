@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Set Up Content Filtering at Home | AIBS Digital Setup Guides</title>
+<meta name="description" content="Block unsafe websites on your home internet in PNG. Change your router DNS to a family-safe filter and enable browser controls in 30 minutes.">
+<meta property="og:title" content="How to Set Up Content Filtering at Home | AIBS Digital Setup Guides">
+<meta property="og:type" content="article">
+<meta name="theme-color" content="#06111C">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<nav class="nav" id="main-nav" role="navigation" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a class="nav-logo" href="/" aria-label="AIBS Digital Setup Guides home">
+      <div class="nav-logo-mark" aria-hidden="true">A</div>
+      <div class="nav-logo-text">AIBS Digital Setup Guides<span>Built for PNG</span></div>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="/start-here.html">Start Here</a>
+      <a class="nav-link" href="/categories/home-internet-safety.html">Home Safety</a>
+      <a class="nav-link" href="/categories/small-office-setup.html">SME Setup</a>
+      <a class="nav-link" href="/categories/internet-cafe-setup.html">Internet Café</a>
+      <a class="nav-link" href="/categories/gaming-zone-setup.html">Gaming Zone</a>
+      <a class="nav-link" href="/checklists.html">Checklists</a>
+      <a class="nav-link" href="/about.html">About</a>
+      <a class="nav-cta" href="/contact.html">Request Help</a>
+    </div>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a class="nav-link" href="/start-here.html">Start Here</a>
+  <a class="nav-link" href="/categories/home-internet-safety.html">Home Safety</a>
+  <a class="nav-link" href="/categories/small-office-setup.html">SME Setup</a>
+  <a class="nav-link" href="/categories/internet-cafe-setup.html">Internet Café</a>
+  <a class="nav-link" href="/categories/gaming-zone-setup.html">Gaming Zone</a>
+  <a class="nav-link" href="/checklists.html">Checklists</a>
+  <a class="nav-link" href="/about.html">About</a>
+  <a class="nav-link" href="/contact.html">Contact</a>
+  <a class="nav-cta" href="/contact.html">Request Help</a>
+</div>
+
+<header class="guide-page-header">
+  <div class="container-narrow">
+    <nav class="guide-breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a><span class="guide-breadcrumb-sep">›</span>
+      <a href="/guides/index.html">Guides</a><span class="guide-breadcrumb-sep">›</span>
+      <a href="/categories/children-family-safety.html">Children &amp; Family Safety</a><span class="guide-breadcrumb-sep">›</span>
+      <span>Content Filtering at Home</span>
+    </nav>
+    <span class="status-draft"><span class="status-dot"></span> Draft — Owner Review Pending</span>
+    <h1>How to Set Up Content Filtering at Home</h1>
+    <div class="guide-meta-strip">
+      <div class="guide-meta-pill"><strong>Audience:</strong> Parents, home users</div>
+      <div class="guide-meta-pill"><strong>Difficulty:</strong> <span class="difficulty-intermediate">Intermediate</span></div>
+      <div class="guide-meta-pill"><strong>Time:</strong> 30 minutes</div>
+      <div class="guide-meta-pill"><strong>Last reviewed:</strong> June 2026</div>
+    </div>
+  </div>
+</header>
+
+<main class="guide-body">
+  <div class="container-narrow">
+    <div class="guide-layout">
+
+      <article class="guide-content">
+
+        <!-- SECTION 1: Quick Summary -->
+        <section class="guide-section" id="quick-summary">
+          <h2><span class="section-number">1</span> Quick Summary</h2>
+          <p>Content filtering blocks access to unsafe websites on your home internet. This guide covers two practical methods for PNG homes: changing your router's DNS settings to a family-safe filter, and using browser-level controls such as Google SafeSearch and YouTube Restricted Mode.</p>
+          <p>These two methods work together. Router DNS filtering covers all devices on your Wi-Fi network. Browser controls add a second layer of protection for specific services like Google Search and YouTube.</p>
+          <div class="success-box">
+            <strong>What you will achieve:</strong> After completing this guide, all devices connected to your home Wi-Fi will have DNS-based content filtering applied, and your browsers will be configured with SafeSearch and Restricted Mode enabled.
+          </div>
+        </section>
+
+        <!-- SECTION 2: PNG Reality Check -->
+        <section class="guide-section" id="png-reality">
+          <h2><span class="section-number">2</span> PNG Reality Check</h2>
+          <div class="png-reality">
+            <div class="png-reality-header">PNG Reality Check</div>
+            <p>In PNG homes, a single router often connects multiple phones, tablets, and computers. Changing the DNS settings on the router applies filtering to all devices on that network — including older devices that cannot run parental control apps.</p>
+            <p>Mobile data connections bypass home router filtering entirely. If a child or family member uses mobile data on their phone rather than the home Wi-Fi, the router DNS settings will not apply to them. Additional device-level settings are needed for phones that use mobile data outside the home.</p>
+            <p>Many PNG homes have inconsistent power supply. A power outage will not permanently affect your DNS settings — they will be retained when the router restarts. However, if you are mid-setup when power cuts, you will need to log back in and confirm whether your changes were saved.</p>
+          </div>
+        </section>
+
+        <!-- SECTION 3: Important Note on Limitations -->
+        <section class="guide-section" id="limitations">
+          <h2><span class="section-number">3</span> What Content Filtering Can and Cannot Do</h2>
+          <div class="info-box">
+            <strong>Content filtering is not a complete solution.</strong> Children should also be taught about online safety, and family conversations about internet use are important. Determined teenagers can bypass DNS-based filtering by using a VPN, switching to mobile data, or using a proxy service. DNS filtering works best as one layer of protection alongside open conversations and supervision — not as a replacement for them.
+          </div>
+          <p>DNS filtering is effective for:</p>
+          <ul>
+            <li>Blocking accidental access to adult content for younger children</li>
+            <li>Blocking known malware and phishing sites for all family members</li>
+            <li>Covering all devices on the network without software on each device</li>
+          </ul>
+          <p>DNS filtering does not protect against:</p>
+          <ul>
+            <li>Devices using mobile data instead of home Wi-Fi</li>
+            <li>VPN usage that routes traffic around your DNS settings</li>
+            <li>Content within apps that do not use your browser (messaging apps, games)</li>
+            <li>Harmful content shared directly by friends or contacts in messages</li>
+          </ul>
+        </section>
+
+        <!-- SECTION 4: Method 1 — DNS Filtering on Your Router -->
+        <section class="guide-section" id="method-dns">
+          <h2><span class="section-number">4</span> Method 1 — DNS Filtering on Your Router</h2>
+          <p>DNS filtering works by pointing your router to a family-safe DNS server that refuses to resolve the addresses of blocked websites. When any device on your Wi-Fi tries to visit a blocked site, the DNS server returns nothing, and the browser shows a "site not found" message.</p>
+          <p>This method requires you to access your router's admin panel. If you have not done this before, read the <a href="/guides/secure-wifi-router-png.html">Secure Your Wi-Fi Router guide</a> first — it covers how to find your router's admin address and log in.</p>
+
+          <div class="step-block">
+            <div class="step-number">Step 1</div>
+            <h4>Access Your Router Admin Panel</h4>
+            <p>You need to be connected to your home Wi-Fi to do this. Open a browser on your phone or laptop and go to your router's admin address — usually <strong>192.168.1.1</strong> or <strong>192.168.0.1</strong>. Log in with your router admin username and password (not your Wi-Fi password). See the <a href="/guides/secure-wifi-router-png.html">router security guide</a> if you need help finding or using these credentials.</p>
+            <div class="step-what-to-look">You should see your router's dashboard or settings page after logging in.</div>
+          </div>
+
+          <div class="step-block">
+            <div class="step-number">Step 2</div>
+            <h4>Find the DNS Settings</h4>
+            <p>DNS settings in router admin panels are typically found under one of these menus:</p>
+            <ul>
+              <li><strong>WAN</strong> or <strong>Internet</strong> settings — the most common location</li>
+              <li><strong>Network</strong> &gt; <strong>WAN</strong></li>
+              <li><strong>Advanced</strong> &gt; <strong>DNS</strong> or <strong>DHCP</strong></li>
+              <li>Some routers label it as <strong>DNS Server</strong> directly in the main menu</li>
+            </ul>
+            <p>Look for fields labelled "Primary DNS", "DNS Server 1", "Preferred DNS", or similar. There will usually be two fields — one for the primary DNS server and one for the secondary (backup).</p>
+            <div class="step-what-to-look">You may see the current values as your ISP's DNS addresses (often numbers starting with 203 or 124 for PNG ISPs). Write down the current values before changing them.</div>
+          </div>
+
+          <div class="step-block">
+            <div class="step-number">Step 3</div>
+            <h4>Enter a Family-Safe DNS Address</h4>
+            <p>Choose one of the following family-safe DNS services. Both are free, publicly available, and effective:</p>
+            <table class="settings-table">
+              <thead>
+                <tr>
+                  <th>Service</th>
+                  <th>Primary DNS</th>
+                  <th>Secondary DNS</th>
+                  <th>Blocks</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Cloudflare Family</td>
+                  <td><strong>1.1.1.3</strong></td>
+                  <td><strong>1.0.0.3</strong></td>
+                  <td>Adult content + malware</td>
+                </tr>
+                <tr>
+                  <td>OpenDNS FamilyShield</td>
+                  <td><strong>208.67.222.123</strong></td>
+                  <td><strong>208.67.220.123</strong></td>
+                  <td>Adult content</td>
+                </tr>
+                <tr>
+                  <td>Google (standard — limited filtering)</td>
+                  <td><strong>8.8.8.8</strong></td>
+                  <td><strong>8.8.4.4</strong></td>
+                  <td>Minimal — not recommended for family filtering without extra setup</td>
+                </tr>
+              </tbody>
+            </table>
+            <p><strong>Recommended for most PNG homes:</strong> Use Cloudflare Family (1.1.1.3 / 1.0.0.3). It is fast, free, and blocks both adult content and malware sites. OpenDNS FamilyShield is also a solid choice and has been widely used for family filtering for many years.</p>
+            <p>Enter the Primary DNS value into the first DNS field, and the Secondary DNS value into the second field.</p>
+            <div class="step-what-to-look">Both fields should contain the DNS addresses you chose. Double-check there are no extra spaces or typos — DNS addresses must be entered exactly.</div>
+          </div>
+
+          <div class="step-block">
+            <div class="step-number">Step 4</div>
+            <h4>Save Settings and Restart Your Router</h4>
+            <p>Click Save, Apply, or OK to save your DNS settings. Most routers will apply the new DNS settings without requiring a full restart, but restarting the router ensures all connected devices pick up the change cleanly.</p>
+            <ol>
+              <li>Save the settings in the router admin panel.</li>
+              <li>Restart the router by turning it off, waiting 10 seconds, and turning it back on — or use the router's own restart option if available.</li>
+              <li>Wait for the router to reconnect (usually 30–60 seconds).</li>
+              <li>Reconnect your devices to Wi-Fi if needed.</li>
+            </ol>
+            <div class="step-what-to-look">Your internet connection should work as normal after restart. All devices on the Wi-Fi network will now use the family-safe DNS.</div>
+          </div>
+
+          <div class="step-block">
+            <div class="step-number">Step 5</div>
+            <h4>Test That Filtering Is Working</h4>
+            <p>After restarting, test that the filter is active and that normal browsing still works:</p>
+            <ol>
+              <li>Open a browser on a device connected to your home Wi-Fi.</li>
+              <li>Try to visit a site that should be blocked — Cloudflare maintains a test page at <strong>https://1.1.1.3/help</strong> which shows your current DNS settings. You can also try searching for a known adult content site and see if it fails to load.</li>
+              <li>Confirm that a normal site like <strong>google.com</strong> or <strong>youtube.com</strong> loads correctly. If normal sites are blocked, your DNS settings may be too restrictive — see the troubleshooting section.</li>
+            </ol>
+            <div class="step-what-to-look">Normal websites should load as expected. Blocked sites should fail to load or show a block page.</div>
+          </div>
+        </section>
+
+        <!-- SECTION 5: Method 2 — Browser Controls -->
+        <section class="guide-section" id="method-browser">
+          <h2><span class="section-number">5</span> Method 2 — Browser-Level Controls</h2>
+          <p>Browser controls work independently of your DNS settings and add filtering specifically for Google Search and YouTube. These are worth setting up even if you have already configured router DNS filtering, because they provide an additional layer for the most commonly used services.</p>
+
+          <div class="step-block">
+            <div class="step-number">Step A</div>
+            <h4>Enable Google SafeSearch</h4>
+            <p>SafeSearch filters explicit content from Google Search results. It does not block all harmful content, but it significantly reduces the likelihood of unsafe images or content appearing in search results.</p>
+            <ol>
+              <li>Open a browser and go to <strong>google.com/preferences</strong> or click <strong>Settings</strong> at the bottom of any Google Search page.</li>
+              <li>Find the <strong>SafeSearch</strong> option.</li>
+              <li>Select <strong>Filter explicit results</strong> (or the equivalent "On" setting for SafeSearch).</li>
+              <li>Click Save at the bottom of the page.</li>
+            </ol>
+            <p>To lock SafeSearch so it cannot be changed without a Google account password, you need to be signed into a Google account with Family Link or account permissions set up. Without locking, a user can simply return to settings and turn it off.</p>
+            <div class="step-what-to-look">After saving, test by searching for a term known to return explicit images — the results should be filtered. A small label may appear at the top of results confirming SafeSearch is active.</div>
+          </div>
+
+          <div class="step-block">
+            <div class="step-number">Step B</div>
+            <h4>Enable YouTube Restricted Mode</h4>
+            <p>YouTube Restricted Mode filters mature content from search results and recommendations. It is not perfect, but it significantly reduces exposure to inappropriate videos.</p>
+            <ol>
+              <li>Go to <strong>youtube.com</strong> on a browser.</li>
+              <li>Click your profile icon (top right) or the three-line menu.</li>
+              <li>Scroll down to <strong>Restricted Mode</strong> at the bottom of the menu.</li>
+              <li>Toggle it to <strong>On</strong> (Activate Restricted Mode).</li>
+            </ol>
+            <p>Note: Restricted Mode is set per browser and per account. If family members use different browser profiles or accounts, Restricted Mode will need to be enabled in each one separately. If you are signed into a Google account in the browser, the setting may persist across sessions. Without sign-in, it may be cleared when the browser closes.</p>
+            <div class="step-what-to-look">A label at the top of the YouTube page will confirm Restricted Mode is on. Videos that do not meet YouTube's restricted content criteria will be hidden from results and recommendations.</div>
+          </div>
+        </section>
+
+        <!-- SECTION 6: Common Mistakes -->
+        <section class="guide-section" id="mistakes">
+          <h2><span class="section-number">6</span> Common Mistakes</h2>
+          <table class="settings-table">
+            <thead>
+              <tr>
+                <th>Mistake</th>
+                <th>Why It Matters</th>
+                <th>Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Relying only on router DNS and forgetting mobile data</td>
+                <td>Phones using mobile data completely bypass the router's DNS filtering — the filter does not apply to any data not going through your home Wi-Fi</td>
+                <td>Set device-level parental controls or screen time restrictions on phones that have their own mobile data SIM</td>
+              </tr>
+              <tr>
+                <td>Not testing after setup</td>
+                <td>DNS settings may not save correctly, or the router may cache the old DNS temporarily — without testing you will not know if filtering is active</td>
+                <td>Always test after setting up by checking Cloudflare's 1.1.1.3/help page and verifying a blocked category site does not load</td>
+              </tr>
+              <tr>
+                <td>Using filtering without explaining it to children</td>
+                <td>Children who discover filtering without explanation may attempt to circumvent it, and the protective conversation about online safety does not happen</td>
+                <td>Have a simple, age-appropriate conversation about why filtering is in place — it works better as part of a larger approach to online safety</td>
+              </tr>
+              <tr>
+                <td>Entering the wrong DNS address</td>
+                <td>A typo in a DNS address will cause internet browsing to fail for all devices on the network</td>
+                <td>Double-check each DNS address digit by digit. If browsing breaks after DNS change, revert to the original DNS values immediately</td>
+              </tr>
+              <tr>
+                <td>Forgetting to set browser controls on all devices</td>
+                <td>SafeSearch and Restricted Mode are set per browser and per account — a device not configured will bypass the browser-level controls</td>
+                <td>Go through each device used by children and set SafeSearch and Restricted Mode individually</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- SECTION 7: Troubleshooting -->
+        <section class="guide-section" id="troubleshooting">
+          <h2><span class="section-number">7</span> Troubleshooting</h2>
+          <table class="settings-table">
+            <thead>
+              <tr>
+                <th>Problem</th>
+                <th>Likely Cause</th>
+                <th>What to Try</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Normal websites are being blocked unexpectedly</td>
+                <td>The DNS filter is being too aggressive, blocking legitimate sites alongside restricted content</td>
+                <td>Try switching to Cloudflare Family (1.1.1.3) instead of OpenDNS — Cloudflare's family filter tends to be less aggressive for general browsing while still blocking adult content and malware</td>
+              </tr>
+              <tr>
+                <td>DNS settings are not saving in the router</td>
+                <td>The router may require a restart to apply changes, or you may not have clicked Save before closing the page</td>
+                <td>Go back into router admin, re-enter the DNS values, click Save, and then restart the router from the admin panel or by power cycling it</td>
+              </tr>
+              <tr>
+                <td>A child bypassed the filter by switching to mobile data</td>
+                <td>Mobile data on a phone does not route through your home router, so the router DNS settings do not apply</td>
+                <td>Use the phone's built-in parental controls or screen time settings to apply restrictions on mobile data use. On Android, consider using Google Family Link. On iOS, use Screen Time (Settings &gt; Screen Time)</td>
+              </tr>
+              <tr>
+                <td>Filtering was working but stopped after ISP reset the router</td>
+                <td>Some ISPs remotely provision or reset router settings, which may overwrite custom DNS entries</td>
+                <td>Log back into the router admin, re-enter the DNS settings, and contact your ISP to ask whether remote resets affect custom DNS configurations</td>
+              </tr>
+              <tr>
+                <td>SafeSearch or Restricted Mode turns off after browser closes</td>
+                <td>These settings are stored per session or per browser profile — if the user is not signed into a Google account, they may not persist</td>
+                <td>Sign into a Google account in the browser for these settings to persist across sessions. Note: a user can still change these settings if they have access to the Google account</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- SECTION 8: Printable Checklist -->
+        <section class="guide-section" id="checklist">
+          <h2><span class="section-number">8</span> Printable Checklist</h2>
+          <div class="checklist-block">
+            <h3>Home Content Filtering Checklist</h3>
+            <ul class="checklist-items">
+              <li><label><input type="checkbox"> Router admin panel accessed successfully</label></li>
+              <li><label><input type="checkbox"> Original DNS settings noted or photographed</label></li>
+              <li><label><input type="checkbox"> Router DNS changed to family-safe service (Cloudflare Family or OpenDNS FamilyShield)</label></li>
+              <li><label><input type="checkbox"> DNS settings saved and router restarted</label></li>
+              <li><label><input type="checkbox"> Filter tested — blocked content cannot be accessed</label></li>
+              <li><label><input type="checkbox"> Normal browsing confirmed as working after DNS change</label></li>
+              <li><label><input type="checkbox"> Google SafeSearch enabled on all browser profiles used by children</label></li>
+              <li><label><input type="checkbox"> YouTube Restricted Mode enabled on all devices used by children</label></li>
+              <li><label><input type="checkbox"> Mobile data filtering addressed separately on phones with SIM cards</label></li>
+              <li><label><input type="checkbox"> Family conversation about online safety completed</label></li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- SECTION 9: Source Register -->
+        <section class="guide-section" id="source-register">
+          <h2><span class="section-number">9</span> Source and Assumptions Register</h2>
+          <h3>Sources</h3>
+          <table class="register-table">
+            <thead>
+              <tr><th>ID</th><th>Source</th><th>Claim</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>SRC-01</td>
+                <td>Cloudflare documentation — one.one.one.one/family</td>
+                <td>Cloudflare Family DNS addresses 1.1.1.3 and 1.0.0.3 block adult content and malware</td>
+                <td><span class="tag-confirmed">CONFIRMED</span></td>
+              </tr>
+              <tr>
+                <td>SRC-02</td>
+                <td>OpenDNS FamilyShield documentation — opendns.com/home-internet-security</td>
+                <td>OpenDNS FamilyShield addresses 208.67.222.123 and 208.67.220.123 block adult content categories</td>
+                <td><span class="tag-confirmed">CONFIRMED</span></td>
+              </tr>
+              <tr>
+                <td>SRC-03</td>
+                <td>Google SafeSearch documentation — support.google.com</td>
+                <td>SafeSearch filters explicit content from Google Search results when enabled</td>
+                <td><span class="tag-confirmed">CONFIRMED</span></td>
+              </tr>
+              <tr>
+                <td>SRC-04</td>
+                <td>YouTube Help documentation — support.google.com/youtube</td>
+                <td>YouTube Restricted Mode filters mature content from search and recommendations</td>
+                <td><span class="tag-confirmed">CONFIRMED</span></td>
+              </tr>
+            </tbody>
+          </table>
+          <h3>Assumptions</h3>
+          <table class="register-table">
+            <thead>
+              <tr><th>ID</th><th>Assumption</th><th>Status</th><th>Action Required</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>A-01</td>
+                <td>PNG home routers allow custom DNS entries in WAN or DHCP settings without ISP restriction</td>
+                <td><span class="tag-assumed">ASSUMED</span></td>
+                <td>Confirm with Digicel, Telikom, and DataCo PNG that custom DNS is permitted and not overridden by remote provisioning</td>
+              </tr>
+              <tr>
+                <td>A-02</td>
+                <td>Mobile data use on personal phones in PNG homes is common enough to warrant addressing as a gap in router-only filtering</td>
+                <td><span class="tag-assumed">ASSUMED</span></td>
+                <td>Confirm with PNG household internet usage data</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+      </article>
+
+      <aside class="guide-sidebar" aria-label="Guide contents">
+        <div class="sidebar-card">
+          <h4>Contents</h4>
+          <ul class="sidebar-toc">
+            <li><a href="#quick-summary">1. Quick Summary</a></li>
+            <li><a href="#png-reality">2. PNG Reality Check</a></li>
+            <li><a href="#limitations">3. What Filtering Can and Cannot Do</a></li>
+            <li><a href="#method-dns">4. Method 1 — Router DNS Filtering</a></li>
+            <li><a href="#method-browser">5. Method 2 — Browser Controls</a></li>
+            <li><a href="#mistakes">6. Common Mistakes</a></li>
+            <li><a href="#troubleshooting">7. Troubleshooting</a></li>
+            <li><a href="#checklist">8. Printable Checklist</a></li>
+            <li><a href="#source-register">9. Source Register</a></li>
+          </ul>
+        </div>
+        <div class="sidebar-card">
+          <h4>Guide Info</h4>
+          <ul class="sidebar-meta-list">
+            <li>Category <strong>Children &amp; Family Safety</strong></li>
+            <li>Difficulty <strong class="difficulty-intermediate">Intermediate</strong></li>
+            <li>Time <strong>30 min</strong></li>
+            <li>Checklist <strong style="color:#4ade80">Yes</strong></li>
+            <li>PNG Context <strong style="color:var(--gold)">High</strong></li>
+          </ul>
+        </div>
+        <div class="sidebar-card">
+          <h4>Related Guides</h4>
+          <ul class="sidebar-toc">
+            <li><a href="/guides/secure-wifi-router-png.html">Secure Your Wi-Fi Router</a></li>
+            <li><a href="/guides/content-filtering-office-png.html">Content Filtering for Offices</a></li>
+          </ul>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</main>
+
+<footer class="footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <div class="footer-logo-mark" aria-hidden="true">A</div>
+          <div class="footer-logo-text">AIBS Digital Setup Guides</div>
+        </div>
+        <p>Free practical ICT and cybersecurity setup guidance built for Papua New Guinea.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Guides</h4>
+        <ul class="footer-links">
+          <li><a href="/categories/home-internet-safety.html">Home Internet Safety</a></li>
+          <li><a href="/categories/small-office-setup.html">Small Office Setup</a></li>
+          <li><a href="/categories/internet-cafe-setup.html">Internet Café Setup</a></li>
+          <li><a href="/categories/gaming-zone-setup.html">Gaming Zone Setup</a></li>
+          <li><a href="/categories/children-family-safety.html">Children &amp; Family Safety</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>More</h4>
+        <ul class="footer-links">
+          <li><a href="/categories/cybersecurity-basics.html">Cybersecurity Basics</a></li>
+          <li><a href="/checklists.html">Checklists</a></li>
+          <li><a href="/start-here.html">Start Here</a></li>
+          <li><a href="/guides/index.html">All Guides</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>AIBS</h4>
+        <ul class="footer-links">
+          <li><a href="/about.html">About AIBS</a></li>
+          <li><a href="/contact.html">Contact</a></li>
+          <li><a href="/disclaimer.html">Disclaimer</a></li>
+          <li><a href="/privacy.html">Privacy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-disclaimer">This website provides public educational guidance only. It does not replace professional technical, legal, cybersecurity incident response, or child protection advice.</p>
+      <p class="footer-copy">&copy; 2026 AI Digital Bridge Solutions PNG</p>
+    </div>
+  </div>
+</footer>
+<script src="../site.js"></script>
+</body>
+</html>

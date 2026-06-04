@@ -1,1 +1,39 @@
-aibskits.com
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- Core Pages -->
+  <url><loc>https://[DOMAIN]/</loc><lastmod>2026-06-04</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://[DOMAIN]/start-here.html</loc><lastmod>2026-06-04</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://[DOMAIN]/guides/index.html</loc><lastmod>2026-06-04</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://[DOMAIN]/checklists.html</loc><lastmod>2026-06-04</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://[DOMAIN]/about.html</loc><lastmod>2026-06-04</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://[DOMAIN]/contact.html</loc><lastmod>2026-06-04</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://[DOMAIN]/disclaimer.html</loc><lastmod>2026-06-04</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://[DOMAIN]/privacy.html</loc><lastmod>2026-06-04</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
+
+  <!-- Guide Pages -->
+  <url><loc>https://[DOMAIN]/guides/secure-wifi-router-png.html</loc><lastmod>2026-06-04</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://[DOMAIN]/guides/strong-passwords-png.html</loc><lastmod>2026-06-04</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://[DOMAIN]/guides/two-factor-authentication-png.html</loc><lastmod>2026-06-04</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://[DOMAIN]/guides/identify-online-scams-png.html</loc><lastmod>2026-06-04</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://[DOMAIN]/guides/protect-personal-information-png.html</loc><lastmod>2026-06-04</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://[DOMAIN]/guides/internet-safety-children-png.html</loc><lastmod>2026-06-04</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://[DOMAIN]/guides/content-filtering-home-png.html</loc><lastmod>2026-06-04</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://[DOMAIN]/guides/content-filtering-office-png.html</loc><lastmod>2026-06-04</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://[DOMAIN]/guides/secure-smartphone-png.html</loc><lastmod>2026-06-04</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://[DOMAIN]/guides/public-wifi-safety-png.html</loc><lastmod>2026-06-04</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://[DOMAIN]/guides/start-internet-cafe-png.html</loc><lastmod>2026-06-04</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://[DOMAIN]/guides/internet-cafe-hardware-png.html</loc><lastmod>2026-06-04</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+
+  <!-- Category Pages -->
+  <url><loc>https://[DOMAIN]/categories/home-internet-safety.html</loc><lastmod>2026-06-04</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://[DOMAIN]/categories/small-office-setup.html</loc><lastmod>2026-06-04</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://[DOMAIN]/categories/internet-cafe-setup.html</loc><lastmod>2026-06-04</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://[DOMAIN]/categories/gaming-zone-setup.html</loc><lastmod>2026-06-04</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://[DOMAIN]/categories/children-family-safety.html</loc><lastmod>2026-06-04</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://[DOMAIN]/categories/cybersecurity-basics.html</loc><lastmod>2026-06-04</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://[DOMAIN]/categories/buying-guides.html</loc><lastmod>2026-06-04</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://[DOMAIN]/categories/templates-checklists.html</loc><lastmod>2026-06-04</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+
+</urlset>
+<!-- NOTE: Replace [DOMAIN] with the confirmed domain name before deployment -->
