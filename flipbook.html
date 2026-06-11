@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIBS Digital Setup Guides — Built for Papua New Guinea</title>
+<meta name="description" content="Free practical ICT and internet safety guides built for Papua New Guinea. AIBS Digital Setup Guides launch announcement.">
+<meta property="og:title" content="AIBS Digital Setup Guides — Built for PNG">
+<meta property="og:description" content="Free step-by-step setup guides for PNG homes, SMEs, internet cafés, and gaming zones.">
+<meta property="og:type" content="website">
+<style>
+/* ── RESET & BASE ─────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  height: 100%;
+  font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+/* ── STAGE ────────────────────────────────────────── */
+.stage {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #02070D;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Ambient background glow */
+.stage::before {
+  content: '';
+  position: absolute;
+  width: 800px; height: 800px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(214,163,41,0.06) 0%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/* ── BOOK CONTAINER ───────────────────────────────── */
+.book {
+  position: relative;
+  width: min(440px, 92vw);
+  height: min(620px, 88vh);
+  perspective: 2000px;
+}
+
+/* ── PAGE WRAPPER ─────────────────────────────────── */
+.page {
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  overflow: hidden;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  cursor: pointer;
+  will-change: transform, opacity;
+  transition: transform 0.7s cubic-bezier(0.77, 0, 0.175, 1),
+              opacity   0.5s ease;
+  box-shadow:
+    0 30px 80px rgba(0,0,0,0.7),
+    0 0 0 1px rgba(214,163,41,0.18),
+    inset 0 0 0 1px rgba(255,255,255,0.04);
+}
+
+/* Page states */
+.page.past {
+  transform: rotateY(-180deg) translateZ(2px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.page.active {
+  transform: rotateY(0deg);
+  opacity: 1;
+  z-index: 10;
+}
+
+.page.future {
+  transform: rotateY(8deg) translateX(6px) translateZ(-4px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.page.next {
+  transform: rotateY(6deg) translateX(4px) translateZ(-2px);
+  opacity: 1;
+  z-index: 8;
+}
+
+/* Flip-out animation */
+@keyframes flipOut {
+  0%   { transform: rotateY(0deg); opacity: 1; }
+  50%  { transform: rotateY(-90deg) translateZ(80px); opacity: 0.4; }
+  100% { transform: rotateY(-180deg); opacity: 0; }
+}
+
+@keyframes flipIn {
+  0%   { transform: rotateY(8deg) translateX(6px) translateZ(-4px); opacity: 0; }
+  30%  { opacity: 0.6; }
+  100% { transform: rotateY(0deg); opacity: 1; }
+}
+
+.page.flipping-out {
+  animation: flipOut 0.65s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+  z-index: 12;
+}
+
+.page.flipping-in {
+  animation: flipIn 0.65s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  z-index: 11;
+}
+
+/* ── PAGE INNER ───────────────────────────────────── */
+.page-inner {
+  width: 100%; height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── PAGE BACKGROUNDS ─────────────────────────────── */
+.page-cover .page-inner { background: linear-gradient(145deg, #02070D 0%, #06111C 50%, #081520 100%); }
+.page-problem .page-inner { background: linear-gradient(160deg, #06111C 0%, #0B1A2A 100%); }
+.page-solution .page-inner { background: linear-gradient(145deg, #0B1A2A 0%, #06111C 100%); }
+.page-guides .page-inner { background: linear-gradient(160deg, #06111C 0%, #081624 100%); }
+.page-categories .page-inner { background: linear-gradient(145deg, #0B1A2A 0%, #06111C 100%); }
+.page-reality .page-inner { background: linear-gradient(160deg, #06111C 0%, #0a1420 100%); }
+.page-roadmap .page-inner { background: linear-gradient(145deg, #081520 0%, #0B1A2A 100%); }
+.page-cta .page-inner { background: linear-gradient(145deg, #0B1A2A 0%, #06111C 60%, #02070D 100%); }
+
+/* ── DECORATIVE ELEMENTS ──────────────────────────── */
+.page-bg-circle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.page-bg-lines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.page-bg-lines::before,
+.page-bg-lines::after {
+  content: '';
+  position: absolute;
+  background: rgba(214,163,41,0.06);
+  border-radius: 2px;
+}
+
+/* ── PAGE CONTENT LAYOUT ──────────────────────────── */
+.page-content {
+  position: relative;
+  z-index: 2;
+  padding: 36px 32px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── TYPOGRAPHY ───────────────────────────────────── */
+.eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #D6A329;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.eyebrow::before {
+  content: '';
+  width: 20px; height: 2px;
+  background: #D6A329;
+  border-radius: 1px;
+  flex-shrink: 0;
+}
+
+h1.page-title {
+  font-size: 34px;
+  font-weight: 900;
+  line-height: 1.05;
+  color: #F5F7FA;
+  letter-spacing: -0.02em;
+}
+
+h1.page-title em { color: #D6A329; font-style: normal; }
+
+h2.page-title {
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.15;
+  color: #F5F7FA;
+  letter-spacing: -0.02em;
+}
+
+h2.page-title em { color: #D6A329; font-style: normal; }
+
+.page-sub {
+  font-size: 14px;
+  color: #AAB4C0;
+  line-height: 1.7;
+  margin-top: 12px;
+}
+
+/* ── PAGE 1 — COVER ───────────────────────────────── */
+.cover-logo-mark {
+  width: 52px; height: 52px;
+  background: #D6A329;
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 900; font-size: 26px; color: #02070D;
+  margin-bottom: 24px;
+  box-shadow: 0 8px 32px rgba(214,163,41,0.4);
+}
+
+.cover-tagline-strip {
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid rgba(214,163,41,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cover-tagline-strip span {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #AAB4C0;
+  text-transform: uppercase;
+}
+
+.cover-tagline-strip .dot {
+  width: 4px; height: 4px; border-radius: 50%;
+  background: #D6A329;
+}
+
+/* Large SVG PNG map watermark */
+.map-watermark {
+  position: absolute;
+  right: -40px;
+  bottom: -20px;
+  width: 280px;
+  opacity: 0.07;
+  pointer-events: none;
+}
+
+/* ── PAGE 2 — PROBLEM ─────────────────────────────── */
+.problem-items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.problem-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: rgba(201,31,31,0.08);
+  border: 1px solid rgba(201,31,31,0.2);
+  border-left: 3px solid #C91F1F;
+  border-radius: 8px;
+  padding: 11px 14px;
+}
+
+.problem-item-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.problem-item p {
+  font-size: 13px;
+  color: #AAB4C0;
+  line-height: 1.45;
+}
+
+.problem-item strong { color: #F5F7FA; font-weight: 600; }
+
+/* ── PAGE 3 — SOLUTION ────────────────────────────── */
+.solution-statement {
+  background: rgba(214,163,41,0.08);
+  border: 1px solid rgba(214,163,41,0.3);
+  border-left: 4px solid #D6A329;
+  border-radius: 10px;
+  padding: 18px 20px;
+  margin: 16px 0;
+}
+
+.solution-statement p {
+  font-size: 15px;
+  color: #F5F7FA;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+.solution-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.pill {
+  background: rgba(214,163,41,0.1);
+  border: 1px solid rgba(214,163,41,0.25);
+  border-radius: 100px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #D6A329;
+}
+
+.author-block {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(214,163,41,0.15);
+}
+
+.author-avatar {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, #D6A329, #F5C542);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 14px; color: #02070D;
+  flex-shrink: 0;
+}
+
+.author-info p { font-size: 12px; color: #AAB4C0; }
+.author-info strong { font-size: 13px; color: #F5F7FA; display: block; }
+
+/* ── PAGE 4 — GUIDES GRID ─────────────────────────── */
+.guides-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 16px;
+  flex: 1;
+}
+
+.guide-chip {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(214,163,41,0.15);
+  border-radius: 8px;
+  padding: 10px 11px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: border-color 0.2s;
+}
+
+.guide-chip:nth-child(odd) { border-left: 2px solid #D6A329; }
+.guide-chip:nth-child(even) { border-left: 2px solid rgba(214,163,41,0.4); }
+
+.guide-chip .chip-num {
+  font-size: 10px;
+  font-weight: 700;
+  color: #D6A329;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.guide-chip p {
+  font-size: 11.5px;
+  color: #F5F7FA;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.launch-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #D6A329;
+  color: #02070D;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 100px;
+  margin-bottom: 14px;
+  align-self: flex-start;
+}
+
+/* ── PAGE 5 — CATEGORIES ──────────────────────────── */
+.cat-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-top: 18px;
+  flex: 1;
+}
+
+.cat-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(214,163,41,0.12);
+  border-radius: 10px;
+  padding: 11px 14px;
+}
+
+.cat-icon {
+  font-size: 20px;
+  width: 36px; height: 36px;
+  background: rgba(214,163,41,0.1);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.cat-item-text strong {
+  font-size: 13px;
+  color: #F5F7FA;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.cat-item-text span {
+  font-size: 11px;
+  color: #AAB4C0;
+}
+
+/* ── PAGE 6 — PNG REALITY ─────────────────────────── */
+.reality-headline {
+  font-size: 15px;
+  color: #AAB4C0;
+  line-height: 1.65;
+  margin-top: 12px;
+  font-style: italic;
+  padding-left: 14px;
+  border-left: 3px solid #D6A329;
+}
+
+.reality-items {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 20px;
+  flex: 1;
+}
+
+.reality-item {
+  background: rgba(214,163,41,0.06);
+  border: 1px solid rgba(214,163,41,0.14);
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.reality-item .r-icon { font-size: 20px; }
+.reality-item strong { font-size: 12px; color: #F5F7FA; font-weight: 700; }
+.reality-item p { font-size: 11px; color: #AAB4C0; line-height: 1.4; }
+
+/* ── PAGE 7 — ROADMAP ─────────────────────────────── */
+.roadmap-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 18px;
+  flex: 1;
+  position: relative;
+}
+
+.roadmap-timeline::before {
+  content: '';
+  position: absolute;
+  left: 20px; top: 8px; bottom: 8px;
+  width: 2px;
+  background: linear-gradient(to bottom, #D6A329, rgba(214,163,41,0.15));
+}
+
+.timeline-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 10px 0;
+  position: relative;
+}
+
+.timeline-dot {
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  z-index: 1;
+  margin-top: 2px;
+}
+
+.timeline-dot.done {
+  background: #D6A329;
+  box-shadow: 0 0 0 3px rgba(214,163,41,0.2);
+}
+
+.timeline-dot.done::after {
+  content: '✓';
+  font-size: 8px;
+  font-weight: 900;
+  color: #02070D;
+}
+
+.timeline-dot.upcoming {
+  background: rgba(214,163,41,0.1);
+  border: 2px solid rgba(214,163,41,0.3);
+}
+
+.timeline-content strong {
+  font-size: 13px;
+  color: #F5F7FA;
+  font-weight: 700;
+  display: block;
+}
+
+.timeline-content span {
+  font-size: 11px;
+  color: #AAB4C0;
+  margin-top: 2px;
+  display: block;
+}
+
+.timeline-content .week-badge {
+  display: inline-block;
+  background: rgba(214,163,41,0.12);
+  border: 1px solid rgba(214,163,41,0.25);
+  border-radius: 4px;
+  padding: 2px 7px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #D6A329;
+  letter-spacing: 0.06em;
+  margin-top: 3px;
+}
+
+/* ── PAGE 8 — CTA ─────────────────────────────────── */
+.cta-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 20px;
+}
+
+.cta-big-text {
+  font-size: 42px;
+  font-weight: 900;
+  line-height: 1.05;
+  color: #F5F7FA;
+  letter-spacing: -0.03em;
+}
+
+.cta-big-text em { color: #D6A329; font-style: normal; display: block; }
+
+.cta-description {
+  font-size: 14px;
+  color: #AAB4C0;
+  line-height: 1.65;
+  max-width: 320px;
+}
+
+.cta-pills {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.cta-pill {
+  background: rgba(214,163,41,0.12);
+  border: 1px solid rgba(214,163,41,0.3);
+  border-radius: 100px;
+  padding: 7px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #D6A329;
+  letter-spacing: 0.04em;
+}
+
+.cta-bottom {
+  padding-top: 20px;
+  border-top: 1px solid rgba(214,163,41,0.2);
+  text-align: center;
+}
+
+.cta-bottom p {
+  font-size: 12px;
+  color: #AAB4C0;
+}
+
+.cta-bottom strong { color: #F5F7FA; }
+
+/* ── ANIMATED DECORATIVE ELEMENTS ────────────────── */
+@keyframes pulse-ring {
+  0%   { transform: translate(-50%,-50%) scale(0.95); opacity: 0.8; }
+  50%  { transform: translate(-50%,-50%) scale(1.05); opacity: 0.3; }
+  100% { transform: translate(-50%,-50%) scale(0.95); opacity: 0.8; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-6px); }
+}
+
+.logo-ring {
+  position: absolute;
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  border: 1px solid rgba(214,163,41,0.3);
+  top: 50%; left: 50%;
+  animation: pulse-ring 3s ease-in-out infinite;
+}
+
+.cover-logo-mark { animation: float 4s ease-in-out infinite; }
+
+/* ── SPARKLE DOTS ─────────────────────────────────── */
+@keyframes sparkle {
+  0%, 100% { opacity: 0.15; transform: scale(1); }
+  50%       { opacity: 0.6; transform: scale(1.4); }
+}
+
+.spark {
+  position: absolute;
+  border-radius: 50%;
+  background: #D6A329;
+  pointer-events: none;
+}
+
+.spark-1 { width: 4px; height: 4px; top: 18%; right: 22%; animation: sparkle 2.1s infinite; }
+.spark-2 { width: 3px; height: 3px; top: 35%; right: 14%; animation: sparkle 2.8s 0.4s infinite; }
+.spark-3 { width: 5px; height: 5px; top: 62%; right: 28%; animation: sparkle 2.4s 0.8s infinite; }
+.spark-4 { width: 3px; height: 3px; top: 78%; left: 18%; animation: sparkle 3.1s 0.2s infinite; }
+
+/* ── NAVIGATION ───────────────────────────────────── */
+.controls {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  z-index: 100;
+}
+
+.dots {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+}
+
+.dot-indicator {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(214,163,41,0.25);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dot-indicator.active {
+  background: #D6A329;
+  width: 20px;
+  border-radius: 3px;
+  box-shadow: 0 0 8px rgba(214,163,41,0.6);
+}
+
+.nav-btn {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(214,163,41,0.3);
+  background: rgba(214,163,41,0.08);
+  color: #D6A329;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.nav-btn:hover {
+  background: rgba(214,163,41,0.18);
+  border-color: rgba(214,163,41,0.6);
+  box-shadow: 0 0 12px rgba(214,163,41,0.3);
+}
+
+/* ── PAGE COUNTER ─────────────────────────────────── */
+.page-counter {
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(170,180,192,0.5);
+  letter-spacing: 0.06em;
+  z-index: 20;
+}
+
+/* ── AUTO-PLAY BAR ────────────────────────────────── */
+.autoplay-bar {
+  position: absolute;
+  bottom: 0; left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #D6A329, #F5C542);
+  border-radius: 0 0 20px 20px;
+  z-index: 20;
+  transition: none;
+}
+
+/* ── PAGE TURN HINT ───────────────────────────────── */
+.turn-hint {
+  position: absolute;
+  bottom: 68px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  color: rgba(170,180,192,0.4);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  pointer-events: none;
+  transition: opacity 0.5s;
+  white-space: nowrap;
+}
+
+/* ── PROGRESS BAR (top) ───────────────────────────── */
+.progress-track {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: rgba(214,163,41,0.08);
+  z-index: 30;
+  border-radius: 20px 20px 0 0;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #D6A329, #F5C542);
+  border-radius: 20px 20px 0 0;
+  transition: width 0.4s ease;
+}
+
+/* ── CORNER FOLD ──────────────────────────────────── */
+.corner-fold {
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 0; height: 0;
+  border-style: solid;
+  border-width: 0 0 28px 28px;
+  border-color: transparent transparent rgba(214,163,41,0.15) transparent;
+  z-index: 5;
+}
+
+/* ── BRAND FOOTER ─────────────────────────────────── */
+.page-brand-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid rgba(214,163,41,0.12);
+}
+
+.brand-mark-sm {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.brand-mark-sm .bm {
+  width: 22px; height: 22px;
+  background: #D6A329;
+  border-radius: 5px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 900; font-size: 11px; color: #02070D;
+}
+
+.brand-mark-sm span {
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(245,247,250,0.6);
+}
+
+.page-number {
+  font-size: 11px;
+  color: rgba(170,180,192,0.4);
+  font-weight: 600;
+}
+
+/* ── GRID LINES DECORATION ────────────────────────── */
+.grid-deco {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(214,163,41,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(214,163,41,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+
+/* ── ANNOUNCEMENT BANNER ──────────────────────────── */
+.announcement-banner {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  background: linear-gradient(90deg, rgba(214,163,41,0.15), rgba(214,163,41,0.08));
+  border-bottom: 1px solid rgba(214,163,41,0.2);
+  padding: 8px 20px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #D6A329;
+  letter-spacing: 0.06em;
+  text-align: center;
+  z-index: 5;
+}
+
+/* ── GLOW ACCENT ──────────────────────────────────── */
+.glow-accent {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(60px);
+}
+
+/* ── ANIMATIONS ───────────────────────────────────── */
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+.page.active .page-content > * {
+  animation: slideUp 0.5s ease forwards;
+}
+
+.page.active .page-content > *:nth-child(1) { animation-delay: 0.1s; opacity: 0; }
+.page.active .page-content > *:nth-child(2) { animation-delay: 0.2s; opacity: 0; }
+.page.active .page-content > *:nth-child(3) { animation-delay: 0.3s; opacity: 0; }
+.page.active .page-content > *:nth-child(4) { animation-delay: 0.4s; opacity: 0; }
+.page.active .page-content > *:nth-child(5) { animation-delay: 0.5s; opacity: 0; }
+.page.active .page-content > *:nth-child(6) { animation-delay: 0.55s; opacity: 0; }
+
+/* Prevent re-animation on non-active pages */
+.page:not(.active) .page-content > * { animation: none; opacity: 1; }
+
+@media (max-width: 480px) {
+  .book { height: min(600px, 85vh); }
+  .page-content { padding: 28px 24px; }
+  h1.page-title { font-size: 28px; }
+  h2.page-title { font-size: 22px; }
+  .cta-big-text { font-size: 34px; }
+}
+</style>
+</head>
+<body>
+
+<div class="stage">
+
+  <!-- ═══ BOOK ═══════════════════════════════════════ -->
+  <div class="book" id="book">
+
+    <!-- ■ Page 1 — Cover ■ -->
+    <div class="page page-cover active" data-page="1" aria-label="Cover page">
+      <div class="page-inner">
+        <div class="grid-deco"></div>
+        <div class="glow-accent" style="width:300px;height:300px;background:rgba(214,163,41,0.12);top:-80px;right:-60px;"></div>
+
+        <div class="spark spark-1"></div>
+        <div class="spark spark-2"></div>
+        <div class="spark spark-3"></div>
+        <div class="spark spark-4"></div>
+
+        <svg class="map-watermark" viewBox="0 0 800 400" fill="none" aria-hidden="true">
+          <path d="M120 180C140 140 180 120 230 115C280 110 330 125 380 130C430 135 470 120 510 125C560 130 590 150 600 175C610 200 595 230 570 250C545 270 510 280 480 290C450 300 420 295 390 285C360 275 330 260 300 255C270 250 240 265 215 260C190 255 165 240 148 220C135 205 125 195 120 180Z" stroke="#D6A329" stroke-width="2.5" fill="rgba(214,163,41,0.15)"/>
+          <path d="M115 175C100 160 88 140 90 120C92 100 108 85 125 80C140 75 158 82 168 95C178 108 175 125 168 140C162 155 148 165 135 170Z" stroke="#D6A329" stroke-width="2" fill="rgba(214,163,41,0.1)"/>
+          <path d="M520 310C540 300 570 295 600 300C625 305 645 320 640 340C635 355 615 360 595 358C570 355 545 345 530 332Z" stroke="#D6A329" stroke-width="1.5" fill="rgba(214,163,41,0.08)"/>
+          <path d="M645 265C655 255 668 258 672 268C676 278 668 290 658 292C648 294 640 285 645 265Z" stroke="#D6A329" stroke-width="1" fill="rgba(214,163,41,0.08)"/>
+          <path d="M668 320C676 310 690 308 698 316C706 324 703 338 695 344C687 350 673 346 668 336Z" stroke="#D6A329" stroke-width="1" fill="rgba(214,163,41,0.08)"/>
+        </svg>
+
+        <div class="progress-track"><div class="progress-fill" id="prog" style="width:12.5%"></div></div>
+        <div class="corner-fold"></div>
+
+        <div class="page-content">
+          <div class="eyebrow">AI Digital Bridge Solutions PNG</div>
+          <div class="cover-logo-mark" aria-hidden="true">A</div>
+          <h1 class="page-title">Digital Setup<br>Guides for<br><em>Papua New Guinea</em></h1>
+          <p class="page-sub">Free step-by-step ICT, internet safety, and cybersecurity guides built for PNG homes and SMEs.</p>
+          <div class="cover-tagline-strip">
+            <span>Free</span>
+            <div class="dot"></div>
+            <span>Practical</span>
+            <div class="dot"></div>
+            <span>Built for PNG</span>
+            <div class="dot"></div>
+            <span>12 Launch Guides</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ■ Page 2 — The Problem ■ -->
+    <div class="page page-problem future" data-page="2" aria-label="The Problem">
+      <div class="page-inner">
+        <div class="grid-deco"></div>
+        <div class="glow-accent" style="width:250px;height:250px;background:rgba(201,31,31,0.08);bottom:-40px;left:-40px;"></div>
+        <div class="progress-track"><div class="progress-fill" style="width:25%"></div></div>
+        <div class="corner-fold"></div>
+
+        <div class="page-content">
+          <div class="eyebrow">The Problem</div>
+          <h2 class="page-title">Generic tech advice<br><em>doesn't fit PNG</em></h2>
+
+          <div class="problem-items">
+            <div class="problem-item">
+              <div class="problem-item-icon">⚡</div>
+              <p><strong>Power interruptions</strong> — but guides assume always-on electricity.</p>
+            </div>
+            <div class="problem-item">
+              <div class="problem-item-icon">📱</div>
+              <p><strong>Mobile-first access</strong> — but guides assume desktop and fast Wi-Fi.</p>
+            </div>
+            <div class="problem-item">
+              <div class="problem-item-icon">💸</div>
+              <p><strong>Limited data budgets</strong> — but guides assume cheap unlimited internet.</p>
+            </div>
+            <div class="problem-item">
+              <div class="problem-item-icon">🔒</div>
+              <p><strong>Account takeovers and scams</strong> are rising — but local guidance is almost non-existent.</p>
+            </div>
+          </div>
+
+          <div class="page-brand-footer">
+            <div class="brand-mark-sm"><div class="bm">A</div><span>AIBS Digital Setup Guides</span></div>
+            <span class="page-number">2 / 8</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ■ Page 3 — The Solution ■ -->
+    <div class="page page-solution future" data-page="3" aria-label="Our Solution">
+      <div class="page-inner">
+        <div class="grid-deco"></div>
+        <div class="glow-accent" style="width:300px;height:300px;background:rgba(214,163,41,0.08);top:-60px;right:-60px;"></div>
+        <div class="progress-track"><div class="progress-fill" style="width:37.5%"></div></div>
+        <div class="corner-fold"></div>
+
+        <div class="page-content">
+          <div class="eyebrow">Our Solution</div>
+          <h2 class="page-title">We built a <em>free</em><br>public knowledge hub</h2>
+
+          <div class="solution-statement">
+            <p>AIBS Digital Setup Guides provides free practical ICT and cybersecurity guidance built specifically for Papua New Guinea — homes, SMEs, internet cafés, gaming zones, churches, and schools.</p>
+          </div>
+
+          <div class="solution-pills">
+            <span class="pill">✓ PNG-grounded</span>
+            <span class="pill">✓ Step-by-step</span>
+            <span class="pill">✓ Safety-first</span>
+            <span class="pill">✓ Free checklists</span>
+            <span class="pill">✓ No jargon</span>
+          </div>
+
+          <div class="author-block">
+            <div class="author-avatar">MF</div>
+            <div class="author-info">
+              <strong>Mariosu Fave</strong>
+              <p>AI Digital Bridge Solutions PNG</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ■ Page 4 — 12 Launch Guides ■ -->
+    <div class="page page-guides future" data-page="4" aria-label="12 Launch Guides">
+      <div class="page-inner">
+        <div class="grid-deco"></div>
+        <div class="progress-track"><div class="progress-fill" style="width:50%"></div></div>
+        <div class="corner-fold"></div>
+
+        <div class="page-content">
+          <div class="launch-badge">🚀 Live Now</div>
+          <h2 class="page-title">12 <em>launch guides</em><br>published today</h2>
+
+          <div class="guides-grid">
+            <div class="guide-chip"><span class="chip-num">Guide 1</span><p>Secure Your Wi-Fi Router</p></div>
+            <div class="guide-chip"><span class="chip-num">Guide 2</span><p>Strong Passwords & Managers</p></div>
+            <div class="guide-chip"><span class="chip-num">Guide 3</span><p>Two-Factor Authentication</p></div>
+            <div class="guide-chip"><span class="chip-num">Guide 4</span><p>Identify Online Scams</p></div>
+            <div class="guide-chip"><span class="chip-num">Guide 5</span><p>Protect Personal Info Online</p></div>
+            <div class="guide-chip"><span class="chip-num">Guide 6</span><p>Internet Safety for Children</p></div>
+            <div class="guide-chip"><span class="chip-num">Guide 7</span><p>Content Filtering at Home</p></div>
+            <div class="guide-chip"><span class="chip-num">Guide 8</span><p>Secure Smartphone Setup</p></div>
+            <div class="guide-chip"><span class="chip-num">Guide 9</span><p>Office Content Filtering</p></div>
+            <div class="guide-chip"><span class="chip-num">Guide 10</span><p>Public Wi-Fi Safety</p></div>
+            <div class="guide-chip"><span class="chip-num">Guide 11</span><p>Start an Internet Café PNG</p></div>
+            <div class="guide-chip"><span class="chip-num">Guide 12</span><p>Internet Café Hardware</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ■ Page 5 — Categories ■ -->
+    <div class="page page-categories future" data-page="5" aria-label="Guide Categories">
+      <div class="page-inner">
+        <div class="grid-deco"></div>
+        <div class="glow-accent" style="width:250px;height:250px;background:rgba(214,163,41,0.07);bottom:-30px;right:-30px;"></div>
+        <div class="progress-track"><div class="progress-fill" style="width:62.5%"></div></div>
+        <div class="corner-fold"></div>
+
+        <div class="page-content">
+          <div class="eyebrow">Browse by Category</div>
+          <h2 class="page-title">8 guide <em>categories</em><br>for every PNG user</h2>
+
+          <div class="cat-list">
+            <div class="cat-item"><div class="cat-icon">🏠</div><div class="cat-item-text"><strong>Home Internet Safety</strong><span>Router, passwords, devices, scam protection</span></div></div>
+            <div class="cat-item"><div class="cat-icon">🏢</div><div class="cat-item-text"><strong>Small Office Setup</strong><span>Network, backup, email, productivity</span></div></div>
+            <div class="cat-item"><div class="cat-icon">💻</div><div class="cat-item-text"><strong>Internet Café Setup</strong><span>Hardware, network, policies, safety</span></div></div>
+            <div class="cat-item"><div class="cat-icon">🎮</div><div class="cat-item-text"><strong>Gaming Zone Setup</strong><span>PCs, LAN, downloads, data control</span></div></div>
+            <div class="cat-item"><div class="cat-icon">👨‍👩‍👧</div><div class="cat-item-text"><strong>Children & Family Safety</strong><span>Filtering, screen time, child accounts</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ■ Page 6 — PNG Reality ■ -->
+    <div class="page page-reality future" data-page="6" aria-label="PNG Reality Check">
+      <div class="page-inner">
+        <div class="grid-deco"></div>
+        <div class="progress-track"><div class="progress-fill" style="width:75%"></div></div>
+        <div class="corner-fold"></div>
+
+        <div class="page-content">
+          <div class="eyebrow">PNG Reality Check</div>
+          <h2 class="page-title">Technology must fit<br><em>PNG conditions</em></h2>
+
+          <p class="reality-headline">"We don't copy-paste from overseas. Every guide accounts for PNG power, internet, affordability, devices, and digital literacy."</p>
+
+          <div class="reality-items">
+            <div class="reality-item">
+              <div class="r-icon">⚡</div>
+              <strong>Power Issues</strong>
+              <p>UPS and generator guidance included</p>
+            </div>
+            <div class="reality-item">
+              <div class="r-icon">📱</div>
+              <strong>Mobile-First</strong>
+              <p>All guides work on Android phones</p>
+            </div>
+            <div class="reality-item">
+              <div class="r-icon">🤝</div>
+              <strong>Shared Devices</strong>
+              <p>Covers multi-user home and office setups</p>
+            </div>
+            <div class="reality-item">
+              <div class="r-icon">💰</div>
+              <strong>Budget Reality</strong>
+              <p>Budget, standard, and premium options</p>
+            </div>
+          </div>
+
+          <div class="page-brand-footer">
+            <div class="brand-mark-sm"><div class="bm">A</div><span>AIBS Digital Setup Guides</span></div>
+            <span class="page-number">6 / 8</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ■ Page 7 — Roadmap ■ -->
+    <div class="page page-roadmap future" data-page="7" aria-label="Content Roadmap">
+      <div class="page-inner">
+        <div class="grid-deco"></div>
+        <div class="glow-accent" style="width:200px;height:200px;background:rgba(214,163,41,0.08);top:-20px;left:-20px;"></div>
+        <div class="progress-track"><div class="progress-fill" style="width:87.5%"></div></div>
+        <div class="corner-fold"></div>
+
+        <div class="page-content">
+          <div class="eyebrow">Content Roadmap</div>
+          <h2 class="page-title">50 guides in<br><em>20 weeks</em></h2>
+
+          <div class="roadmap-timeline">
+            <div class="timeline-item">
+              <div class="timeline-dot done"></div>
+              <div class="timeline-content">
+                <strong>Week 1 — Launch Pack</strong>
+                <span>12 guides: Safety, passwords, 2FA, children, café setup</span>
+                <span class="week-badge">LIVE NOW</span>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot upcoming"></div>
+              <div class="timeline-content">
+                <strong>Month 1 — Café & Gaming</strong>
+                <span>Network architecture, gaming PCs, LAN setup, game downloads</span>
+                <span class="week-badge">WEEKS 2–4</span>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot upcoming"></div>
+              <div class="timeline-content">
+                <strong>Month 2 — SME & Office</strong>
+                <span>Office internet, UPS, printer, backup, home office</span>
+                <span class="week-badge">WEEKS 5–8</span>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot upcoming"></div>
+              <div class="timeline-content">
+                <strong>Months 3–5 — Business Growth</strong>
+                <span>Email, Microsoft 365, payments, CCTV, network diagrams, buying guides</span>
+                <span class="week-badge">WEEKS 9–20</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ■ Page 8 — CTA ■ -->
+    <div class="page page-cta future" data-page="8" aria-label="Call to Action">
+      <div class="page-inner">
+        <div class="grid-deco"></div>
+        <div class="glow-accent" style="width:350px;height:350px;background:rgba(214,163,41,0.1);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+        <div class="spark spark-1"></div>
+        <div class="spark spark-2"></div>
+        <div class="spark spark-3"></div>
+        <div class="spark spark-4"></div>
+        <div class="progress-track"><div class="progress-fill" style="width:100%"></div></div>
+        <div class="corner-fold"></div>
+
+        <div class="page-content">
+          <div class="cta-center">
+            <div class="eyebrow" style="align-self:center;">Now Live</div>
+            <div class="cta-big-text">Free.<br><em>PNG.<br>Practical.</em></div>
+            <p class="cta-description">The AIBS Digital Setup Guides website is live. 12 guides published. 50 guides on the way. All free. All built for PNG.</p>
+            <div class="cta-pills">
+              <span class="cta-pill">🛡️ Internet Safety</span>
+              <span class="cta-pill">🏠 Home Setups</span>
+              <span class="cta-pill">☕ Internet Cafés</span>
+              <span class="cta-pill">🎮 Gaming Zones</span>
+            </div>
+          </div>
+          <div class="cta-bottom">
+            <p><strong>#PNG</strong> &nbsp;·&nbsp; <strong>#DigitalPNG</strong> &nbsp;·&nbsp; <strong>#CyberSafetyPNG</strong> &nbsp;·&nbsp; <strong>#AIBS</strong></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- END BOOK -->
+
+  <!-- ═══ CONTROLS ════════════════════════════════════ -->
+  <div class="controls" role="navigation" aria-label="Flipbook navigation">
+    <button class="nav-btn" id="btn-prev" onclick="navigate(-1)" aria-label="Previous page">&#8592;</button>
+    <div class="dots" id="dots" role="tablist" aria-label="Page indicators"></div>
+    <button class="nav-btn" id="btn-next" onclick="navigate(1)" aria-label="Next page">&#8594;</button>
+  </div>
+
+</div>
+
+<script>
+const PAGES = document.querySelectorAll('.page');
+const TOTAL = PAGES.length;
+let current = 0;
+let autoTimer = null;
+const AUTO_DELAY = 4000;
+
+function buildDots() {
+  const container = document.getElementById('dots');
+  for (let i = 0; i < TOTAL; i++) {
+    const d = document.createElement('button');
+    d.className = 'dot-indicator' + (i === 0 ? ' active' : '');
+    d.setAttribute('aria-label', `Go to page ${i + 1}`);
+    d.setAttribute('role', 'tab');
+    d.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+    d.addEventListener('click', () => goTo(i));
+    container.appendChild(d);
+  }
+}
+
+function updateDots() {
+  document.querySelectorAll('.dot-indicator').forEach((d, i) => {
+    d.classList.toggle('active', i === current);
+    d.setAttribute('aria-selected', i === current ? 'true' : 'false');
+  });
+}
+
+function goTo(index) {
+  if (index < 0 || index >= TOTAL || index === current) return;
+
+  const prev = PAGES[current];
+  const next = PAGES[index];
+
+  // Determine direction
+  const goingForward = index > current;
+
+  // Remove all state classes from all pages
+  PAGES.forEach(p => {
+    p.classList.remove('active', 'past', 'future', 'next', 'flipping-out', 'flipping-in');
+  });
+
+  // Animate out current page
+  prev.classList.add('flipping-out');
+
+  // Animate in next page
+  next.classList.add('flipping-in');
+
+  // After animation, settle
+  setTimeout(() => {
+    prev.classList.remove('flipping-out');
+    prev.classList.add(goingForward ? 'past' : 'future');
+
+    next.classList.remove('flipping-in');
+    next.classList.add('active');
+
+    // Set remaining pages
+    PAGES.forEach((p, i) => {
+      if (i === index) return;
+      if (i < index) {
+        p.classList.remove('future', 'next', 'active');
+        p.classList.add('past');
+      } else if (i === index + 1) {
+        p.classList.remove('past', 'future', 'active');
+        p.classList.add('next');
+      } else {
+        p.classList.remove('past', 'next', 'active');
+        p.classList.add('future');
+      }
+    });
+
+    current = index;
+    updateDots();
+    updatePrev();
+  }, 650);
+
+  // Optimistic UI update
+  current = index;
+  updateDots();
+  updatePrev();
+
+  // Restart autoplay
+  startAuto();
+}
+
+function navigate(dir) {
+  const next = current + dir;
+  if (next < 0 || next >= TOTAL) return;
+  goTo(next);
+}
+
+function updatePrev() {
+  const btn = document.getElementById('btn-prev');
+  if (btn) btn.style.opacity = current === 0 ? '0.3' : '1';
+}
+
+function startAuto() {
+  clearInterval(autoTimer);
+  autoTimer = setInterval(() => {
+    if (current < TOTAL - 1) {
+      navigate(1);
+    } else {
+      // Loop back to start
+      goTo(0);
+    }
+  }, AUTO_DELAY);
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); navigate(1); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); navigate(-1); }
+});
+
+// Click on book to advance
+document.getElementById('book').addEventListener('click', (e) => {
+  if (e.target.closest('.controls') || e.target.closest('.nav-btn') || e.target.closest('.dot-indicator')) return;
+  navigate(1);
+});
+
+// Touch swipe
+let touchStartX = 0;
+document.getElementById('book').addEventListener('touchstart', e => {
+  touchStartX = e.touches[0].clientX;
+}, { passive: true });
+
+document.getElementById('book').addEventListener('touchend', e => {
+  const diff = touchStartX - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 40) {
+    navigate(diff > 0 ? 1 : -1);
+  }
+}, { passive: true });
+
+// Init
+buildDots();
+updatePrev();
+
+// Set initial page stack
+PAGES.forEach((p, i) => {
+  p.classList.remove('active', 'past', 'future', 'next');
+  if (i === 0) p.classList.add('active');
+  else if (i === 1) p.classList.add('next');
+  else p.classList.add('future');
+});
+
+// Start autoplay after a brief delay
+setTimeout(startAuto, 2000);
+</script>
+</body>
+</html>
