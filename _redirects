@@ -1,0 +1,19 @@
+# Cloudflare Pages — URL Redirects
+
+# Redirect bare domain to www (remove if using bare domain as primary)
+# https://www.aibsguides.com/*  https://aibsguides.com/:splat  301
+
+# Trailing slash normalisation
+/guides  /guides/index.html  301
+/categories  /categories/  301
+
+# Friendly short URLs → full guide URLs
+/wifi  /guides/secure-wifi-router-png.html  301
+/passwords  /guides/strong-passwords-png.html  301
+/2fa  /guides/two-factor-authentication-png.html  301
+/scams  /guides/identify-online-scams-png.html  301
+/kids  /guides/internet-safety-children-png.html  301
+/cafe  /guides/start-internet-cafe-png.html  301
+
+# 404 fallback — must be last
+/*  /404.html  404

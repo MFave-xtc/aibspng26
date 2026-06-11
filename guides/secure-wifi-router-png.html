@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Secure Your Home or Small Office Wi-Fi Router | AIBS Digital Setup Guides</title>
+<meta name="description" content="Step-by-step guide to securing your Wi-Fi router in PNG. Change default passwords, enable WPA2, disable WPS, and protect your home or office network in 30 minutes.">
+<meta property="og:title" content="How to Secure Your Home or Small Office Wi-Fi Router | AIBS Digital Setup Guides">
+<meta property="og:type" content="article">
+<meta name="theme-color" content="#06111C">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<nav class="nav" id="main-nav" role="navigation" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a class="nav-logo" href="/" aria-label="AIBS Digital Setup Guides home">
+      <div class="nav-logo-mark" aria-hidden="true">A</div>
+      <div class="nav-logo-text">AIBS Digital Setup Guides<span>Built for PNG</span></div>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="/start-here.html">Start Here</a>
+      <a class="nav-link" href="/categories/home-internet-safety.html">Home Safety</a>
+      <a class="nav-link" href="/categories/small-office-setup.html">SME Setup</a>
+      <a class="nav-link" href="/categories/internet-cafe-setup.html">Internet Café</a>
+      <a class="nav-link" href="/categories/gaming-zone-setup.html">Gaming Zone</a>
+      <a class="nav-link" href="/checklists.html">Checklists</a>
+      <a class="nav-link" href="/about.html">About</a>
+      <a class="nav-cta" href="/contact.html">Request Help</a>
+    </div>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a class="nav-link" href="/start-here.html">Start Here</a>
+  <a class="nav-link" href="/categories/home-internet-safety.html">Home Safety</a>
+  <a class="nav-link" href="/categories/small-office-setup.html">SME Setup</a>
+  <a class="nav-link" href="/categories/internet-cafe-setup.html">Internet Café</a>
+  <a class="nav-link" href="/categories/gaming-zone-setup.html">Gaming Zone</a>
+  <a class="nav-link" href="/checklists.html">Checklists</a>
+  <a class="nav-link" href="/about.html">About</a>
+  <a class="nav-link" href="/contact.html">Contact</a>
+  <a class="nav-cta" href="/contact.html">Request Help</a>
+</div>
+
+<header class="guide-page-header">
+  <div class="container-narrow">
+    <nav class="guide-breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a><span class="guide-breadcrumb-sep">›</span>
+      <a href="/guides/index.html">Guides</a><span class="guide-breadcrumb-sep">›</span>
+      <a href="/categories/home-internet-safety.html">Home Internet Safety</a><span class="guide-breadcrumb-sep">›</span>
+      <span>Secure Your Wi-Fi Router</span>
+    </nav>
+    <span class="status-draft"><span class="status-dot"></span> Draft — Owner Review Pending</span>
+    <h1>How to Secure Your Home or Small Office Wi-Fi Router</h1>
+    <div class="guide-meta-strip">
+      <div class="guide-meta-pill"><strong>Audience:</strong> Home users, SME owners, café operators</div>
+      <div class="guide-meta-pill"><strong>Difficulty:</strong> <span class="difficulty-beginner">Beginner</span></div>
+      <div class="guide-meta-pill"><strong>Time:</strong> 30 minutes</div>
+      <div class="guide-meta-pill"><strong>Last reviewed:</strong> June 2026</div>
+    </div>
+  </div>
+</header>
+
+<main class="guide-body">
+  <div class="container-narrow">
+    <div class="guide-layout">
+
+      <article class="guide-content">
+
+        <!-- SECTION 1: Quick Summary -->
+        <section class="guide-section" id="quick-summary">
+          <h2><span class="section-number">1</span> Quick Summary</h2>
+          <p>This guide helps you reduce common risks with your home or small office Wi-Fi router by changing default passwords, adjusting Wi-Fi settings, and enabling basic security features. These steps take about 30 minutes and can prevent unauthorised access to your internet connection.</p>
+          <p>When a router is installed by an ISP technician, it typically comes with factory default settings. These defaults are publicly known and easy to exploit. By following this guide, you will change those defaults and make your network significantly harder to access without permission.</p>
+          <div class="success-box">
+            <strong>What you will achieve:</strong> After completing this guide, your router will have a custom admin password, a unique Wi-Fi name and password, WPA2 or WPA3 encryption enabled, WPS disabled, and remote management turned off.
+          </div>
+        </section>
+
+        <!-- SECTION 2: Before You Start -->
+        <section class="guide-section" id="before-you-start">
+          <h2><span class="section-number">2</span> Before You Start</h2>
+          <h3>What you need</h3>
+          <ul>
+            <li>Your router — the box that provides Wi-Fi in your home or office</li>
+            <li>A phone or laptop currently connected to that Wi-Fi</li>
+            <li>A notebook or your phone's notes app to record your current settings</li>
+            <li>Admin login details — often printed on a sticker on the underside or back of the router</li>
+            <li>Your ISP connection details (username and password given when your internet was set up) — in case you need them after a factory reset</li>
+          </ul>
+          <h3>Who this guide is for</h3>
+          <ul>
+            <li>First-time router administrators</li>
+            <li>Home users who have never changed their router settings</li>
+            <li>SME owners setting up or reviewing a small office network</li>
+            <li>Internet café or gaming zone operators checking basic network security</li>
+          </ul>
+          <div class="info-box">
+            <strong>Before you begin:</strong> Take photos of the sticker on your router and screenshots of any existing settings you can access. This gives you a reference point if you need to restore anything.
+          </div>
+        </section>
+
+        <!-- SECTION 3: PNG Reality Check -->
+        <section class="guide-section" id="png-reality">
+          <h2><span class="section-number">3</span> PNG Reality Check</h2>
+          <div class="png-reality">
+            <div class="png-reality-header">PNG Reality Check</div>
+            <p>In PNG, many homes and small offices use routers installed by an ISP technician and never change the default settings. Default admin passwords are publicly available online — anyone within Wi-Fi range can try to access your router settings using those defaults.</p>
+            <p>Wi-Fi signals often reach beyond your property boundary in urban areas. Neighbours, people on the street, or customers at a nearby business may be able to attempt to connect to your network or access your router admin panel if defaults have not been changed.</p>
+            <p>Before making any changes, take photos of the current router settings so you can recover if something goes wrong. If there is a power outage during setup, your router will restart with the last saved settings — this is safe. If you save a setting and then the power cuts, simply reconnect and confirm whether your changes were saved.</p>
+            <p>Most routers used in PNG are supplied by Digicel, Telikom, DataCo, or Vodafone and are commonly TP-Link, D-Link, Huawei, or ZTE models. The admin interface varies by model, but the general steps in this guide apply to all of them. <span class="tag-assumed">ASSUMED — confirm with ISP survey</span></p>
+          </div>
+        </section>
+
+        <!-- SECTION 4: Safety Warning -->
+        <section class="guide-section" id="safety-warning">
+          <h2><span class="section-number">4</span> Safety Warning</h2>
+          <div class="warning-box">
+            <div class="warning-box-header">Important — Read Before Proceeding</div>
+            <p>Do not share your router admin password with anyone, including people who call claiming to be from your ISP. A legitimate ISP technician who visits your premises does not need your admin password to check your connection speed or test the line.</p>
+            <p>Never reset your router to factory settings unless you have your ISP connection details written down. A factory reset will disconnect your internet service and require you to re-enter your ISP credentials. If you do not have these details, contact your ISP before resetting.</p>
+            <p>If you forget your new router admin password and need to reset, contact your ISP first — they may be able to help you recover access without a full factory reset.</p>
+          </div>
+        </section>
+
+        <!-- SECTION 5: Step-by-Step -->
+        <section class="guide-section" id="steps">
+          <h2><span class="section-number">5</span> Step-by-Step Instructions</h2>
+
+          <div class="step-block">
+            <div class="step-number">Step 1</div>
+            <h4>Find Your Router's Admin Address</h4>
+            <p>The router admin panel is accessed through a web browser on a device connected to your Wi-Fi — not through the internet. Most routers use one of two addresses: <strong>192.168.1.1</strong> or <strong>192.168.0.1</strong>.</p>
+            <ol>
+              <li>Connect your phone or laptop to your Wi-Fi network.</li>
+              <li>Open a web browser (Chrome, Firefox, Safari, or the built-in browser).</li>
+              <li>Type <strong>192.168.1.1</strong> in the address bar at the top — not in a search field. Press Enter.</li>
+              <li>If you see a router login page, you have the correct address. If not, try <strong>192.168.0.1</strong>.</li>
+              <li>Some routers use a different address — check the sticker on the back or underside of the router. It may be labelled "Default Gateway" or "Admin URL".</li>
+            </ol>
+            <div class="step-what-to-look">You should see a login page asking for a username and password. If you see a page that looks like your router's brand (TP-Link, D-Link, Huawei, etc.), you are in the right place.</div>
+          </div>
+
+          <div class="step-block">
+            <div class="step-number">Step 2</div>
+            <h4>Log In to Router Admin</h4>
+            <p>Use the admin username and password to access your router settings. If you have never changed these, they are the factory defaults.</p>
+            <ol>
+              <li>Check the sticker on the back or underside of the router for default credentials. Common defaults include: admin / admin, admin / password, admin / 1234, admin / (blank password).</li>
+              <li>If no sticker, check any documentation your ISP provided when your internet was installed.</li>
+              <li>Enter the username and password on the login screen and click Login or Sign In.</li>
+            </ol>
+            <div class="step-what-to-look">If login fails, your ISP may have set a custom password during installation. Contact your ISP to ask for the default admin credentials for your specific router model.</div>
+          </div>
+
+          <div class="step-block">
+            <div class="step-number">Step 3</div>
+            <h4>Change the Router Admin Password</h4>
+            <p>This is the password that controls access to the router settings themselves — not the Wi-Fi password. Changing this prevents others from logging into your router.</p>
+            <ol>
+              <li>Once logged in, look for a menu item called <strong>Administration</strong>, <strong>System</strong>, <strong>Management</strong>, or <strong>Device Settings</strong>. It may be under an "Advanced" section.</li>
+              <li>Find the option to change the admin password — it may be labelled "Admin Password", "Login Password", or "Management Password".</li>
+              <li>Enter a new password that is at least 12 characters, uses a mix of letters and numbers, and is not the same as your Wi-Fi password.</li>
+              <li>Write down this new password and store it somewhere safe — not on the router itself.</li>
+              <li>Save the settings. You may be logged out and need to log in again with the new password.</li>
+            </ol>
+            <div class="step-what-to-look">After saving, log out and log back in to confirm the new password works before continuing.</div>
+          </div>
+
+          <div class="step-block">
+            <div class="step-number">Step 4</div>
+            <h4>Change Your Wi-Fi Name (SSID) and Password</h4>
+            <p>Your Wi-Fi network name (SSID) and password are what devices use to connect to your internet. The default name often reveals your router model or ISP, making your network easier to target.</p>
+            <ol>
+              <li>In the router admin panel, find <strong>Wireless</strong>, <strong>Wi-Fi</strong>, or <strong>WLAN</strong> settings.</li>
+              <li>Find the SSID (network name) field. Change it to something neutral — not your name, address, business name, or phone number. Examples: "HomeNetwork01", "FamilyWiFi", "OfficeNet".</li>
+              <li>Find the Wi-Fi password (may be labelled "Passphrase", "Pre-Shared Key", or "WPA Key").</li>
+              <li>Change it to a password that is at least 12 characters long and uses a combination of uppercase letters, lowercase letters, numbers, and symbols. Example pattern (not a real password): "Blue-River-2024!" — use your own unique phrase.</li>
+              <li>Save settings.</li>
+            </ol>
+            <div class="step-what-to-look">After saving, all devices will be disconnected from Wi-Fi. You will need to reconnect each device using the new Wi-Fi name and password.</div>
+          </div>
+
+          <div class="step-block">
+            <div class="step-number">Step 5</div>
+            <h4>Enable WPA2 or WPA3 Security</h4>
+            <p>The security type (encryption) determines how your Wi-Fi password protects your network traffic. WPA2 and WPA3 are the current secure standards; WEP and WPA (without the "2") are outdated and easily broken.</p>
+            <ol>
+              <li>In the Wireless or Wi-Fi settings section, look for <strong>Security Type</strong>, <strong>Encryption</strong>, or <strong>Authentication Mode</strong>.</li>
+              <li>Select <strong>WPA2-PSK (AES)</strong> if available. If you see <strong>WPA3</strong> or <strong>WPA2/WPA3 Mixed</strong>, choose that — it is better.</li>
+              <li>Avoid selecting WEP or WPA (without the number 2) — these are weak and should not be used.</li>
+              <li>Save settings.</li>
+            </ol>
+            <div class="step-what-to-look">Some older devices may not support WPA3. If any devices fail to connect after switching to WPA3, use WPA2/WPA3 Mixed mode, or fall back to WPA2-PSK (AES) which is still secure.</div>
+          </div>
+
+        </section>
+
+        <!-- SECTION 6: Recommended Settings -->
+        <section class="guide-section" id="settings">
+          <h2><span class="section-number">6</span> Recommended Settings</h2>
+          <table class="settings-table">
+            <thead>
+              <tr>
+                <th>Setting</th>
+                <th>Recommended Value</th>
+                <th>Why</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Security Type / Encryption</td>
+                <td>WPA2-PSK (AES) or WPA3</td>
+                <td>Current secure standard. WEP and WPA are outdated and easily broken.</td>
+              </tr>
+              <tr>
+                <td>SSID Broadcast</td>
+                <td>Enabled (visible)</td>
+                <td>Easier to connect your own devices. Hiding SSID provides minimal security benefit and creates inconvenience.</td>
+              </tr>
+              <tr>
+                <td>WPS (Wi-Fi Protected Setup)</td>
+                <td>Disabled</td>
+                <td>WPS has known brute-force and KRACK vulnerabilities that allow attackers to bypass your Wi-Fi password.</td>
+              </tr>
+              <tr>
+                <td>Remote Management</td>
+                <td>Disabled</td>
+                <td>Prevents anyone outside your network from accessing your router admin panel via the internet.</td>
+              </tr>
+              <tr>
+                <td>Firewall</td>
+                <td>Enabled</td>
+                <td>Built-in protection that filters unwanted incoming traffic from the internet.</td>
+              </tr>
+              <tr>
+                <td>Admin Password</td>
+                <td>Unique, 12+ characters</td>
+                <td>Default admin passwords are publicly known. A custom password prevents unauthorised router access.</td>
+              </tr>
+              <tr>
+                <td>Wi-Fi Password</td>
+                <td>12+ characters, mixed types</td>
+                <td>Longer passwords with mixed characters take far longer to crack by brute force.</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- SECTION 7: What to Buy -->
+        <section class="guide-section" id="what-to-buy">
+          <h2><span class="section-number">7</span> What to Buy (If Upgrading)</h2>
+          <p>If your router is more than 5 years old or only supports WEP or WPA (not WPA2), consider replacing it. Older routers may also no longer receive firmware security updates.</p>
+          <h3>What to look for</h3>
+          <ul>
+            <li>Brands available in PNG: TP-Link, D-Link, Huawei, Xiaomi (Mi Router), or Tenda</li>
+            <li>Minimum: dual-band (2.4GHz and 5GHz), WPA2 support, at least 2 LAN ports</li>
+            <li>For a home with 3–5 devices: an entry-level dual-band router is sufficient</li>
+            <li>For a small office serving 5–10 users: a mid-range router with more simultaneous connections and stronger processor is recommended</li>
+            <li>Estimated price range in PNG: K300–K800 for a reliable home or small office router <span class="tag-requires-confirmation">REQUIRES USER CONFIRMATION — current PNG pricing</span></li>
+          </ul>
+          <h3>What not to buy</h3>
+          <ul>
+            <li>Do not buy a router that only supports WEP — it offers very weak protection and cannot be fixed by changing settings</li>
+            <li>Do not buy a router with no active manufacturer support if you cannot get firmware updates</li>
+            <li>Do not buy second-hand routers without first performing a factory reset and verifying the model can still receive updates</li>
+          </ul>
+        </section>
+
+        <!-- SECTION 8: Common Mistakes -->
+        <section class="guide-section" id="mistakes">
+          <h2><span class="section-number">8</span> Common Mistakes</h2>
+          <table class="settings-table">
+            <thead>
+              <tr>
+                <th>Mistake</th>
+                <th>Why It Matters</th>
+                <th>Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Keeping the default admin password</td>
+                <td>Anyone who can reach your router admin page can log in using widely known defaults</td>
+                <td>Change the admin password immediately — it is the first step in this guide</td>
+              </tr>
+              <tr>
+                <td>Using your name, address, or business name as the Wi-Fi network name</td>
+                <td>Identifies your network to neighbours and strangers, making it easier to target you</td>
+                <td>Use a neutral, non-identifying name for your Wi-Fi SSID</td>
+              </tr>
+              <tr>
+                <td>Short or simple Wi-Fi password (e.g. "12345678" or "pngwifi")</td>
+                <td>Short or common passwords can be guessed or cracked quickly by nearby attackers</td>
+                <td>Use a password of at least 12 characters with a mix of letters, numbers, and symbols</td>
+              </tr>
+              <tr>
+                <td>Leaving WPS enabled</td>
+                <td>WPS has a documented vulnerability that can allow attackers to connect to your network without knowing your Wi-Fi password</td>
+                <td>Disable WPS in router wireless settings — you almost certainly do not need it</td>
+              </tr>
+              <tr>
+                <td>Not writing down the new admin password</td>
+                <td>If forgotten, you may need to factory reset the router and lose all your settings</td>
+                <td>Write the password in a secure, physical location — not on a sticky note on the router itself</td>
+              </tr>
+              <tr>
+                <td>Sharing Wi-Fi password with everyone who asks</td>
+                <td>Once shared widely, your network is open to anyone who received the password</td>
+                <td>Create a separate Guest Wi-Fi network (if your router supports it) for visitors and customers</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- SECTION 9: Troubleshooting -->
+        <section class="guide-section" id="troubleshooting">
+          <h2><span class="section-number">9</span> Troubleshooting</h2>
+          <table class="settings-table">
+            <thead>
+              <tr>
+                <th>Problem</th>
+                <th>Likely Cause</th>
+                <th>What to Try</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Cannot access the router admin page</td>
+                <td>Wrong IP address, or not connected to that router's Wi-Fi</td>
+                <td>Try 192.168.0.1 or 192.168.1.1. Check the sticker on the router for the correct address. Confirm you are connected to the correct Wi-Fi network.</td>
+              </tr>
+              <tr>
+                <td>Admin login page appears but password is rejected</td>
+                <td>ISP set a custom password, or defaults have been changed previously</td>
+                <td>Try all common defaults (admin/admin, admin/password, admin/1234). Check ISP documentation. If all fail, a factory reset may be required — have your ISP credentials ready first.</td>
+              </tr>
+              <tr>
+                <td>Forgot the new admin password you set</td>
+                <td>Password changed and not recorded</td>
+                <td>Factory reset the router (usually a small reset button on the back held for 10 seconds). Warning: this will disconnect your internet — have your ISP connection details ready before resetting.</td>
+              </tr>
+              <tr>
+                <td>Devices cannot connect to Wi-Fi after changing password</td>
+                <td>Devices still have the old password saved</td>
+                <td>On each device, go to Wi-Fi settings, forget the network, then reconnect using the new Wi-Fi name and new password.</td>
+              </tr>
+              <tr>
+                <td>Internet disconnects after saving changes</td>
+                <td>A setting change conflicted with your ISP connection</td>
+                <td>Log back into the router admin panel and revert the last change. If you cannot log in, factory reset and contact your ISP to restore the connection.</td>
+              </tr>
+              <tr>
+                <td>Some devices cannot connect after switching to WPA3</td>
+                <td>Older devices do not support WPA3</td>
+                <td>Change security type to WPA2/WPA3 Mixed mode, or use WPA2-PSK (AES) which is still secure and compatible with older devices.</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- SECTION 10: When to Call a Technician -->
+        <section class="guide-section" id="technician">
+          <h2><span class="section-number">10</span> When to Call a Technician</h2>
+          <p>This guide covers standard home and small office router security. Call a qualified technician or contact your ISP if:</p>
+          <ul>
+            <li>You cannot access the router admin panel at all, even after trying both common IP addresses</li>
+            <li>Your internet service is provided through a complex business, multi-tenant building, or shared infrastructure setup</li>
+            <li>You need to configure VLANs, port forwarding, or business-grade access controls beyond what this guide covers</li>
+            <li>You suspect your router has been compromised, is running unfamiliar firmware, or is behaving abnormally</li>
+            <li>Your router is part of a fibre optic or enterprise-grade network that requires specialist configuration</li>
+            <li>You need to set up a business Guest Wi-Fi network with separate access controls</li>
+          </ul>
+        </section>
+
+        <!-- SECTION 11: Printable Checklist -->
+        <section class="guide-section" id="checklist">
+          <h2><span class="section-number">11</span> Printable Checklist</h2>
+          <div class="checklist-block">
+            <h3>Wi-Fi Router Security Checklist</h3>
+            <ul class="checklist-items">
+              <li><label><input type="checkbox"> Router admin password changed from default</label></li>
+              <li><label><input type="checkbox"> Wi-Fi name (SSID) changed from default — no personal or business name used</label></li>
+              <li><label><input type="checkbox"> Wi-Fi password changed — at least 12 characters with mixed characters</label></li>
+              <li><label><input type="checkbox"> Security type set to WPA2-PSK (AES) or WPA3</label></li>
+              <li><label><input type="checkbox"> WPS (Wi-Fi Protected Setup) disabled</label></li>
+              <li><label><input type="checkbox"> Remote management disabled</label></li>
+              <li><label><input type="checkbox"> Firewall enabled</label></li>
+              <li><label><input type="checkbox"> New admin password written down and stored safely (not on the router)</label></li>
+              <li><label><input type="checkbox"> All household or office devices reconnected with the new Wi-Fi password</label></li>
+              <li><label><input type="checkbox"> Screenshot or photo of router settings saved for reference</label></li>
+              <li><label><input type="checkbox"> ISP connection details (username/password) recorded and stored securely</label></li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- SECTION 12: Source Register -->
+        <section class="guide-section" id="source-register">
+          <h2><span class="section-number">12</span> Source and Assumptions Register</h2>
+          <h3>Sources</h3>
+          <table class="register-table">
+            <thead>
+              <tr><th>ID</th><th>Source</th><th>Claim</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>SRC-01</td>
+                <td>TP-Link and D-Link vendor documentation</td>
+                <td>WPA2 is the current minimum recommended standard for home Wi-Fi security</td>
+                <td><span class="tag-confirmed">CONFIRMED</span></td>
+              </tr>
+              <tr>
+                <td>SRC-02</td>
+                <td>Wi-Fi Alliance technical standards</td>
+                <td>WPA3 is the preferred standard where available; WPA2 is acceptable</td>
+                <td><span class="tag-confirmed">CONFIRMED</span></td>
+              </tr>
+              <tr>
+                <td>SRC-03</td>
+                <td>General ICT knowledge base — published CVE records</td>
+                <td>WPS has documented KRACK and brute-force vulnerabilities</td>
+                <td><span class="tag-confirmed">CONFIRMED</span></td>
+              </tr>
+              <tr>
+                <td>SRC-04</td>
+                <td>PNG market observation</td>
+                <td>Router retail prices in the K300–K800 range for home/SME use</td>
+                <td><span class="tag-requires-confirmation">REQUIRES USER CONFIRMATION</span></td>
+              </tr>
+            </tbody>
+          </table>
+          <h3>Assumptions</h3>
+          <table class="register-table">
+            <thead>
+              <tr><th>ID</th><th>Assumption</th><th>Status</th><th>Action Required</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>A-01</td>
+                <td>Most PNG home routers are TP-Link, D-Link, Huawei, or ZTE models supplied by ISPs</td>
+                <td><span class="tag-assumed">ASSUMED</span></td>
+                <td>Confirm with ISP supplier survey</td>
+              </tr>
+              <tr>
+                <td>A-02</td>
+                <td>Default admin password sticker is present on most routers as supplied in PNG</td>
+                <td><span class="tag-assumed">ASSUMED</span></td>
+                <td>Varies by ISP and model — verify with each ISP</td>
+              </tr>
+              <tr>
+                <td>A-03</td>
+                <td>PNG ISPs do not separately provide router admin credentials in printed documentation</td>
+                <td><span class="tag-assumed">ASSUMED</span></td>
+                <td>Confirm with Digicel, Telikom, DataCo, and Vodafone PNG</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+      </article>
+
+      <aside class="guide-sidebar" aria-label="Guide contents">
+        <div class="sidebar-card">
+          <h4>Contents</h4>
+          <ul class="sidebar-toc">
+            <li><a href="#quick-summary">1. Quick Summary</a></li>
+            <li><a href="#before-you-start">2. Before You Start</a></li>
+            <li><a href="#png-reality">3. PNG Reality Check</a></li>
+            <li><a href="#safety-warning">4. Safety Warning</a></li>
+            <li><a href="#steps">5. Step-by-Step Instructions</a></li>
+            <li><a href="#settings">6. Recommended Settings</a></li>
+            <li><a href="#what-to-buy">7. What to Buy</a></li>
+            <li><a href="#mistakes">8. Common Mistakes</a></li>
+            <li><a href="#troubleshooting">9. Troubleshooting</a></li>
+            <li><a href="#technician">10. When to Call a Technician</a></li>
+            <li><a href="#checklist">11. Printable Checklist</a></li>
+            <li><a href="#source-register">12. Source Register</a></li>
+          </ul>
+        </div>
+        <div class="sidebar-card">
+          <h4>Guide Info</h4>
+          <ul class="sidebar-meta-list">
+            <li>Category <strong>Home Internet Safety</strong></li>
+            <li>Difficulty <strong class="difficulty-beginner">Beginner</strong></li>
+            <li>Time <strong>30 min</strong></li>
+            <li>Checklist <strong style="color:#4ade80">Yes</strong></li>
+            <li>PNG Context <strong style="color:var(--gold)">High</strong></li>
+          </ul>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</main>
+
+<footer class="footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <div class="footer-logo-mark" aria-hidden="true">A</div>
+          <div class="footer-logo-text">AIBS Digital Setup Guides</div>
+        </div>
+        <p>Free practical ICT and cybersecurity setup guidance built for Papua New Guinea.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Guides</h4>
+        <ul class="footer-links">
+          <li><a href="/categories/home-internet-safety.html">Home Internet Safety</a></li>
+          <li><a href="/categories/small-office-setup.html">Small Office Setup</a></li>
+          <li><a href="/categories/internet-cafe-setup.html">Internet Café Setup</a></li>
+          <li><a href="/categories/gaming-zone-setup.html">Gaming Zone Setup</a></li>
+          <li><a href="/categories/children-family-safety.html">Children &amp; Family Safety</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>More</h4>
+        <ul class="footer-links">
+          <li><a href="/categories/cybersecurity-basics.html">Cybersecurity Basics</a></li>
+          <li><a href="/checklists.html">Checklists</a></li>
+          <li><a href="/start-here.html">Start Here</a></li>
+          <li><a href="/guides/index.html">All Guides</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>AIBS</h4>
+        <ul class="footer-links">
+          <li><a href="/about.html">About AIBS</a></li>
+          <li><a href="/contact.html">Contact</a></li>
+          <li><a href="/disclaimer.html">Disclaimer</a></li>
+          <li><a href="/privacy.html">Privacy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-disclaimer">This website provides public educational guidance only. It does not replace professional technical, legal, cybersecurity incident response, or child protection advice.</p>
+      <p class="footer-copy">&copy; 2026 AI Digital Bridge Solutions PNG</p>
+    </div>
+  </div>
+</footer>
+<script src="../site.js"></script>
+</body>
+</html>

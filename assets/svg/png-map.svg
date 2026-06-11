@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" fill="none" aria-label="Papua New Guinea map outline">
+  <!-- Simplified stylized PNG map outline - replace with official SVG -->
+  <!-- Mainland PNG - rough approximation -->
+  <path d="M 120 180 C 140 140 180 120 230 115 C 280 110 330 125 380 130 C 430 135 470 120 510 125 C 560 130 590 150 600 175 C 610 200 595 230 570 250 C 545 270 510 280 480 290 C 450 300 420 295 390 285 C 360 275 330 260 300 255 C 270 250 240 265 215 260 C 190 255 165 240 148 220 C 135 205 125 195 120 180 Z"
+        stroke="#D6A329" stroke-width="2" fill="rgba(214,163,41,0.08)"/>
+  <!-- Bird's head peninsula -->
+  <path d="M 115 175 C 100 160 88 140 90 120 C 92 100 108 85 125 80 C 140 75 158 82 168 95 C 178 108 175 125 168 140 C 162 155 148 165 135 170 Z"
+        stroke="#D6A329" stroke-width="2" fill="rgba(214,163,41,0.08)"/>
+  <!-- New Britain island -->
+  <path d="M 520 310 C 540 300 570 295 600 300 C 625 305 645 320 640 340 C 635 355 615 360 595 358 C 570 355 545 345 530 332 Z"
+        stroke="#D6A329" stroke-width="1.5" fill="rgba(214,163,41,0.06)"/>
+  <!-- New Ireland - small island -->
+  <path d="M 645 265 C 655 255 668 258 672 268 C 676 278 668 290 658 292 C 648 294 640 285 645 265 Z"
+        stroke="#D6A329" stroke-width="1" fill="rgba(214,163,41,0.06)"/>
+  <!-- Bougainville -->
+  <path d="M 668 320 C 676 310 690 308 698 316 C 706 324 703 338 695 344 C 687 350 673 346 668 336 Z"
+        stroke="#D6A329" stroke-width="1" fill="rgba(214,163,41,0.06)"/>
+</svg>

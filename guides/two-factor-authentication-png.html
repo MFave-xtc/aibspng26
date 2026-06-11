@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Turn On Two-Factor Authentication for Facebook, Gmail, WhatsApp and Banking Apps | AIBS Digital Setup Guides</title>
+<meta name="description" content="Step-by-step guide to enabling two-factor authentication (2FA) on Facebook, Gmail, Microsoft, WhatsApp, and banking apps in Papua New Guinea.">
+<meta property="og:title" content="How to Turn On Two-Factor Authentication | AIBS Digital Setup Guides">
+<meta property="og:type" content="article">
+<meta name="theme-color" content="#06111C">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<nav class="nav" id="main-nav" role="navigation" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a class="nav-logo" href="/" aria-label="AIBS Digital Setup Guides home">
+      <div class="nav-logo-mark" aria-hidden="true">A</div>
+      <div class="nav-logo-text">AIBS Digital Setup Guides<span>Built for PNG</span></div>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="/start-here.html">Start Here</a>
+      <a class="nav-link" href="/categories/home-internet-safety.html">Home Safety</a>
+      <a class="nav-link" href="/categories/small-office-setup.html">SME Setup</a>
+      <a class="nav-link" href="/categories/internet-cafe-setup.html">Internet Café</a>
+      <a class="nav-link" href="/categories/gaming-zone-setup.html">Gaming Zone</a>
+      <a class="nav-link" href="/checklists.html">Checklists</a>
+      <a class="nav-link" href="/about.html">About</a>
+      <a class="nav-cta" href="/contact.html">Request Help</a>
+    </div>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a class="nav-link" href="/start-here.html">Start Here</a>
+  <a class="nav-link" href="/categories/home-internet-safety.html">Home Safety</a>
+  <a class="nav-link" href="/categories/small-office-setup.html">SME Setup</a>
+  <a class="nav-link" href="/categories/internet-cafe-setup.html">Internet Café</a>
+  <a class="nav-link" href="/categories/gaming-zone-setup.html">Gaming Zone</a>
+  <a class="nav-link" href="/checklists.html">Checklists</a>
+  <a class="nav-link" href="/about.html">About</a>
+  <a class="nav-link" href="/contact.html">Contact</a>
+  <a class="nav-cta" href="/contact.html">Request Help</a>
+</div>
+
+<header class="guide-page-header">
+  <div class="container-narrow">
+    <nav class="guide-breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a><span class="guide-breadcrumb-sep">›</span>
+      <a href="/guides/index.html">Guides</a><span class="guide-breadcrumb-sep">›</span>
+      <a href="/categories/cybersecurity-basics.html">Cybersecurity Basics</a><span class="guide-breadcrumb-sep">›</span>
+      <span>Two-Factor Authentication</span>
+    </nav>
+    <span class="status-draft"><span class="status-dot"></span> Draft — Owner Review Pending</span>
+    <h1>How to Turn On Two-Factor Authentication for Facebook, Gmail, Microsoft, WhatsApp, and Banking Apps</h1>
+    <div class="guide-meta-strip">
+      <div class="guide-meta-pill"><strong>Audience:</strong> Everyone</div>
+      <div class="guide-meta-pill"><strong>Difficulty:</strong> <span class="difficulty-beginner">Beginner</span></div>
+      <div class="guide-meta-pill"><strong>Time:</strong> 30 minutes</div>
+      <div class="guide-meta-pill"><strong>Last reviewed:</strong> June 2026</div>
+    </div>
+  </div>
+</header>
+
+<main class="guide-body">
+  <div class="container-narrow">
+    <div class="guide-layout">
+
+      <article class="guide-content">
+
+        <!-- SECTION 1: Quick Summary -->
+        <section class="guide-section" id="quick-summary">
+          <h2><span class="section-number">1</span> Quick Summary</h2>
+          <p>Two-factor authentication (2FA) adds a second step to logging in, making it much harder for someone to access your account even if they know your password. Without 2FA, your account is only protected by one thing — your password. With 2FA, an attacker would also need physical access to your phone or app.</p>
+          <p>This guide covers how to enable 2FA on Facebook, Gmail, Microsoft accounts, WhatsApp, and banking apps — the most commonly used services in Papua New Guinea.</p>
+          <div class="success-box">
+            <strong>What you will achieve:</strong> After completing this guide, your most important accounts will require a second verification step to log in. Account takeovers — which are common in PNG, especially on Facebook — are significantly harder when 2FA is enabled.
+          </div>
+          <div class="info-box">
+            <strong>Two types of 2FA:</strong> SMS codes (a code sent to your phone by text message) are the most common and easiest to set up. Authentication apps (like Google Authenticator or Authy) are more secure and work without mobile data or signal. This guide covers both where available.
+          </div>
+        </section>
+
+        <!-- SECTION 2: Before You Start -->
+        <section class="guide-section" id="before-you-start">
+          <h2><span class="section-number">2</span> Before You Start</h2>
+          <h3>What you need</h3>
+          <ul>
+            <li>Your mobile phone — you need it to receive SMS verification codes during setup</li>
+            <li>Access to each account you want to protect (you must be able to log in)</li>
+            <li>A current, working phone number registered to you — this becomes your 2FA method</li>
+            <li>For authentication app 2FA: install Google Authenticator or Authy from the Play Store or App Store before starting</li>
+          </ul>
+          <h3>Before enabling 2FA, make sure you have</h3>
+          <ul>
+            <li>A working recovery email address added to your Google and Facebook accounts</li>
+            <li>Your current phone number confirmed as correct in account settings</li>
+            <li>A secure place to store any backup codes that are generated during setup</li>
+          </ul>
+        </section>
+
+        <!-- SECTION 3: PNG Reality Check -->
+        <section class="guide-section" id="png-reality">
+          <h2><span class="section-number">3</span> PNG Reality Check</h2>
+          <div class="png-reality">
+            <div class="png-reality-header">PNG Reality Check</div>
+            <p>Facebook account takeovers are a common and serious problem in PNG. Many users lose access to accounts that they use for business communication, selling goods, family contact, and sometimes mobile payments. Recovering a taken-over account without 2FA is difficult and sometimes impossible.</p>
+            <p>Enabling 2FA on Facebook, Gmail, and banking apps is one of the most effective single steps you can take to protect yourself online. Even SMS-based 2FA — the simplest form — provides significantly better protection than password-only accounts.</p>
+            <p>PNG mobile numbers using Digicel and bmobile are fully compatible with SMS-based 2FA on all major platforms. If you have a working phone number that receives SMS, you can set up 2FA today. <span class="tag-confirmed">CONFIRMED — international SMS delivery works for Digicel PNG and bmobile numbers</span></p>
+            <p>Note: SMS delivery can occasionally be delayed in areas with poor signal. If you use 2FA via SMS and you are in a low-signal area, you may experience delays receiving your code. An authentication app works offline once set up, making it a better option for users in areas with unreliable data connectivity.</p>
+          </div>
+        </section>
+
+        <!-- SECTION 4: Safety Warning -->
+        <section class="guide-section" id="safety-warning">
+          <h2><span class="section-number">4</span> Safety Warning</h2>
+          <div class="warning-box">
+            <div class="warning-box-header">Never Share Your 2FA Codes</div>
+            <p>If you receive a code via SMS that you did not request — or a code arrives just as someone calls you or messages you asking for it — do NOT share it. This is a social engineering attack called "SIM swap" or "2FA bypass" fraud.</p>
+            <p>Scammers will say things like: "I'm from Facebook support and I need that code to verify your account", "BSP Bank is processing a transaction and needs the code to confirm it's you", or "There's a problem with your account — just read me the code and I'll fix it."</p>
+            <p>A real company will never ask you to read back a 2FA code over the phone or in a message. If you receive an unsolicited code, treat it as a sign that someone is attempting to access your account. Change your password immediately.</p>
+          </div>
+        </section>
+
+        <!-- SECTION 5: Step-by-Step -->
+        <section class="guide-section" id="steps">
+          <h2><span class="section-number">5</span> Step-by-Step Instructions by Platform</h2>
+
+          <div class="step-block">
+            <div class="step-number">Facebook</div>
+            <h4>Enable 2FA on Facebook</h4>
+            <p>Facebook 2FA protects your account from takeovers even if your password is stolen or guessed.</p>
+            <ol>
+              <li>Open the Facebook app on your phone, or go to facebook.com in a browser.</li>
+              <li>Tap the three lines menu (bottom right on iPhone, top right on Android), or click the down arrow in the top right corner on a computer.</li>
+              <li>Go to <strong>Settings &amp; Privacy</strong> → <strong>Settings</strong>.</li>
+              <li>Tap <strong>Security and Login</strong> (or <strong>Password and Security</strong> on newer versions).</li>
+              <li>Find <strong>Two-Factor Authentication</strong> and tap it.</li>
+              <li>Tap <strong>Use Two-Factor Authentication</strong> and then tap <strong>Get Started</strong>.</li>
+              <li>Choose your method: <strong>Text Message (SMS)</strong> is the easiest for most users. An authentication app is more secure — use it if you have Google Authenticator installed.</li>
+              <li>Enter your phone number, receive the SMS code, and enter it to confirm.</li>
+              <li>Save the backup codes that Facebook provides. Print or write them down and store safely.</li>
+            </ol>
+            <div class="step-what-to-look">After setup, Facebook will ask for a 6-digit code the next time you log in from a new device. On trusted devices you use regularly, Facebook may remember your device for 30 days.</div>
+          </div>
+
+          <div class="step-block">
+            <div class="step-number">Gmail / Google</div>
+            <h4>Enable 2-Step Verification on Google</h4>
+            <p>Your Google account controls Gmail, Google Drive, YouTube, and Google Pay. Protecting it with 2-step verification is critical because it is also used to recover other accounts.</p>
+            <ol>
+              <li>Go to <strong>myaccount.google.com</strong> in a browser, or tap your Google account icon in the Gmail app and tap <strong>Manage your Google Account</strong>.</li>
+              <li>Tap or click the <strong>Security</strong> tab.</li>
+              <li>Under "How you sign in to Google", find <strong>2-Step Verification</strong> and tap it.</li>
+              <li>Tap <strong>Get started</strong>. You may need to enter your Google password.</li>
+              <li>Choose your method:
+                <ul>
+                  <li><strong>Google prompt</strong> — sends a notification to your phone asking "Is this you trying to sign in?" — easiest if your phone is linked to your Google account.</li>
+                  <li><strong>SMS or call</strong> — sends a code to your phone number.</li>
+                  <li><strong>Authenticator app</strong> — more secure, works without signal.</li>
+                </ul>
+              </li>
+              <li>Follow the on-screen steps to verify your chosen method and turn on 2-Step Verification.</li>
+              <li>Once enabled, consider adding a backup option (e.g. a second phone number or backup codes).</li>
+            </ol>
+            <div class="step-what-to-look">Go to myaccount.google.com → Security → 2-Step Verification to check that it shows "On". You will also see the date it was turned on.</div>
+          </div>
+
+          <div class="step-block">
+            <div class="step-number">Microsoft</div>
+            <h4>Enable Two-Step Verification on Microsoft Account</h4>
+            <p>If you use Outlook email, Microsoft 365, OneDrive, Xbox, or Windows with a Microsoft account, protecting it with 2-step verification is important.</p>
+            <ol>
+              <li>Go to <strong>account.microsoft.com</strong> in a browser and sign in.</li>
+              <li>Click <strong>Security</strong> in the top navigation bar.</li>
+              <li>Click <strong>Advanced security options</strong>.</li>
+              <li>Under "Two-step verification", click <strong>Turn on</strong>.</li>
+              <li>Follow the setup wizard. Options include the Microsoft Authenticator app (recommended), email, or phone number.</li>
+              <li>At the end of setup, Microsoft will give you a <strong>recovery code</strong>. Print or write this down and store it very safely. It is the only way to recover your account if you lose access to your 2FA method.</li>
+            </ol>
+            <div class="step-what-to-look">The Microsoft Authenticator app is available free from the Play Store and App Store. It works even without mobile data once set up.</div>
+          </div>
+
+          <div class="step-block">
+            <div class="step-number">WhatsApp</div>
+            <h4>Enable Two-Step Verification on WhatsApp</h4>
+            <p>WhatsApp's two-step verification adds a 6-digit PIN that is required when you register your phone number on a new device. This prevents someone who gets your SIM card from taking over your WhatsApp account.</p>
+            <ol>
+              <li>Open WhatsApp on your phone.</li>
+              <li>Tap the three dots menu (top right on Android) or go to <strong>Settings</strong> (bottom right on iPhone).</li>
+              <li>Tap <strong>Account</strong> → <strong>Two-step verification</strong>.</li>
+              <li>Tap <strong>Enable</strong>.</li>
+              <li>Create a <strong>6-digit PIN</strong>. This is not a code sent to you — you create it. Choose something memorable but not obvious. Do not use your birth year or phone number.</li>
+              <li>Enter the PIN a second time to confirm it.</li>
+              <li>Add a <strong>recovery email address</strong>. This is used to reset the PIN if you forget it. Use a real email address you have access to — not a throwaway one.</li>
+              <li>Tap <strong>Done</strong>.</li>
+            </ol>
+            <div class="step-what-to-look">WhatsApp will occasionally ask you to enter your PIN to remind you of it. If you forget the PIN and did not add a recovery email, you must wait 7 days to reset it. Write your PIN down and store it safely.</div>
+          </div>
+
+          <div class="step-block">
+            <div class="step-number">Banking Apps</div>
+            <h4>Enable 2FA on Banking and Mobile Money Apps</h4>
+            <p>PNG banks increasingly offer 2FA for their mobile apps. How you enable it depends on your bank.</p>
+            <ul>
+              <li><strong>BSP Mobile Banking:</strong> Contact BSP Bank or visit your nearest branch. BSP uses SMS OTP (one-time password) for transaction verification. Ensure your registered mobile number in BSP's system is current and belongs to you. <span class="tag-requires-confirmation">REQUIRES USER CONFIRMATION — check with BSP for current 2FA options</span></li>
+              <li><strong>Kina Bank:</strong> Check the Kina Bank app settings or call Kina Bank. <span class="tag-requires-confirmation">REQUIRES USER CONFIRMATION — check with Kina Bank</span></li>
+              <li><strong>Other banks and mobile money services:</strong> Check your app's Settings or Security section. Look for "Two-Factor Authentication", "2FA", "OTP", or "Transaction Verification".</li>
+            </ul>
+            <div class="info-box">
+              <strong>For all banking apps:</strong> Ensure your bank has your current mobile number on file. SMS-based transaction alerts and OTP codes are your first line of defence against unauthorised transactions. Call your bank immediately if you notice any transactions you did not authorise.
+            </div>
+          </div>
+
+        </section>
+
+        <!-- SECTION 6: After Enabling 2FA -->
+        <section class="guide-section" id="after-setup">
+          <h2><span class="section-number">6</span> After Enabling 2FA — What to Do Next</h2>
+          <h3>Save your backup codes</h3>
+          <p>Most platforms offer backup codes when you enable 2FA. These are one-time codes you can use to log in if you lose access to your phone or 2FA method. Treat backup codes like cash — if someone else has them, they can access your account.</p>
+          <ul>
+            <li>Print backup codes or write them down clearly.</li>
+            <li>Store them in a secure physical location — not in your phone's notes app unless that app is password-protected.</li>
+            <li>Do not photograph backup codes and store the photo in your camera roll — it is too easily accessible.</li>
+          </ul>
+          <h3>Add a recovery option</h3>
+          <ul>
+            <li>Add a recovery email to Facebook and Google accounts if you have not already.</li>
+            <li>Add a backup phone number where possible.</li>
+            <li>For Google, consider adding a "Trusted device" — a second device you own that can confirm your identity.</li>
+          </ul>
+          <h3>Check trusted devices</h3>
+          <p>After enabling 2FA, review which devices are marked as "trusted" or "remembered" in your account settings. Remove any devices you no longer own or recognise.</p>
+          <ul>
+            <li>Facebook: Settings → Security and Login → Where you're logged in</li>
+            <li>Google: myaccount.google.com → Security → Your devices</li>
+          </ul>
+        </section>
+
+        <!-- SECTION 7: Checklist -->
+        <section class="guide-section" id="checklist">
+          <h2><span class="section-number">7</span> Printable Checklist</h2>
+          <div class="checklist-block">
+            <h3>Two-Factor Authentication Checklist</h3>
+            <ul class="checklist-items">
+              <li><label><input type="checkbox"> Facebook 2FA enabled (SMS or authentication app)</label></li>
+              <li><label><input type="checkbox"> Gmail / Google 2-Step Verification turned on</label></li>
+              <li><label><input type="checkbox"> Microsoft account two-step verification enabled (if used)</label></li>
+              <li><label><input type="checkbox"> WhatsApp two-step verification PIN set and recovery email added</label></li>
+              <li><label><input type="checkbox"> Banking app 2FA / OTP checked and phone number confirmed with bank</label></li>
+              <li><label><input type="checkbox"> Backup codes saved securely (printed or written — not in unprotected phone notes)</label></li>
+              <li><label><input type="checkbox"> Recovery email or phone number added to all accounts</label></li>
+              <li><label><input type="checkbox"> Trusted/remembered devices reviewed and old devices removed</label></li>
+              <li><label><input type="checkbox"> WhatsApp PIN written down and stored safely</label></li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- SECTION 8: Troubleshooting -->
+        <section class="guide-section" id="troubleshooting">
+          <h2><span class="section-number">8</span> Troubleshooting</h2>
+          <table class="settings-table">
+            <thead>
+              <tr>
+                <th>Problem</th>
+                <th>Likely Cause</th>
+                <th>What to Try</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>SMS code not arriving</td>
+                <td>Poor signal, SMS delay, or wrong phone number entered</td>
+                <td>Wait 2–3 minutes. Check signal. Request the code again. Confirm your phone number is entered correctly in the account. Try an authentication app instead.</td>
+              </tr>
+              <tr>
+                <td>Locked out of account after enabling 2FA</td>
+                <td>Lost phone or changed phone number</td>
+                <td>Use backup codes if saved. Use recovery email to reset. For Facebook, use the "Get more help" option on the login page with identity verification.</td>
+              </tr>
+              <tr>
+                <td>Authentication app codes not accepted</td>
+                <td>Phone clock is out of sync</td>
+                <td>Authentication apps use time-based codes. If your phone clock is wrong, codes will not work. Sync your phone's time: Settings → Date &amp; Time → Automatic date &amp; time.</td>
+              </tr>
+              <tr>
+                <td>Forgot WhatsApp 2-step PIN</td>
+                <td>PIN not recorded</td>
+                <td>Use the recovery email you set up during configuration. If no recovery email was added, you must wait 7 days for the PIN reset to process — WhatsApp will not let you register on a new device during this period.</td>
+              </tr>
+              <tr>
+                <td>Cannot find 2FA settings on Facebook</td>
+                <td>App version or interface changed</td>
+                <td>On newer Facebook versions, go to: Menu → Settings → Password and Security → Two-Factor Authentication. Settings locations change with app updates.</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- SECTION 9: When to Call for Help -->
+        <section class="guide-section" id="technician">
+          <h2><span class="section-number">9</span> When to Get Help</h2>
+          <ul>
+            <li>If you are fully locked out of an account and have no backup codes or recovery options — contact the platform's official support directly (Facebook Help, Google Account support)</li>
+            <li>If you suspect your account has already been taken over — contact the platform immediately, and change passwords on all linked accounts</li>
+            <li>If your bank account shows unauthorised transactions — contact your bank immediately, not through the app</li>
+            <li>For business accounts or organisations needing 2FA policies across multiple staff members — consult a technical advisor</li>
+          </ul>
+        </section>
+
+        <!-- SECTION 10: Source Register -->
+        <section class="guide-section" id="source-register">
+          <h2><span class="section-number">10</span> Source and Assumptions Register</h2>
+          <table class="register-table">
+            <thead>
+              <tr><th>ID</th><th>Source</th><th>Claim</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>SRC-01</td>
+                <td>Facebook Help Center — official documentation</td>
+                <td>Facebook 2FA setup steps via Settings → Security and Login</td>
+                <td><span class="tag-confirmed">CONFIRMED</span></td>
+              </tr>
+              <tr>
+                <td>SRC-02</td>
+                <td>Google Account Help — official documentation</td>
+                <td>Google 2-Step Verification setup via myaccount.google.com</td>
+                <td><span class="tag-confirmed">CONFIRMED</span></td>
+              </tr>
+              <tr>
+                <td>SRC-03</td>
+                <td>Microsoft Security documentation</td>
+                <td>Microsoft two-step verification via account.microsoft.com → Security</td>
+                <td><span class="tag-confirmed">CONFIRMED</span></td>
+              </tr>
+              <tr>
+                <td>SRC-04</td>
+                <td>WhatsApp Help Center</td>
+                <td>WhatsApp two-step verification via Settings → Account → Two-step verification</td>
+                <td><span class="tag-confirmed">CONFIRMED</span></td>
+              </tr>
+              <tr>
+                <td>SRC-05</td>
+                <td>PNG banking 2FA availability</td>
+                <td>BSP Bank and Kina Bank offer SMS OTP for transactions</td>
+                <td><span class="tag-requires-confirmation">REQUIRES USER CONFIRMATION — verify with each bank</span></td>
+              </tr>
+              <tr>
+                <td>SRC-06</td>
+                <td>General ISP knowledge</td>
+                <td>Digicel PNG and bmobile numbers receive international SMS reliably</td>
+                <td><span class="tag-confirmed">CONFIRMED — standard international SMS delivery</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+      </article>
+
+      <aside class="guide-sidebar" aria-label="Guide contents">
+        <div class="sidebar-card">
+          <h4>Contents</h4>
+          <ul class="sidebar-toc">
+            <li><a href="#quick-summary">1. Quick Summary</a></li>
+            <li><a href="#before-you-start">2. Before You Start</a></li>
+            <li><a href="#png-reality">3. PNG Reality Check</a></li>
+            <li><a href="#safety-warning">4. Safety Warning</a></li>
+            <li><a href="#steps">5. Steps by Platform</a></li>
+            <li><a href="#after-setup">6. After Enabling 2FA</a></li>
+            <li><a href="#checklist">7. Printable Checklist</a></li>
+            <li><a href="#troubleshooting">8. Troubleshooting</a></li>
+            <li><a href="#technician">9. When to Get Help</a></li>
+            <li><a href="#source-register">10. Source Register</a></li>
+          </ul>
+        </div>
+        <div class="sidebar-card">
+          <h4>Guide Info</h4>
+          <ul class="sidebar-meta-list">
+            <li>Category <strong>Cybersecurity Basics</strong></li>
+            <li>Difficulty <strong class="difficulty-beginner">Beginner</strong></li>
+            <li>Time <strong>30 min</strong></li>
+            <li>Checklist <strong style="color:#4ade80">Yes</strong></li>
+            <li>PNG Context <strong style="color:var(--gold)">High</strong></li>
+          </ul>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</main>
+
+<footer class="footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <div class="footer-logo-mark" aria-hidden="true">A</div>
+          <div class="footer-logo-text">AIBS Digital Setup Guides</div>
+        </div>
+        <p>Free practical ICT and cybersecurity setup guidance built for Papua New Guinea.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Guides</h4>
+        <ul class="footer-links">
+          <li><a href="/categories/home-internet-safety.html">Home Internet Safety</a></li>
+          <li><a href="/categories/small-office-setup.html">Small Office Setup</a></li>
+          <li><a href="/categories/internet-cafe-setup.html">Internet Café Setup</a></li>
+          <li><a href="/categories/gaming-zone-setup.html">Gaming Zone Setup</a></li>
+          <li><a href="/categories/children-family-safety.html">Children &amp; Family Safety</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>More</h4>
+        <ul class="footer-links">
+          <li><a href="/categories/cybersecurity-basics.html">Cybersecurity Basics</a></li>
+          <li><a href="/checklists.html">Checklists</a></li>
+          <li><a href="/start-here.html">Start Here</a></li>
+          <li><a href="/guides/index.html">All Guides</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>AIBS</h4>
+        <ul class="footer-links">
+          <li><a href="/about.html">About AIBS</a></li>
+          <li><a href="/contact.html">Contact</a></li>
+          <li><a href="/disclaimer.html">Disclaimer</a></li>
+          <li><a href="/privacy.html">Privacy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-disclaimer">This website provides public educational guidance only. It does not replace professional technical, legal, cybersecurity incident response, or child protection advice.</p>
+      <p class="footer-copy">&copy; 2026 AI Digital Bridge Solutions PNG</p>
+    </div>
+  </div>
+</footer>
+<script src="../site.js"></script>
+</body>
+</html>

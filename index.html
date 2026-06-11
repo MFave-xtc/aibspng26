@@ -2,1094 +2,582 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#0a0a0a">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="AIBS Agent">
-<meta name="description" content="AI Bridge Solutions PNG — Mobile Command Centre">
-<link rel="manifest" href="./manifest.json">
-<title>AIBS Mobile Agent</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --black: #0a0a0a;
-    --ink: #141414;
-    --card: #1a1a1a;
-    --card2: #202020;
-    --gold: #c9a84c;
-    --gold-dim: rgba(201,168,76,0.12);
-    --red: #c0392b;
-    --red-dim: rgba(192,57,43,0.12);
-    --green: #27ae60;
-    --green-dim: rgba(39,174,96,0.12);
-    --blue: #2980b9;
-    --blue-dim: rgba(41,128,185,0.12);
-    --white: #f5f0e8;
-    --grey: #666660;
-    --grey2: #444440;
-    --mono: 'DM Mono', monospace;
-    --serif: 'Playfair Display', serif;
-    --sans: 'Outfit', sans-serif;
-    --radius: 16px;
-    --radius-sm: 10px;
-    --safe-top: env(safe-area-inset-top, 0px);
-    --safe-bottom: env(safe-area-inset-bottom, 20px);
-  }
-
-  *, *::before, *::after {
-    box-sizing: border-box; margin: 0; padding: 0;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  html, body {
-    height: 100%; width: 100%;
-    background: var(--black);
-    color: var(--white);
-    font-family: var(--sans);
-    overflow: hidden;
-    overscroll-behavior: none;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  /* ═══ APP SHELL ═══ */
-  .app {
-    display: grid;
-    grid-template-rows: 1fr auto;
-    height: 100vh;
-    height: 100dvh;
-    overflow: hidden;
-  }
-
-  .screens { overflow: hidden; position: relative; }
-
-  .screen {
-    position: absolute; inset: 0;
-    overflow-y: auto; overflow-x: hidden;
-    overscroll-behavior: contain;
-    padding-bottom: 20px;
-    display: none;
-    animation: screenIn 0.28s cubic-bezier(0.23,1,0.32,1) both;
-  }
-
-  .screen.active { display: block; }
-
-  @keyframes screenIn {
-    from { opacity: 0; transform: translateY(14px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  /* scrollbar hide */
-  .screen::-webkit-scrollbar { display: none; }
-  .screen { -ms-overflow-style: none; scrollbar-width: none; }
-
-  /* ═══ BOTTOM NAV ═══ */
-  .bottom-nav {
-    background: var(--ink);
-    border-top: 1px solid rgba(201,168,76,0.1);
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    padding-bottom: var(--safe-bottom);
-    position: relative; z-index: 100;
-  }
-
-  .nav-item {
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    padding: 10px 4px 8px; cursor: pointer; gap: 4px;
-    transition: color 0.2s; border: none; background: none;
-    color: var(--grey); position: relative;
-  }
-
-  .nav-item.active { color: var(--gold); }
-
-  .nav-dot {
-    position: absolute; top: 6px;
-    width: 4px; height: 4px; border-radius: 50%;
-    background: var(--gold); opacity: 0; transition: opacity 0.2s;
-  }
-
-  .nav-item.active .nav-dot { opacity: 1; }
-  .nav-icon { width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; }
-  .nav-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; }
-
-  /* ═══ SHARED ═══ */
-  .screen-header {
-    padding: 52px 20px 18px;
-    background: var(--black);
-    position: sticky; top: 0; z-index: 10;
-    border-bottom: 1px solid rgba(255,255,255,0.04);
-  }
-
-  .header-eyebrow {
-    font-family: var(--mono); font-size: 9px; color: var(--gold);
-    letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.7; margin-bottom: 4px;
-  }
-
-  .header-title {
-    font-family: var(--serif); font-size: 28px; font-weight: 900;
-    line-height: 1; letter-spacing: -0.01em;
-  }
-
-  .header-title em { font-style: italic; color: var(--gold); }
-  .screen-body { padding: 20px; }
-
-  .card {
-    background: var(--card); border-radius: var(--radius);
-    padding: 20px; margin-bottom: 12px;
-    border: 1px solid rgba(255,255,255,0.04);
-  }
-
-  .card-gold { background: var(--gold-dim); border: 1px solid rgba(201,168,76,0.2); }
-  .card-red  { background: var(--red-dim);  border: 1px solid rgba(192,57,43,0.2); }
-  .card-green{ background: var(--green-dim);border: 1px solid rgba(39,174,96,0.2); }
-
-  .label {
-    font-family: var(--mono); font-size: 9px; color: var(--gold);
-    letter-spacing: 0.25em; text-transform: uppercase; opacity: 0.7; margin-bottom: 8px;
-  }
-
-  .btn {
-    width: 100%; padding: 16px; border: none;
-    border-radius: var(--radius-sm);
-    font-family: var(--mono); font-size: 11px;
-    letter-spacing: 0.15em; text-transform: uppercase;
-    cursor: pointer; transition: all 0.2s; font-weight: 500;
-  }
-
-  .btn-gold { background: var(--gold); color: var(--black); }
-  .btn-gold:active { background: #b8963e; transform: scale(0.98); }
-  .btn-outline { background: transparent; color: var(--gold); border: 1px solid rgba(201,168,76,0.3); }
-  .btn-outline:active { background: var(--gold-dim); }
-
-  .input-field {
-    width: 100%; background: var(--card2);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: var(--radius-sm);
-    padding: 14px 16px; color: var(--white);
-    font-family: var(--sans); font-size: 15px;
-    outline: none; transition: border-color 0.2s;
-    -webkit-appearance: none;
-  }
-
-  .input-field:focus { border-color: rgba(201,168,76,0.4); }
-  .input-field::placeholder { color: var(--grey); }
-
-  select.input-field {
-    appearance: none; -webkit-appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c9a84c' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat; background-position: right 16px center;
-    padding-right: 44px;
-  }
-
-  textarea.input-field { resize: none; line-height: 1.6; }
-
-  .field-group { margin-bottom: 14px; }
-  .field-label {
-    font-family: var(--mono); font-size: 9px; color: var(--grey);
-    letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 6px;
-  }
-
-  .divider { height: 1px; background: rgba(255,255,255,0.05); margin: 16px 0; }
-
-  /* ═══ DASHBOARD ═══ */
-  .hero-card {
-    background: linear-gradient(135deg, #1a1600 0%, #120f00 50%, #0a0a0a 100%);
-    border: 1px solid rgba(201,168,76,0.2);
-    border-radius: var(--radius); padding: 24px 20px;
-    margin-bottom: 12px; position: relative; overflow: hidden;
-  }
-
-  .hero-card::before {
-    content: 'AIBS';
-    position: absolute; right: -14px; top: 50%;
-    transform: translateY(-50%);
-    font-family: var(--serif); font-size: 88px; font-weight: 900;
-    color: rgba(201,168,76,0.05); line-height: 1; pointer-events: none;
-  }
-
-  .hero-greeting { font-family: var(--mono); font-size: 9px; color: var(--gold); letter-spacing: 0.25em; text-transform: uppercase; opacity: 0.7; margin-bottom: 4px; }
-  .hero-name { font-family: var(--serif); font-size: 26px; font-weight: 900; margin-bottom: 4px; }
-  .hero-name em { font-style: italic; color: var(--gold); }
-  .hero-role { font-size: 11px; color: rgba(245,240,232,0.4); font-weight: 300; margin-bottom: 18px; }
-
-  .hero-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-  .hero-stat { background: rgba(0,0,0,0.3); border-radius: 8px; padding: 10px 8px; text-align: center; }
-  .hero-stat-num { font-family: var(--serif); font-size: 22px; font-weight: 900; color: var(--gold); line-height: 1; }
-  .hero-stat-label { font-family: var(--mono); font-size: 7px; color: var(--grey); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 2px; }
-
-  .api-status {
-    display: flex; align-items: center; gap: 10px; padding: 12px 16px;
-    background: var(--card2); border-radius: var(--radius-sm); margin-bottom: 12px;
-  }
-
-  .status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-  .status-dot.connected { background: var(--green); box-shadow: 0 0 6px rgba(39,174,96,0.5); }
-  .status-dot.disconnected { background: var(--red); }
-  .status-dot.pending { background: var(--gold); animation: pulse 1.5s infinite; }
-
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
-
-  .status-text { font-size: 12px; color: rgba(245,240,232,0.6); flex: 1; }
-  .status-badge { font-family: var(--mono); font-size: 9px; color: var(--grey); letter-spacing: 0.1em; }
-
-  .quick-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
-
-  .quick-action {
-    background: var(--card); border: 1px solid rgba(255,255,255,0.04);
-    border-radius: var(--radius); padding: 18px 16px;
-    cursor: pointer; transition: all 0.15s;
-    display: flex; flex-direction: column; gap: 10px;
-  }
-
-  .quick-action:active { transform: scale(0.97); background: var(--card2); }
-
-  .qa-icon {
-    width: 36px; height: 36px; border-radius: 8px;
-    display: flex; align-items: center; justify-content: center; font-size: 18px;
-  }
-
-  .qa-gold { background: var(--gold-dim); }
-  .qa-blue { background: var(--blue-dim); }
-  .qa-green { background: var(--green-dim); }
-  .qa-red  { background: var(--red-dim); }
-
-  .qa-title { font-size: 13px; font-weight: 600; color: var(--white); line-height: 1.3; }
-  .qa-sub   { font-family: var(--mono); font-size: 8px; color: var(--grey); letter-spacing: 0.08em; }
-
-  .activity-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
-  .activity-item:last-child { border-bottom: none; }
-  .activity-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
-  .activity-text { font-size: 13px; color: rgba(245,240,232,0.7); line-height: 1.5; }
-  .activity-time { font-family: var(--mono); font-size: 9px; color: var(--grey); margin-top: 2px; }
-
-  /* Install banner */
-  .install-banner {
-    display: none;
-    background: var(--gold-dim); border: 1px solid rgba(201,168,76,0.25);
-    border-radius: var(--radius-sm); padding: 14px 16px;
-    margin-bottom: 12px; align-items: center; gap: 12px; cursor: pointer;
-  }
-
-  .install-banner.show { display: flex; }
-  .install-banner-text { flex: 1; font-size: 12px; color: var(--white); line-height: 1.5; }
-  .install-banner-btn {
-    font-family: var(--mono); font-size: 9px; color: var(--gold);
-    letter-spacing: 0.15em; text-transform: uppercase;
-    background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.3);
-    border-radius: 6px; padding: 8px 12px; white-space: nowrap; cursor: pointer;
-    border: none;
-  }
-
-  /* ═══ PROPOSAL DRAFTER ═══ */
-  .phase-zero-badge {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: var(--gold-dim); border: 1px solid rgba(201,168,76,0.2);
-    border-radius: 20px; padding: 6px 12px;
-    font-family: var(--mono); font-size: 9px; color: var(--gold);
-    letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 16px;
-  }
-
-  .output-box {
-    background: var(--card2); border: 1px solid rgba(201,168,76,0.15);
-    border-radius: var(--radius-sm); padding: 16px;
-    font-size: 13px; color: rgba(245,240,232,0.8);
-    line-height: 1.8; white-space: pre-wrap; min-height: 200px;
-    font-family: var(--sans); display: none;
-  }
-
-  .output-box.visible { display: block; }
-  .output-box.loading { display: flex; align-items: center; justify-content: center; gap: 10px; color: var(--grey); font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; }
-
-  .spinner { width: 16px; height: 16px; border: 2px solid rgba(201,168,76,0.2); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  .copy-btn {
-    display: none; align-items: center; justify-content: center; gap: 8px;
-    width: 100%; padding: 12px; background: transparent;
-    border: 1px solid rgba(201,168,76,0.2); border-radius: var(--radius-sm);
-    color: var(--gold); font-family: var(--mono); font-size: 10px;
-    letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; margin-top: 8px;
-    transition: background 0.2s;
-  }
-
-  .copy-btn:active { background: var(--gold-dim); }
-
-  /* ═══ DOCUMENT VAULT ═══ */
-  .search-bar { display: flex; gap: 8px; margin-bottom: 16px; }
-
-  .search-input {
-    flex: 1; background: var(--card);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 24px; padding: 12px 18px;
-    color: var(--white); font-family: var(--sans); font-size: 14px; outline: none;
-  }
-
-  .search-input:focus { border-color: rgba(201,168,76,0.3); }
-
-  .doc-category { font-family: var(--mono); font-size: 8px; color: var(--gold); letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.6; margin: 16px 0 8px; }
-
-  .doc-item {
-    display: flex; align-items: center; gap: 14px;
-    padding: 14px 16px; background: var(--card);
-    border-radius: var(--radius-sm); margin-bottom: 6px;
-    cursor: pointer; transition: all 0.15s;
-    border: 1px solid rgba(255,255,255,0.03);
-  }
-
-  .doc-item:active { background: var(--card2); transform: scale(0.99); }
-  .doc-icon { width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
-  .doc-info { flex: 1; min-width: 0; }
-  .doc-name { font-size: 14px; font-weight: 500; color: var(--white); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
-  .doc-meta { font-family: var(--mono); font-size: 9px; color: var(--grey); letter-spacing: 0.05em; }
-  .doc-badge { font-family: var(--mono); font-size: 8px; padding: 3px 8px; border-radius: 4px; letter-spacing: 0.1em; flex-shrink: 0; }
-  .badge-gold  { background: var(--gold-dim); color: var(--gold); }
-  .badge-green { background: var(--green-dim); color: var(--green); }
-  .badge-blue  { background: var(--blue-dim); color: #5ba4d4; }
-
-  /* ═══ SETTINGS ═══ */
-  .settings-section { margin-bottom: 24px; }
-  .settings-title { font-family: var(--mono); font-size: 9px; color: var(--gold); letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.6; margin-bottom: 10px; padding: 0 4px; }
-
-  .setting-row {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 14px 16px; background: var(--card); border-radius: 4px;
-    margin-bottom: 2px; cursor: pointer; gap: 12px;
-    transition: background 0.15s;
-  }
-
-  .setting-row:first-of-type { border-radius: var(--radius-sm) var(--radius-sm) 4px 4px; }
-  .setting-row:last-of-type  { border-radius: 4px 4px var(--radius-sm) var(--radius-sm); }
-  .setting-row:only-child    { border-radius: var(--radius-sm); }
-  .setting-row:active { background: var(--card2); }
-
-  .setting-info { flex: 1; }
-  .setting-name { font-size: 14px; color: var(--white); margin-bottom: 2px; }
-  .setting-desc { font-size: 11px; color: var(--grey); }
-  .setting-value { font-family: var(--mono); font-size: 11px; color: var(--grey); text-align: right; max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .setting-arrow { color: var(--grey2); font-size: 16px; }
-
-  .toggle { width: 44px; height: 26px; background: var(--grey2); border-radius: 13px; position: relative; cursor: pointer; transition: background 0.2s; flex-shrink: 0; border: none; }
-  .toggle.on { background: var(--gold); }
-  .toggle::after { content: ''; position: absolute; width: 20px; height: 20px; background: white; border-radius: 50%; top: 3px; left: 3px; transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
-  .toggle.on::after { transform: translateX(18px); }
-
-  .api-key-display { font-family: var(--mono); font-size: 11px; color: var(--grey); letter-spacing: 0.05em; background: var(--card2); padding: 10px 14px; border-radius: 8px; margin-top: 8px; word-break: break-all; }
-
-  .genesis-footer { text-align: center; padding: 24px 0 8px; }
-  .genesis-badge { display: inline-block; font-family: var(--mono); font-size: 8px; color: rgba(201,168,76,0.35); letter-spacing: 0.2em; text-transform: uppercase; border: 1px solid rgba(201,168,76,0.1); padding: 6px 14px; border-radius: 20px; }
-
-  .version-line { font-family: var(--mono); font-size: 9px; color: rgba(102,102,96,0.4); text-align: center; margin-top: 8px; letter-spacing: 0.1em; }
-
-  /* ═══ MODAL ═══ */
-  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 200; display: none; align-items: flex-end; backdrop-filter: blur(4px); }
-  .modal-overlay.open { display: flex; }
-  .modal { background: var(--ink); border-radius: 24px 24px 0 0; padding: 24px 20px calc(24px + var(--safe-bottom)); width: 100%; border-top: 1px solid rgba(201,168,76,0.15); animation: modalUp 0.28s cubic-bezier(0.23,1,0.32,1) both; }
-  @keyframes modalUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-  .modal-handle { width: 36px; height: 4px; background: var(--grey2); border-radius: 2px; margin: 0 auto 20px; }
-  .modal-title { font-family: var(--serif); font-size: 22px; font-weight: 900; margin-bottom: 12px; }
-  .modal-body { font-size: 13px; color: rgba(245,240,232,0.55); line-height: 1.8; margin-bottom: 20px; }
-
-  /* ═══ TOAST ═══ */
-  .toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--card2); border: 1px solid rgba(201,168,76,0.2); border-radius: 24px; padding: 10px 20px; font-family: var(--mono); font-size: 11px; color: var(--gold); letter-spacing: 0.1em; z-index: 999; opacity: 0; transition: all 0.3s; white-space: nowrap; pointer-events: none; }
-  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIBS Digital Setup Guides | Free ICT &amp; Internet Safety Guides for PNG</title>
+<meta name="description" content="Free step-by-step ICT, internet safety, cybersecurity, small office, internet café, and gaming zone setup guides built for Papua New Guinea homes, SMEs, parents, schools, churches, and community users.">
+<meta property="og:title" content="AIBS Digital Setup Guides | Free ICT &amp; Internet Safety Guides for PNG">
+<meta property="og:description" content="Free step-by-step setup guides built for Papua New Guinea. Internet safety, router security, child protection, internet café setup, and more.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#06111C">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<div class="app">
-  <div class="screens">
-
-    <!-- ═══ DASHBOARD ═══ -->
-    <div class="screen active" id="screen-dashboard">
-      <div class="screen-header">
-        <div class="header-eyebrow">AI Bridge Solutions PNG</div>
-        <div class="header-title">Command <em>Centre</em></div>
-      </div>
-      <div class="screen-body">
-
-        <div class="install-banner" id="install-banner" onclick="triggerInstall()">
-          <div class="install-banner-text">
-            <strong style="color:var(--gold)">Install AIBS Agent</strong><br>
-            Add to home screen for the full app experience
-          </div>
-          <button class="install-banner-btn">Install</button>
-        </div>
-
-        <div class="hero-card">
-          <div class="hero-greeting" id="greeting">Good morning</div>
-          <div class="hero-name"><em>Mariosu</em> Fave</div>
-          <div class="hero-role">Digitalisation & Transformational Governance Architect</div>
-          <div class="hero-stats">
-            <div class="hero-stat">
-              <div class="hero-stat-num">3</div>
-              <div class="hero-stat-label">Services</div>
-            </div>
-            <div class="hero-stat">
-              <div class="hero-stat-num" id="draft-count">0</div>
-              <div class="hero-stat-label">Drafts</div>
-            </div>
-            <div class="hero-stat">
-              <div class="hero-stat-num">v4.3</div>
-              <div class="hero-stat-label">Genesis</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="api-status">
-          <div class="status-dot pending" id="status-dot"></div>
-          <div class="status-text" id="status-text">API key not configured</div>
-          <div class="status-badge" id="status-badge">OFFLINE</div>
-        </div>
-
-        <div class="label">Quick Actions</div>
-        <div class="quick-actions">
-          <div class="quick-action" onclick="switchScreen('drafter')">
-            <div class="qa-icon qa-gold">📝</div>
-            <div><div class="qa-title">Draft Proposal</div><div class="qa-sub">Genesis v4.3</div></div>
-          </div>
-          <div class="quick-action" onclick="switchScreen('vault')">
-            <div class="qa-icon qa-blue">📁</div>
-            <div><div class="qa-title">Document Vault</div><div class="qa-sub">Templates</div></div>
-          </div>
-          <div class="quick-action" onclick="showToast('Gmail triage — Phase 2')">
-            <div class="qa-icon qa-green">📧</div>
-            <div><div class="qa-title">Email Triage</div><div class="qa-sub">Phase 2</div></div>
-          </div>
-          <div class="quick-action" onclick="showToast('Content studio — Phase 2')">
-            <div class="qa-icon qa-red">💡</div>
-            <div><div class="qa-title">LinkedIn Post</div><div class="qa-sub">Phase 2</div></div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="label">Activity</div>
-          <div class="activity-item">
-            <div class="activity-dot" style="background:var(--gold)"></div>
-            <div><div class="activity-text">AIBS Agent deployed to GitHub Pages</div><div class="activity-time">Today</div></div>
-          </div>
-          <div class="activity-item">
-            <div class="activity-dot" style="background:var(--green)"></div>
-            <div><div class="activity-text">3 tear sheets ready for distribution</div><div class="activity-time">Today</div></div>
-          </div>
-          <div class="activity-item">
-            <div class="activity-dot" style="background:var(--blue)"></div>
-            <div><div class="activity-text">Service Intelligence Pack published</div><div class="activity-time">Today</div></div>
-          </div>
-          <div class="activity-item">
-            <div class="activity-dot" style="background:var(--grey)"></div>
-            <div><div class="activity-text">Entity separation confirmed — AIBS standalone</div><div class="activity-time">Today</div></div>
-          </div>
-        </div>
-
-      </div>
+<!-- ═══ NAVIGATION ═══════════════════════════════ -->
+<nav class="nav" id="main-nav" role="navigation" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a class="nav-logo" href="/" aria-label="AIBS Digital Setup Guides home">
+      <div class="nav-logo-mark" aria-hidden="true">A</div>
+      <div class="nav-logo-text">AIBS Digital Setup Guides<span>Built for PNG</span></div>
+    </a>
+    <div class="nav-links" role="menubar">
+      <a class="nav-link" href="/start-here.html" role="menuitem">Start Here</a>
+      <a class="nav-link" href="/categories/home-internet-safety.html" role="menuitem">Home Safety</a>
+      <a class="nav-link" href="/categories/small-office-setup.html" role="menuitem">SME Setup</a>
+      <a class="nav-link" href="/categories/internet-cafe-setup.html" role="menuitem">Internet Café</a>
+      <a class="nav-link" href="/categories/gaming-zone-setup.html" role="menuitem">Gaming Zone</a>
+      <a class="nav-link" href="/checklists.html" role="menuitem">Checklists</a>
+      <a class="nav-link" href="/about.html" role="menuitem">About</a>
+      <a class="nav-cta" href="/contact.html">Request Help</a>
     </div>
-
-    <!-- ═══ PROPOSAL DRAFTER ═══ -->
-    <div class="screen" id="screen-drafter">
-      <div class="screen-header">
-        <div class="header-eyebrow">Genesis Blueprint v4.3</div>
-        <div class="header-title">Proposal <em>Drafter</em></div>
-      </div>
-      <div class="screen-body">
-        <div class="phase-zero-badge">⬡ Phase Zero — Mandatory Intake</div>
-
-        <div class="field-group">
-          <div class="field-label">Client Name</div>
-          <input type="text" class="input-field" id="client-name" placeholder="e.g. Pacific Trading Ltd">
-        </div>
-
-        <div class="field-group">
-          <div class="field-label">Service</div>
-          <select class="input-field" id="service-type">
-            <option value="">Select service...</option>
-            <option value="governance">AI Document & Compliance Pack</option>
-            <option value="acs">ACS Skills Assessment Pathway</option>
-            <option value="m365">Microsoft 365 Health Check</option>
-            <option value="retainer">Governance-as-a-Service Retainer</option>
-            <option value="cctv">CCTV / ELV Design Service</option>
-          </select>
-        </div>
-
-        <div class="field-group">
-          <div class="field-label">Scope Notes</div>
-          <textarea class="input-field" id="scope-notes" rows="4" placeholder="Key requirements, number of policies, site details, special considerations..."></textarea>
-        </div>
-
-        <div class="field-group">
-          <div class="field-label">Client Contact</div>
-          <input type="text" class="input-field" id="client-contact" placeholder="Name, title, email">
-        </div>
-
-        <div class="field-group">
-          <div class="field-label">Delivery Preference</div>
-          <select class="input-field" id="timeline">
-            <option value="standard">Standard (14 days)</option>
-            <option value="express">Express (7 days)</option>
-            <option value="urgent">Urgent (3 days — surcharge applies)</option>
-            <option value="custom">Custom — specify in scope notes</option>
-          </select>
-        </div>
-
-        <div style="margin-bottom:16px;">
-          <button class="btn btn-gold" onclick="generateProposal()">⬡ Generate Genesis Draft</button>
-        </div>
-
-        <div class="output-box" id="proposal-output"></div>
-        <button class="copy-btn" id="copy-btn" onclick="copyProposal()">⎘ Copy Draft to Clipboard</button>
-
-        <div class="divider"></div>
-        <div class="card card-gold">
-          <div class="label">Genesis v4.3 Governance</div>
-          <div style="font-size:12px;color:rgba(245,240,232,0.6);line-height:1.7;">Every draft includes Phase Zero intake, assumption register, confidence tags, and Covenant Scan checklist. No bypass. No filler.</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ═══ DOCUMENT VAULT ═══ -->
-    <div class="screen" id="screen-vault">
-      <div class="screen-header">
-        <div class="header-eyebrow">AIBS Knowledge Base</div>
-        <div class="header-title">Document <em>Vault</em></div>
-      </div>
-      <div class="screen-body">
-        <div class="search-bar">
-          <input type="text" class="search-input" placeholder="Search vault..." oninput="filterDocs(this.value)">
-        </div>
-        <div id="doc-list">
-
-          <div class="doc-category">Service Templates</div>
-          <div class="doc-item" onclick="openDoc('governance-template')">
-            <div class="doc-icon qa-gold">📋</div>
-            <div class="doc-info"><div class="doc-name">Governance Pack — Scope Template</div><div class="doc-meta">Genesis P0 · 8 policies max</div></div>
-            <div class="doc-badge badge-gold">ACTIVE</div>
-          </div>
-          <div class="doc-item" onclick="openDoc('acs-template')">
-            <div class="doc-icon qa-blue">🎓</div>
-            <div class="doc-info"><div class="doc-name">ACS Application Package Template</div><div class="doc-meta">Genesis P0 · RPL + CV</div></div>
-            <div class="doc-badge badge-gold">ACTIVE</div>
-          </div>
-          <div class="doc-item" onclick="openDoc('m365-template')">
-            <div class="doc-icon qa-green">🔐</div>
-            <div class="doc-info"><div class="doc-name">M365 Health Check — Assessment</div><div class="doc-meta">Genesis P0 · 7 areas</div></div>
-            <div class="doc-badge badge-gold">ACTIVE</div>
-          </div>
-
-          <div class="doc-category">Sales Materials</div>
-          <div class="doc-item" onclick="openDoc('sales-pack')">
-            <div class="doc-icon" style="background:var(--gold-dim)">🌉</div>
-            <div class="doc-info"><div class="doc-name">AIBS Service Intelligence Pack 2026</div><div class="doc-meta">3 services · Print-ready</div></div>
-            <div class="doc-badge badge-green">READY</div>
-          </div>
-          <div class="doc-item" onclick="openDoc('tearsheet-01')">
-            <div class="doc-icon qa-gold">📄</div>
-            <div class="doc-info"><div class="doc-name">Tear Sheet 01 — Governance Pack</div><div class="doc-meta">A4 · K5,000–K12,000</div></div>
-            <div class="doc-badge badge-green">READY</div>
-          </div>
-          <div class="doc-item" onclick="openDoc('tearsheet-02')">
-            <div class="doc-icon qa-blue">📄</div>
-            <div class="doc-info"><div class="doc-name">Tear Sheet 02 — ACS Pathway</div><div class="doc-meta">A4 · K2,500–K4,000</div></div>
-            <div class="doc-badge badge-green">READY</div>
-          </div>
-          <div class="doc-item" onclick="openDoc('tearsheet-03')">
-            <div class="doc-icon qa-green">📄</div>
-            <div class="doc-info"><div class="doc-name">Tear Sheet 03 — M365 Health Check</div><div class="doc-meta">A4 · K3,500–K8,000</div></div>
-            <div class="doc-badge badge-green">READY</div>
-          </div>
-
-          <div class="doc-category">Genesis Framework</div>
-          <div class="doc-item" onclick="openDoc('genesis-master')">
-            <div class="doc-icon" style="background:var(--red-dim)">⬡</div>
-            <div class="doc-info"><div class="doc-name">Genesis Creation Blueprint v4.3</div><div class="doc-meta">Master framework · P0–P7</div></div>
-            <div class="doc-badge badge-blue">MASTER</div>
-          </div>
-          <div class="doc-item" onclick="openDoc('covenant-scan')">
-            <div class="doc-icon" style="background:var(--red-dim)">✓</div>
-            <div class="doc-info"><div class="doc-name">Covenant Scan Checklist</div><div class="doc-meta">Pre-release gate · P6</div></div>
-            <div class="doc-badge badge-blue">GATE</div>
-          </div>
-
-          <div class="doc-category">AIBS Identity</div>
-          <div class="doc-item" onclick="openDoc('aibs-profile')">
-            <div class="doc-icon" style="background:var(--gold-dim)">🏢</div>
-            <div class="doc-info"><div class="doc-name">AIBS Company Profile</div><div class="doc-meta">IPA Acc#116407435 · NCD 1121</div></div>
-            <div class="doc-badge badge-gold">AIBS</div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-    <!-- ═══ SETTINGS ═══ -->
-    <div class="screen" id="screen-settings">
-      <div class="screen-header">
-        <div class="header-eyebrow">AIBS Mobile Agent</div>
-        <div class="header-title">Agent <em>Settings</em></div>
-      </div>
-      <div class="screen-body">
-
-        <div class="settings-section">
-          <div class="settings-title">AI Provider</div>
-
-          <!-- Provider Toggle -->
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:14px;">
-            <button id="provider-anthropic" onclick="setProvider('anthropic')" style="padding:12px;border:1px solid rgba(201,168,76,0.3);border-radius:10px 4px 4px 10px;background:var(--gold);color:var(--black);font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;">
-              Anthropic
-            </button>
-            <button id="provider-openrouter" onclick="setProvider('openrouter')" style="padding:12px;border:1px solid rgba(255,255,255,0.06);border-radius:4px 10px 10px 4px;background:var(--card2);color:var(--grey);font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;">
-              OpenRouter
-            </button>
-          </div>
-
-          <!-- Anthropic Section -->
-          <div id="anthropic-section">
-            <div class="field-group">
-              <div class="field-label">Anthropic API Key</div>
-              <input type="password" class="input-field" id="api-key-input"
-                placeholder="sk-ant-api03-..."
-                oninput="saveApiKey(this.value)">
-            </div>
-            <div class="api-key-display" id="api-key-display">Not configured — enter key above</div>
-            <div class="card card-gold" style="margin-top:10px;padding:14px;">
-              <div class="label">Get Your Key</div>
-              <div style="font-size:12px;color:rgba(245,240,232,0.6);line-height:1.7;">
-                1. Go to console.anthropic.com<br>
-                2. Sign in → API Keys → Create Key<br>
-                3. Requires billing — Kina Bank may block<br>
-                4. Call bank to enable international transactions
-              </div>
-            </div>
-          </div>
-
-          <!-- OpenRouter Section -->
-          <div id="openrouter-section" style="display:none;">
-            <div class="field-group">
-              <div class="field-label">OpenRouter API Key</div>
-              <input type="password" class="input-field" id="or-key-input"
-                placeholder="sk-or-v1-..."
-                oninput="saveOrKey(this.value)">
-            </div>
-            <div class="api-key-display" id="or-key-display">Not configured — enter key above</div>
-            <div class="card card-gold" style="margin-top:10px;padding:14px;">
-              <div class="label">Get OpenRouter Key — Easier for PNG</div>
-              <div style="font-size:12px;color:rgba(245,240,232,0.6);line-height:1.7;">
-                1. Go to <strong>openrouter.ai</strong><br>
-                2. Sign up with Google account<br>
-                3. Go to Keys → Create Key<br>
-                4. Add credits — accepts more card types<br>
-                5. Uses same Claude Sonnet model
-              </div>
-            </div>
-          </div>
-
-          <div style="margin-top:12px;">
-            <button class="btn btn-outline" onclick="testApiKey()">Test Connection</button>
-          </div>
-        </div>
-
-        <div class="settings-section">
-          <div class="settings-title">Model</div>
-          <div class="setting-row">
-            <div class="setting-info"><div class="setting-name">Primary Model</div><div class="setting-desc">Used for proposal drafting</div></div>
-            <div class="setting-value">claude-sonnet-4</div>
-          </div>
-          <div class="setting-row">
-            <div class="setting-info"><div class="setting-name">Max Tokens</div><div class="setting-desc">Per generation</div></div>
-            <div class="setting-value">1,000</div>
-          </div>
-        </div>
-
-        <div class="settings-section">
-          <div class="settings-title">Genesis Framework</div>
-          <div class="setting-row">
-            <div class="setting-info"><div class="setting-name">Blueprint Version</div></div>
-            <div class="setting-value">v4.3</div>
-          </div>
-          <div class="setting-row">
-            <div class="setting-info"><div class="setting-name">Phase Zero Mandatory</div><div class="setting-desc">Cannot be bypassed</div></div>
-            <button class="toggle on" disabled></button>
-          </div>
-          <div class="setting-row">
-            <div class="setting-info"><div class="setting-name">Covenant Scan</div><div class="setting-desc">Pre-release quality gate</div></div>
-            <button class="toggle on" disabled></button>
-          </div>
-        </div>
-
-        <div class="settings-section">
-          <div class="settings-title">AIBS Identity</div>
-          <div class="setting-row"><div class="setting-info"><div class="setting-name">Company</div></div><div class="setting-value">AI Bridge Solutions PNG</div></div>
-          <div class="setting-row"><div class="setting-info"><div class="setting-name">IPA Registration</div></div><div class="setting-value">116407435</div></div>
-          <div class="setting-row"><div class="setting-info"><div class="setting-name">Email</div></div><div class="setting-value">md.aibspng@gmail.com</div></div>
-          <div class="setting-row"><div class="setting-info"><div class="setting-name">Phone</div></div><div class="setting-value">+675 7197 8592</div></div>
-        </div>
-
-        <div class="settings-section">
-          <div class="settings-title">Roadmap</div>
-          <div class="setting-row" onclick="showToast('Phase 2 — Gmail triage coming')">
-            <div class="setting-info"><div class="setting-name">Gmail Integration</div><div class="setting-desc">Email triage automation</div></div>
-            <div class="setting-arrow">›</div>
-          </div>
-          <div class="setting-row" onclick="showToast('Phase 2 — LinkedIn studio coming')">
-            <div class="setting-info"><div class="setting-name">LinkedIn Content Studio</div><div class="setting-desc">Scheduled post drafting</div></div>
-            <div class="setting-arrow">›</div>
-          </div>
-          <div class="setting-row" onclick="showToast('Phase 3 — offline via Termux')">
-            <div class="setting-info"><div class="setting-name">Offline Mode</div><div class="setting-desc">Local model — no internet needed</div></div>
-            <div class="setting-arrow">›</div>
-          </div>
-        </div>
-
-        <div class="genesis-footer">
-          <div class="genesis-badge">Genesis Creation Blueprint v4.3</div>
-          <div class="version-line">AIBS-MOBILE-AGENT · Phase 1 · github.com/MFave-xtc/aibspng26</div>
-        </div>
-
-      </div>
-    </div>
-
-  </div><!-- /screens -->
-
-  <nav class="bottom-nav">
-    <button class="nav-item active" id="nav-dashboard" onclick="switchScreen('dashboard')">
-      <div class="nav-dot"></div>
-      <div class="nav-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="2" y="2" width="8" height="8" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="12" y="2" width="8" height="8" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="2" y="12" width="8" height="8" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="12" y="12" width="8" height="8" rx="2" stroke="currentColor" stroke-width="1.5"/></svg></div>
-      <span class="nav-label">Home</span>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-mobile">
+      <span></span><span></span><span></span>
     </button>
-    <button class="nav-item" id="nav-drafter" onclick="switchScreen('drafter')">
-      <div class="nav-dot"></div>
-      <div class="nav-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M3 17.5V14l9-9 3.5 3.5-9 9H3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 5l3.5 3.5M15 19h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-      <span class="nav-label">Draft</span>
-    </button>
-    <button class="nav-item" id="nav-vault" onclick="switchScreen('vault')">
-      <div class="nav-dot"></div>
-      <div class="nav-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="2" y="3" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M6 7h10M6 11h10M6 15h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-      <span class="nav-label">Vault</span>
-    </button>
-    <button class="nav-item" id="nav-settings" onclick="switchScreen('settings')">
-      <div class="nav-dot"></div>
-      <div class="nav-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M11 2v2M11 18v2M2 11h2M18 11h2M4.22 4.22l1.42 1.42M16.36 16.36l1.42 1.42M4.22 17.78l1.42-1.42M16.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-      <span class="nav-label">Settings</span>
-    </button>
-  </nav>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="nav-mobile" id="nav-mobile" role="menu" aria-label="Mobile navigation">
+  <a class="nav-link" href="/start-here.html" role="menuitem">Start Here</a>
+  <a class="nav-link" href="/categories/home-internet-safety.html" role="menuitem">Home Safety</a>
+  <a class="nav-link" href="/categories/small-office-setup.html" role="menuitem">SME Setup</a>
+  <a class="nav-link" href="/categories/internet-cafe-setup.html" role="menuitem">Internet Café</a>
+  <a class="nav-link" href="/categories/gaming-zone-setup.html" role="menuitem">Gaming Zone</a>
+  <a class="nav-link" href="/checklists.html" role="menuitem">Checklists</a>
+  <a class="nav-link" href="/about.html" role="menuitem">About</a>
+  <a class="nav-link" href="/contact.html" role="menuitem">Contact</a>
+  <a class="nav-cta" href="/contact.html" role="menuitem">Request Help</a>
 </div>
 
-<!-- MODAL -->
-<div class="modal-overlay" id="doc-modal" onclick="if(event.target===this)closeModal()">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-title" id="modal-title"></div>
-    <div class="modal-body" id="modal-body"></div>
-    <button class="btn btn-gold" onclick="closeModal()">Close</button>
+<!-- ═══ HERO ══════════════════════════════════════ -->
+<section class="hero" aria-label="Welcome to AIBS Digital Setup Guides">
+  <div class="hero-bg" aria-hidden="true">
+    <img class="hero-bg-map" src="/assets/svg/png-map.svg" alt="" role="presentation">
+  </div>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-eyebrow" aria-label="Papua New Guinea Digital Knowledge Hub">
+        <span>&#11044;</span> PNG Digital Knowledge Hub
+      </div>
+      <h1>Free Digital Setup Guides Built for <em>Papua New Guinea</em></h1>
+      <p>Step-by-step ICT, internet safety, cybersecurity, small office, internet café, and gaming zone setup guides for PNG homes and SMEs.</p>
+      <div class="hero-cta">
+        <a class="btn-primary" href="/categories/home-internet-safety.html">Start with Internet Safety</a>
+        <a class="btn-secondary" href="/guides/index.html">Browse All Guides</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TRUST STRIP ════════════════════════════════ -->
+<div class="trust-strip" role="complementary" aria-label="Key features">
+  <div class="container">
+    <div class="trust-strip-inner">
+      <div class="trust-item"><span class="trust-item-dot" aria-hidden="true"></span> Built for PNG</div>
+      <div class="trust-item"><span class="trust-item-dot" aria-hidden="true"></span> Step-by-step</div>
+      <div class="trust-item"><span class="trust-item-dot" aria-hidden="true"></span> Safety-first</div>
+      <div class="trust-item"><span class="trust-item-dot" aria-hidden="true"></span> Free Checklists</div>
+      <div class="trust-item"><span class="trust-item-dot" aria-hidden="true"></span> Practical Guidance</div>
+    </div>
   </div>
 </div>
 
-<div class="toast" id="toast"></div>
+<!-- ═══ INTRO ══════════════════════════════════════ -->
+<section class="section" style="background: var(--bg);">
+  <div class="container">
+    <div style="max-width:720px; margin:0 auto; text-align:center;">
+      <div class="section-label">Why This Website Exists</div>
+      <h2 class="section-title">Technology advice must fit Papua New Guinea.</h2>
+      <p style="font-size:17px; line-height:1.8; margin-bottom:0;">These guides are written for real PNG conditions: variable internet quality, mobile-first access, power interruptions, shared devices, second-hand equipment, informal buying channels, and different levels of digital literacy. AIBS Digital Setup Guides helps homes, SMEs, internet café operators, gaming zone owners, parents, churches, schools, and community groups set up technology safely and practically.</p>
+    </div>
+  </div>
+</section>
 
-<script>
-// ─── STATE ───────────────────────────────────────
-const S = {
-  apiKey:   localStorage.getItem('aibs_key') || '',
-  orKey:    localStorage.getItem('aibs_or_key') || '',
-  provider: localStorage.getItem('aibs_provider') || 'anthropic',
-  drafts:   parseInt(localStorage.getItem('aibs_drafts') || '0')
-};
+<!-- ═══ FEATURED LAUNCH GUIDES ════════════════════ -->
+<section class="section" style="background: var(--bg-dark);" id="guides" aria-labelledby="featured-heading">
+  <div class="container">
+    <div class="section-label">Launch Pack — 12 Guides</div>
+    <h2 class="section-title" id="featured-heading">Start with These Guides</h2>
+    <p class="section-sub">The first 12 guides cover internet safety, passwords, family protection, and internet café setup.</p>
 
-let deferredInstall = null;
+    <div class="guide-grid">
 
-// ─── NAV ─────────────────────────────────────────
-function switchScreen(name) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('screen-' + name).classList.add('active');
-  document.getElementById('nav-' + name).classList.add('active');
-}
+      <a class="guide-card" href="/guides/secure-wifi-router-png.html"
+         data-category="home-internet-safety"
+         data-search="secure wifi router home office safety beginner">
+        <div class="guide-card-top">
+          <span class="guide-category-badge">Home Safety</span>
+          <span class="guide-priority-badge">Guide 1</span>
+        </div>
+        <h3>How to Secure Your Home or Small Office Wi-Fi Router</h3>
+        <p>Change default passwords, check Wi-Fi settings, enable safer security options, and reduce common risks.</p>
+        <div class="guide-card-meta">
+          <span class="guide-meta-item difficulty-beginner">&#9679; Beginner</span>
+          <span class="guide-meta-item">&#9200; 30 min</span>
+          <span class="checklist-badge">&#10003; Checklist</span>
+        </div>
+      </a>
 
-// ─── PROVIDER SWITCH ─────────────────────────────
-function setProvider(p) {
-  S.provider = p;
-  localStorage.setItem('aibs_provider', p);
-  document.getElementById('provider-anthropic').classList.toggle('active', p === 'anthropic');
-  document.getElementById('provider-openrouter').classList.toggle('active', p === 'openrouter');
-  document.getElementById('anthropic-section').style.display = p === 'anthropic' ? 'block' : 'none';
-  document.getElementById('openrouter-section').style.display = p === 'openrouter' ? 'block' : 'none';
-  updateStatus();
-}
+      <a class="guide-card" href="/guides/strong-passwords-png.html"
+         data-category="cybersecurity"
+         data-search="passwords password manager strong cybersecurity beginner">
+        <div class="guide-card-top">
+          <span class="guide-category-badge">Cybersecurity</span>
+          <span class="guide-priority-badge">Guide 2</span>
+        </div>
+        <h3>Strong Passwords and Password Managers: PNG Beginner Guide</h3>
+        <p>Create, store, and manage stronger passwords to protect your accounts.</p>
+        <div class="guide-card-meta">
+          <span class="guide-meta-item difficulty-beginner">&#9679; Beginner</span>
+          <span class="guide-meta-item">&#9200; 20 min</span>
+          <span class="checklist-badge">&#10003; Checklist</span>
+        </div>
+      </a>
 
-// ─── API KEY ──────────────────────────────────────
-function saveApiKey(v) {
-  S.apiKey = v;
-  localStorage.setItem('aibs_key', v);
-  updateStatus();
-  document.getElementById('api-key-display').textContent = v
-    ? v.slice(0, 18) + '••••••••••••'
-    : 'Not configured — enter key above';
-}
+      <a class="guide-card" href="/guides/two-factor-authentication-png.html"
+         data-category="cybersecurity"
+         data-search="two factor authentication 2fa facebook gmail microsoft whatsapp banking">
+        <div class="guide-card-top">
+          <span class="guide-category-badge">Cybersecurity</span>
+          <span class="guide-priority-badge">Guide 3</span>
+        </div>
+        <h3>How to Turn On Two-Factor Authentication</h3>
+        <p>Protect Facebook, Gmail, Microsoft, WhatsApp, and banking apps with extra verification.</p>
+        <div class="guide-card-meta">
+          <span class="guide-meta-item difficulty-beginner">&#9679; Beginner</span>
+          <span class="guide-meta-item">&#9200; 30 min</span>
+          <span class="checklist-badge">&#10003; Checklist</span>
+        </div>
+      </a>
 
-function saveOrKey(v) {
-  S.orKey = v;
-  localStorage.setItem('aibs_or_key', v);
-  updateStatus();
-  document.getElementById('or-key-display').textContent = v
-    ? v.slice(0, 18) + '••••••••••••'
-    : 'Not configured — enter key above';
-}
+      <a class="guide-card" href="/guides/identify-online-scams-png.html"
+         data-category="cybersecurity"
+         data-search="scams phishing fake links online fraud cybersecurity">
+        <div class="guide-card-top">
+          <span class="guide-category-badge">Cybersecurity</span>
+          <span class="guide-priority-badge">Guide 4</span>
+        </div>
+        <h3>How to Identify Online Scams, Fake Links, and Phishing Messages</h3>
+        <p>Recognise unsafe messages, fake links, and common scam behaviour targeting PNG users.</p>
+        <div class="guide-card-meta">
+          <span class="guide-meta-item difficulty-beginner">&#9679; Beginner</span>
+          <span class="guide-meta-item">&#9200; 15 min</span>
+          <span class="checklist-badge">&#10003; Checklist</span>
+        </div>
+      </a>
 
-function updateStatus() {
-  const dot   = document.getElementById('status-dot');
-  const text  = document.getElementById('status-text');
-  const badge = document.getElementById('status-badge');
-  const activeKey = S.provider === 'anthropic' ? S.apiKey : S.orKey;
-  const label = S.provider === 'anthropic' ? 'Anthropic Claude' : 'OpenRouter';
-  if (activeKey) {
-    dot.className = 'status-dot connected';
-    text.textContent = label + ' configured — ready';
-    badge.textContent = 'ONLINE';
-  } else {
-    dot.className = 'status-dot pending';
-    text.textContent = 'API key not configured — go to Settings';
-    badge.textContent = 'OFFLINE';
-  }
-}
+      <a class="guide-card" href="/guides/protect-personal-information-png.html"
+         data-category="home-internet-safety"
+         data-search="personal information privacy protection online">
+        <div class="guide-card-top">
+          <span class="guide-category-badge">Home Safety</span>
+          <span class="guide-priority-badge">Guide 5</span>
+        </div>
+        <h3>How to Protect Your Personal Information Online</h3>
+        <p>Understand what personal information should not be shared carelessly online.</p>
+        <div class="guide-card-meta">
+          <span class="guide-meta-item difficulty-beginner">&#9679; Beginner</span>
+          <span class="guide-meta-item">&#9200; 20 min</span>
+          <span class="checklist-badge">&#10003; Checklist</span>
+        </div>
+      </a>
 
-async function testApiKey() {
-  const activeKey = S.provider === 'anthropic' ? S.apiKey : S.orKey;
-  if (!activeKey) { showToast('Enter API key in Settings first'); return; }
-  showToast('Testing connection...');
-  try {
-    let r;
-    if (S.provider === 'anthropic') {
-      r = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-api-key': S.apiKey, 'anthropic-version': '2023-06-01' },
-        body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 20, messages: [{ role: 'user', content: 'Reply: AIBS online' }] })
-      });
-    } else {
-      r = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + S.orKey, 'HTTP-Referer': 'https://mfave-xtc.github.io/aibspng26/', 'X-Title': 'AIBS Mobile Agent' },
-        body: JSON.stringify({ model: 'anthropic/claude-sonnet-4', max_tokens: 20, messages: [{ role: 'user', content: 'Reply: AIBS online' }] })
-      });
-    }
-    showToast(r.ok ? '✓ Connected successfully' : 'Error — check your key');
-    if (r.ok) updateStatus();
-  } catch { showToast('Connection failed — check internet'); }
-}
+      <a class="guide-card" href="/guides/internet-safety-children-png.html"
+         data-category="children-family-safety"
+         data-search="children internet safety parent child family protection">
+        <div class="guide-card-top">
+          <span class="guide-category-badge">Family Safety</span>
+          <span class="guide-priority-badge">Guide 6</span>
+        </div>
+        <h3>Internet Safety for Children: Parent Setup Guide</h3>
+        <p>Help families create safer internet use for children with practical setup steps.</p>
+        <div class="guide-card-meta">
+          <span class="guide-meta-item difficulty-beginner">&#9679; Beginner</span>
+          <span class="guide-meta-item">&#9200; 45 min</span>
+          <span class="checklist-badge">&#10003; Checklist</span>
+        </div>
+      </a>
 
-// ─── PROPOSAL GENERATOR ──────────────────────────
-const SVC = {
-  governance: { name: 'AI Document & Compliance Pack', price: 'K5,000 – K12,000 inc. GST', time: '14 calendar days from signed engagement' },
-  acs:        { name: 'ACS Skills Assessment Pathway', price: 'K2,500 – K4,000 inc. GST per candidate', time: '7 calendar days from intake interview' },
-  m365:       { name: 'Microsoft 365 Health Check',    price: 'K3,500 – K8,000 inc. GST',  time: '5 working days from access granted' },
-  retainer:   { name: 'Governance-as-a-Service Retainer', price: 'K2,000 – K4,000/month inc. GST', time: 'Commences 1st of following month' },
-  cctv:       { name: 'CCTV / ELV Design Service',    price: 'K500 – K1,500 design fee + project margin', time: '5 working days for design' }
-};
+      <a class="guide-card" href="/guides/content-filtering-home-png.html"
+         data-category="children-family-safety"
+         data-search="content filtering home dns parental controls">
+        <div class="guide-card-top">
+          <span class="guide-category-badge">Family Safety</span>
+          <span class="guide-priority-badge">Guide 7</span>
+        </div>
+        <h3>How to Set Up Content Filtering at Home</h3>
+        <p>Reduce access to unsafe websites and content using DNS filtering and router settings.</p>
+        <div class="guide-card-meta">
+          <span class="guide-meta-item difficulty-intermediate">&#9679; Intermediate</span>
+          <span class="guide-meta-item">&#9200; 30 min</span>
+          <span class="checklist-badge">&#10003; Checklist</span>
+        </div>
+      </a>
 
-async function generateProposal() {
-  const client  = document.getElementById('client-name').value.trim();
-  const svcKey  = document.getElementById('service-type').value;
-  const scope   = document.getElementById('scope-notes').value.trim();
-  const contact = document.getElementById('client-contact').value.trim();
-  const tl      = document.getElementById('timeline').value;
+      <a class="guide-card" href="/guides/secure-smartphone-png.html"
+         data-category="home-internet-safety"
+         data-search="smartphone mobile phone security screen lock update android">
+        <div class="guide-card-top">
+          <span class="guide-category-badge">Home Safety</span>
+          <span class="guide-priority-badge">Guide 8</span>
+        </div>
+        <h3>Secure Smartphone Setup for PNG Users</h3>
+        <p>Secure phones with screen locks, updates, app permissions, backups, and recovery settings.</p>
+        <div class="guide-card-meta">
+          <span class="guide-meta-item difficulty-beginner">&#9679; Beginner</span>
+          <span class="guide-meta-item">&#9200; 30 min</span>
+          <span class="checklist-badge">&#10003; Checklist</span>
+        </div>
+      </a>
 
-  const activeKey = S.provider === 'anthropic' ? S.apiKey : S.orKey;
-  if (!client || !svcKey) { showToast('Enter client name and service'); return; }
-  if (!activeKey) { showToast('Add API key in Settings'); switchScreen('settings'); return; }
+      <a class="guide-card" href="/guides/content-filtering-office-png.html"
+         data-category="small-office-setup"
+         data-search="content filtering office sme school church network dns">
+        <div class="guide-card-top">
+          <span class="guide-category-badge">SME Setup</span>
+          <span class="guide-priority-badge">Guide 9</span>
+        </div>
+        <h3>How to Set Up Content Filtering for a Small Office</h3>
+        <p>Protect staff, students, customers, and shared internet with office-level content filtering.</p>
+        <div class="guide-card-meta">
+          <span class="guide-meta-item difficulty-intermediate">&#9679; Intermediate</span>
+          <span class="guide-meta-item">&#9200; 45 min</span>
+          <span class="checklist-badge">&#10003; Checklist</span>
+        </div>
+      </a>
 
-  const out = document.getElementById('proposal-output');
-  const btn = document.getElementById('copy-btn');
-  out.className = 'output-box loading visible';
-  out.innerHTML = '<div class="spinner"></div><span>Generating Genesis draft...</span>';
-  btn.style.display = 'none';
+      <a class="guide-card" href="/guides/public-wifi-safety-png.html"
+         data-category="home-internet-safety"
+         data-search="public wifi internet cafe safety shared device login">
+        <div class="guide-card-top">
+          <span class="guide-category-badge">Home Safety</span>
+          <span class="guide-priority-badge">Guide 10</span>
+        </div>
+        <h3>How to Safely Use Public Wi-Fi and Internet Cafés</h3>
+        <p>Avoid unsafe logins, shared-device risks, and public Wi-Fi mistakes.</p>
+        <div class="guide-card-meta">
+          <span class="guide-meta-item difficulty-beginner">&#9679; Beginner</span>
+          <span class="guide-meta-item">&#9200; 15 min</span>
+          <span class="checklist-badge">&#10003; Checklist</span>
+        </div>
+      </a>
 
-  const svc = SVC[svcKey];
+      <a class="guide-card" href="/guides/start-internet-cafe-png.html"
+         data-category="internet-cafe"
+         data-search="internet cafe startup png entrepreneur business setup">
+        <div class="guide-card-top">
+          <span class="guide-category-badge">Internet Café</span>
+          <span class="guide-priority-badge">Guide 11</span>
+        </div>
+        <h3>How to Start a Small Internet Café in PNG: Beginner Roadmap</h3>
+        <p>Understand planning, location, equipment, ISP, power, pricing, and safety for a new café.</p>
+        <div class="guide-card-meta">
+          <span class="guide-meta-item difficulty-intermediate">&#9679; Intermediate</span>
+          <span class="guide-meta-item">&#9200; 60 min</span>
+          <span class="checklist-badge">&#10003; Checklist</span>
+        </div>
+      </a>
 
-  const systemPrompt = `You are the AIBS Proposal Engine under Genesis Creation Blueprint v4.3.
-AIBS (AI Bridge Solutions PNG) — independent ICT advisory. IPA: 116407435.
-Owner: Mariosu Fave, 21 years PNG ICT experience.
-Contact: md.aibspng@gmail.com | +675 7197 8592 | Sec 126 Lot 37 Kanage St, Moresby NE, NCD 1121.
+      <a class="guide-card" href="/guides/internet-cafe-hardware-png.html"
+         data-category="internet-cafe"
+         data-search="internet cafe hardware equipment budget standard premium">
+        <div class="guide-card-top">
+          <span class="guide-category-badge">Internet Café</span>
+          <span class="guide-priority-badge">Guide 12</span>
+        </div>
+        <h3>Internet Café Hardware Requirements: Budget, Standard, and Premium Setups</h3>
+        <p>A practical buying and planning checklist for café hardware across three budget levels.</p>
+        <div class="guide-card-meta">
+          <span class="guide-meta-item difficulty-intermediate">&#9679; Intermediate</span>
+          <span class="guide-meta-item">&#9200; 30 min</span>
+          <span class="checklist-badge">&#10003; Checklist</span>
+        </div>
+      </a>
 
-Output a concise Genesis v4.3 proposal draft with:
-=== PHASE ZERO COMPLETE ===
-- Executive Summary (2 sentences)
-- Scope of Work (bullets)
-- Deliverables
-- Pricing
-- Timeline
-- Next Steps
-- Assumptions: ASSUMPTION-A1, A2...
-- Confidence tags: [CONFIRMED] [ASSUMED] [UNVERIFIED]
-Professional PNG tone. No filler. Mobile-readable.`;
+    </div>
+  </div>
+</section>
 
-  const userMsg = `Client: ${client}
-Service: ${svc.name}
-Scope: ${scope || 'Standard scope'}
-Contact: ${contact || 'TBC'}
-Timeline: ${tl}
-Price: ${svc.price}
-Delivery: ${svc.time}`;
+<!-- ═══ WHO THIS HELPS ══════════════════════════════ -->
+<section class="section" style="background: var(--bg);" aria-labelledby="users-heading">
+  <div class="container">
+    <div class="section-label">Target Users</div>
+    <h2 class="section-title" id="users-heading">Practical Guidance for PNG Users</h2>
+    <p class="section-sub">Every guide is written for a specific user with specific PNG conditions in mind.</p>
+    <div class="segments-grid">
+      <div class="segment-card">
+        <h3>&#127968; Home Users</h3>
+        <p>Safer internet, router setup, child safety, scam protection, and secure devices.</p>
+      </div>
+      <div class="segment-card">
+        <h3>&#127970; SME Owners</h3>
+        <p>Office internet, email, backups, cyber safety, and productivity tools.</p>
+      </div>
+      <div class="segment-card">
+        <h3>&#128421; Internet Cafés</h3>
+        <p>Hardware checklist, network design, user safety, and business setup.</p>
+      </div>
+      <div class="segment-card">
+        <h3>&#127918; Gaming Zones</h3>
+        <p>PC specs, LAN setup, download management, and safe gaming.</p>
+      </div>
+      <div class="segment-card">
+        <h3>&#128106; Parents</h3>
+        <p>Content filtering, screen time, child account protection, and device rules.</p>
+      </div>
+      <div class="segment-card">
+        <h3>&#9962; Churches &amp; Schools</h3>
+        <p>Safer shared internet, usage policies, device protection, and youth safety.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-  try {
-    let r, text;
+<!-- ═══ PNG REALITY CHECK ══════════════════════════ -->
+<section class="section" style="background: var(--bg-dark);" aria-labelledby="reality-heading">
+  <div class="container">
+    <div class="section-label">PNG Context</div>
+    <h2 class="section-title" id="reality-heading">Built Around PNG Conditions</h2>
+    <p style="font-size:17px; color: var(--muted); max-width:620px; margin-bottom:36px;">Generic overseas advice often assumes reliable electricity, cheap unlimited internet, easy replacement parts, and high digital literacy. PNG users need advice that accounts for real local conditions.</p>
+    <div class="reality-grid">
+      <div class="reality-item">
+        <div class="reality-item-icon">&#9889;</div>
+        <h4>Power Interruptions</h4>
+        <p>Advice for UPS, battery backup, and protecting equipment from outages.</p>
+      </div>
+      <div class="reality-item">
+        <div class="reality-item-icon">&#128246;</div>
+        <h4>Mobile Data Costs</h4>
+        <p>Guidance for limited data budgets and mobile-first internet access.</p>
+      </div>
+      <div class="reality-item">
+        <div class="reality-item-icon">&#128101;</div>
+        <h4>Shared Devices</h4>
+        <p>Setup advice for households and offices sharing phones and computers.</p>
+      </div>
+      <div class="reality-item">
+        <div class="reality-item-icon">&#128722;</div>
+        <h4>Second-Hand Equipment</h4>
+        <p>Buying checklists and safety checks for used hardware purchases.</p>
+      </div>
+      <div class="reality-item">
+        <div class="reality-item-icon">&#128268;</div>
+        <h4>Variable Internet Speeds</h4>
+        <p>Tips for slow or inconsistent connectivity from local ISPs.</p>
+      </div>
+      <div class="reality-item">
+        <div class="reality-item-icon">&#128272;</div>
+        <h4>Cyber Scams &amp; Fake Links</h4>
+        <p>PNG-specific scam awareness and practical protection steps.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-    if (S.provider === 'anthropic') {
-      r = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': S.apiKey,
-          'anthropic-version': '2023-06-01'
-        },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 1000,
-          system: systemPrompt,
-          messages: [{ role: 'user', content: userMsg }]
-        })
-      });
-      const d = await r.json();
-      text = d.content?.[0]?.text;
+<!-- ═══ GUIDE CATEGORIES ════════════════════════════ -->
+<section class="section" style="background: var(--bg);" aria-labelledby="categories-heading">
+  <div class="container">
+    <div class="section-label">Browse by Topic</div>
+    <h2 class="section-title" id="categories-heading">Browse by Setup Area</h2>
+    <p class="section-sub">Find guides organised by your situation and setup needs.</p>
+    <div class="category-grid">
 
-    } else {
-      // OpenRouter
-      r = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + S.orKey,
-          'HTTP-Referer': 'https://mfave-xtc.github.io/aibspng26/',
-          'X-Title': 'AIBS Mobile Agent'
-        },
-        body: JSON.stringify({
-          model: 'anthropic/claude-sonnet-4',
-          max_tokens: 1000,
-          messages: [
-            { role: 'system', content: systemPrompt },
-            { role: 'user', content: userMsg }
-          ]
-        })
-      });
-      const d = await r.json();
-      text = d.choices?.[0]?.message?.content;
-    }
+      <a class="category-card" href="/categories/home-internet-safety.html">
+        <div class="category-icon" aria-hidden="true">&#127968;</div>
+        <h3>Home Internet Safety</h3>
+        <p>Secure your Wi-Fi, passwords, accounts, phones, and family devices.</p>
+        <div class="category-count">5 guides</div>
+      </a>
 
-    if (text) {
-      out.className = 'output-box visible';
-      out.textContent = text;
-      btn.style.display = 'flex';
-      S.drafts++;
-      localStorage.setItem('aibs_drafts', S.drafts);
-      document.getElementById('draft-count').textContent = S.drafts;
-      showToast('Draft generated ✓');
-    } else throw new Error('No content returned');
+      <a class="category-card" href="/categories/small-office-setup.html">
+        <div class="category-icon" aria-hidden="true">&#127970;</div>
+        <h3>Small Office Setup</h3>
+        <p>Build a simple, reliable office network with secure internet, printing, backup, and email.</p>
+        <div class="category-count">7 guides planned</div>
+      </a>
 
-  } catch(e) {
-    out.className = 'output-box visible';
-    out.textContent = 'Error generating draft.\nCheck API key in Settings and internet connection.\n\n' + e.message;
-  }
-}
+      <a class="category-card" href="/categories/internet-cafe-setup.html">
+        <div class="category-icon" aria-hidden="true">&#128421;</div>
+        <h3>Internet Café Setup</h3>
+        <p>Plan equipment, network layout, safety controls, and customer usage policies.</p>
+        <div class="category-count">4 guides</div>
+      </a>
 
-function copyProposal() {
-  const text = document.getElementById('proposal-output').textContent;
-  navigator.clipboard?.writeText(text).then(() => showToast('Copied ✓')).catch(() => {
-    const t = document.createElement('textarea');
-    t.value = text; document.body.appendChild(t); t.select();
-    document.execCommand('copy'); document.body.removeChild(t);
-    showToast('Copied ✓');
-  });
-}
+      <a class="category-card" href="/categories/gaming-zone-setup.html">
+        <div class="category-icon" aria-hidden="true">&#127918;</div>
+        <h3>Gaming Zone Setup</h3>
+        <p>Set up local and online gaming with safe downloads, proper hardware, and data control.</p>
+        <div class="category-count">5 guides planned</div>
+      </a>
 
-// ─── DOCUMENT VAULT ──────────────────────────────
-const DOCS = {
-  'governance-template': { title: 'Governance Pack — Scope Template', body: 'Phase Zero intake template for the AI Document & Compliance Pack. Covers up to 8 ICT policies: Acceptable Use, Data Classification, Access Control, Incident Response, Change Management, Business Continuity, Remote Access, and Third-Party Risk. Includes client questionnaire, scope assumptions, Genesis gate evidence block, and 14-day delivery schedule.' },
-  'acs-template':        { title: 'ACS Application Package Template', body: 'Full ACS Skills Assessment application structure. CV format aligned to ACS reviewer expectations. RPL narrative for up to 5 SFIA competencies. Skills evidence documentation guide. ACS portal submission checklist. ANZSCO category selection guide. One review round included.' },
-  'm365-template':       { title: 'M365 Health Check — Assessment Template', body: '7-area assessment: Entra ID/identity security (MFA, Conditional Access), DLP policies (sensitivity labels, Teams/SharePoint/Exchange), licence optimisation, Microsoft Secure Score, Exchange Online/Teams security, billing profile audit, and SharePoint/OneDrive governance. Output: findings report with severity ratings and remediation roadmap.' },
-  'sales-pack':          { title: 'AIBS Service Intelligence Pack 2026', body: 'Full interactive sales sheet for all three Tier 1 services. Dark editorial design, AIBS branded. Includes stat strip, services grid with fixed pricing, Why AIBS proof points, 4-step delivery process, and gold CTA band. Print-ready HTML. File: aibs-sales-sheet.html' },
-  'tearsheet-01':        { title: 'Tear Sheet 01 — Governance Pack', body: 'A4 single-page tear sheet. Fixed price K5,000–K12,000 inc. GST. 14-day delivery guarantee. Deliverables: ICT Policy Suite, Data Governance Framework, Compliance & Risk Register, Procedures Manual, Covenant Scan Certificate. Genesis v4.3 governed. File: AIBS-SS-01-Governance-Pack.html' },
-  'tearsheet-02':        { title: 'Tear Sheet 02 — ACS Pathway', body: 'A4 single-page tear sheet. Fixed price K2,500–K4,000 per candidate. 7-day delivery. 5-step pathway visual. In-country exclusivity positioning. File: AIBS-SS-02-ACS-Pathway.html' },
-  'tearsheet-03':        { title: 'Tear Sheet 03 — M365 Health Check', body: 'A4 single-page tear sheet. Assessment K3,500–K8,000 inc. GST. 5-day assessment. Severity-coded findings band. Microsoft certification block. File: AIBS-SS-03-M365-HealthCheck.html' },
-  'genesis-master':      { title: 'Genesis Creation Blueprint v4.3', body: '7-phase governance framework (P0–P7). Phase Zero: mandatory intake, no bypass. The Covenant: TRUTH, ASSUMPTIONS, DECISIONS, OPTIONS, CONFIDENCE TIERS, NO FILLER, RISK HONESTY, SUSTAINABILITY. v4.3 additions: DRIP Matrix resource classification (P1), Buyback Rate check on senior resources. Release requires Covenant Scan CLEAR.' },
-  'covenant-scan':       { title: 'Covenant Scan Checklist', body: 'Pre-release quality gate — P6. Eight checks: (1) No invented facts — every specific figure sourced, (2) All assumptions labelled A1, A2..., (3) All decisions logged DEC-01 with rationale, (4) Minimum 2 options per trade-off, (5) Confidence tags applied throughout, (6) No filler paragraphs, (7) No risk downgraded for commercial comfort, (8) Sustainability gate — 5 sub-criteria evidenced. SCAN CLEAR → release. Any fail → HOLD.' },
-  'aibs-profile':        { title: 'AIBS Company Profile', body: 'AI Bridge Solutions PNG. IPA Acc#116407435. Sec 126 Lot 37 Kanage St, Moresby NE District, NCD 1121. PO Box 2111, Port Moresby. md.aibspng@gmail.com. +675 7197 8592. Owner: Mariosu Fave — Digitalisation & Transformational Governance Architect. AIBS is INDEPENDENT — not linked to PISC Tech, Maigata Limited, or Clade IT Solutions Limited. Logo: black/red/gold bridge.' }
-};
+      <a class="category-card" href="/categories/children-family-safety.html">
+        <div class="category-icon" aria-hidden="true">&#128106;</div>
+        <h3>Children &amp; Family Safety</h3>
+        <p>Protect children online with content filtering, device rules, and safe account settings.</p>
+        <div class="category-count">3 guides</div>
+      </a>
 
-function openDoc(id) {
-  const d = DOCS[id];
-  if (!d) return;
-  document.getElementById('modal-title').textContent = d.title;
-  document.getElementById('modal-body').textContent = d.body;
-  document.getElementById('doc-modal').classList.add('open');
-}
+      <a class="category-card" href="/categories/cybersecurity-basics.html">
+        <div class="category-icon" aria-hidden="true">&#128737;</div>
+        <h3>Cybersecurity Basics</h3>
+        <p>Understand scams, malware, hacked accounts, ransomware, and basic protection steps.</p>
+        <div class="category-count">4 guides</div>
+      </a>
 
-function closeModal() {
-  document.getElementById('doc-modal').classList.remove('open');
-}
+      <a class="category-card" href="/categories/buying-guides.html">
+        <div class="category-icon" aria-hidden="true">&#128722;</div>
+        <h3>Buying Guides</h3>
+        <p>Know what to check before buying routers, laptops, desktops, printers, UPS, and second-hand equipment.</p>
+        <div class="category-count">3 guides planned</div>
+      </a>
 
-function filterDocs(q) {
-  q = q.toLowerCase();
-  document.querySelectorAll('.doc-item').forEach(el => {
-    el.style.display = el.querySelector('.doc-name').textContent.toLowerCase().includes(q) ? 'flex' : 'none';
-  });
-}
+      <a class="category-card" href="/categories/templates-checklists.html">
+        <div class="category-icon" aria-hidden="true">&#128203;</div>
+        <h3>Templates &amp; Checklists</h3>
+        <p>Download printable setup checklists and simple policy templates for homes and offices.</p>
+        <div class="category-count">6 checklists</div>
+      </a>
 
-// ─── TOAST ───────────────────────────────────────
-let toastTimer;
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
-}
+    </div>
+  </div>
+</section>
 
-// ─── PWA INSTALL ─────────────────────────────────
-window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault();
-  deferredInstall = e;
-  document.getElementById('install-banner').classList.add('show');
-});
+<!-- ═══ FREE CHECKLISTS ════════════════════════════ -->
+<section class="section" style="background: var(--bg-dark);" aria-labelledby="checklists-heading">
+  <div class="container">
+    <div class="section-label">Free Downloads</div>
+    <h2 class="section-title" id="checklists-heading">Free Checklists</h2>
+    <p class="section-sub">Download practical checklists you can print or save on your phone.</p>
+    <div class="checklist-download-grid">
 
-function triggerInstall() {
-  if (deferredInstall) {
-    deferredInstall.prompt();
-    deferredInstall.userChoice.then(() => {
-      deferredInstall = null;
-      document.getElementById('install-banner').classList.remove('show');
-    });
-  }
-}
+      <div class="checklist-download-card">
+        <h3>Router Security Checklist</h3>
+        <p>Step-by-step checklist to secure your home or small office Wi-Fi router.</p>
+        <a class="btn-download" href="/guides/secure-wifi-router-png.html#checklist">View Checklist &#8594;</a>
+      </div>
 
-window.addEventListener('appinstalled', () => {
-  document.getElementById('install-banner').classList.remove('show');
-  showToast('AIBS Agent installed ✓');
-});
+      <div class="checklist-download-card">
+        <h3>Strong Password Checklist</h3>
+        <p>Checklist for creating and managing strong passwords across your accounts.</p>
+        <a class="btn-download" href="/guides/strong-passwords-png.html#checklist">View Checklist &#8594;</a>
+      </div>
 
-// ─── SERVICE WORKER ──────────────────────────────
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js').catch(() => {});
-}
+      <div class="checklist-download-card">
+        <h3>Child Internet Safety Checklist</h3>
+        <p>Parent setup checklist for safer internet use by children and youth.</p>
+        <a class="btn-download" href="/guides/internet-safety-children-png.html#checklist">View Checklist &#8594;</a>
+      </div>
 
-// ─── INIT ────────────────────────────────────────
-(function init() {
-  const h = new Date().getHours();
-  document.getElementById('greeting').textContent = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
+      <div class="checklist-download-card">
+        <h3>Internet Café Startup Checklist</h3>
+        <p>Planning and setup checklist for new internet café operators in PNG.</p>
+        <a class="btn-download" href="/guides/start-internet-cafe-png.html#checklist">View Checklist &#8594;</a>
+      </div>
 
-  if (S.apiKey) {
-    document.getElementById('api-key-input').value = S.apiKey;
-    document.getElementById('api-key-display').textContent = S.apiKey.slice(0,18) + '••••••••••••';
-  }
+      <div class="checklist-download-card">
+        <h3>Gaming Zone Equipment Checklist</h3>
+        <p>Hardware and setup checklist for gaming zone operators.</p>
+        <a class="btn-download" href="/categories/gaming-zone-setup.html">View Category &#8594;</a>
+      </div>
 
-  if (S.orKey) {
-    document.getElementById('or-key-input').value = S.orKey;
-    document.getElementById('or-key-display').textContent = S.orKey.slice(0,18) + '••••••••••••';
-  }
+      <div class="checklist-download-card">
+        <h3>Small Office Internet Setup Checklist</h3>
+        <p>Network and security checklist for small office internet setup.</p>
+        <a class="btn-download" href="/guides/content-filtering-office-png.html#checklist">View Checklist &#8594;</a>
+      </div>
 
-  // Restore provider toggle state
-  setProvider(S.provider);
+    </div>
+    <div style="margin-top:28px; text-align:center;">
+      <a class="btn-secondary" href="/checklists.html">View All Checklists</a>
+    </div>
+  </div>
+</section>
 
-  document.getElementById('draft-count').textContent = S.drafts;
-  updateStatus();
-})();
-</script>
+<!-- ═══ ABOUT AIBS ═════════════════════════════════ -->
+<section class="section" style="background: var(--bg);" aria-labelledby="about-heading">
+  <div class="container">
+    <div class="about-block">
+      <div>
+        <div class="section-label">About AIBS</div>
+        <h2 class="section-title" id="about-heading">About AI Digital Bridge Solutions PNG</h2>
+        <p style="font-size:16px; line-height:1.8; margin-bottom:16px;">AI Digital Bridge Solutions PNG creates practical digital systems, documentation, and technology guidance for PNG organisations, SMEs, and communities.</p>
+        <p style="font-size:16px; line-height:1.8; margin-bottom:24px;">This guide hub exists to make safe, useful digital setup knowledge available to more Papua New Guineans. The focus is practical: clear steps, PNG context, security warnings, checklists, and guidance that ordinary users can follow.</p>
+        <a class="btn-secondary" href="/about.html">About AIBS</a>
+      </div>
+      <div>
+        <div style="background: var(--card); border: 1px solid var(--border-dim); border-radius: var(--radius); padding: 28px;">
+          <h3 style="font-size:15px; color:var(--gold); margin-bottom:16px; text-transform:uppercase; letter-spacing:0.08em;">Our Positioning</h3>
+          <p style="font-size:15px; line-height:1.75; font-style:italic; color:var(--muted); border-left:3px solid var(--gold); padding-left:16px;">"AIBS Digital Setup Guides provides free practical ICT and cybersecurity setup guidance built for Papua New Guinea homes, SMEs, internet cafés, gaming zones, churches, schools, and community users."</p>
+          <div style="margin-top:24px; padding-top:20px; border-top:1px solid var(--border-dim);">
+            <div style="font-size:13px; color:var(--muted); margin-bottom:8px;"><strong style="color:var(--white);">Focus:</strong> PNG-grounded, practical, safety-first</div>
+            <div style="font-size:13px; color:var(--muted); margin-bottom:8px;"><strong style="color:var(--white);">Guides:</strong> 12 launch guides. 50-guide roadmap.</div>
+            <div style="font-size:13px; color:var(--muted);"><strong style="color:var(--white);">Cost:</strong> Free. Always.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ REQUEST HELP CTA ════════════════════════════ -->
+<section class="section-sm" style="background: var(--bg-dark);" aria-labelledby="cta-heading">
+  <div class="container">
+    <div class="cta-section">
+      <h2 id="cta-heading">Need Help Setting This Up?</h2>
+      <p>Use the guides first. If your setup involves a business, school, church, internet café, gaming zone, or multiple users, you may need proper review before buying equipment or changing settings.</p>
+      <a class="btn-primary" href="/contact.html">Request Practical Help</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ════════════════════════════════════ -->
+<footer class="footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <div class="footer-logo-mark" aria-hidden="true">A</div>
+          <div class="footer-logo-text">AIBS Digital Setup Guides</div>
+        </div>
+        <p>Free practical ICT and cybersecurity setup guidance built for Papua New Guinea homes, SMEs, internet cafés, gaming zones, churches, schools, and community users.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Guides</h4>
+        <ul class="footer-links">
+          <li><a href="/categories/home-internet-safety.html">Home Internet Safety</a></li>
+          <li><a href="/categories/small-office-setup.html">Small Office Setup</a></li>
+          <li><a href="/categories/internet-cafe-setup.html">Internet Café Setup</a></li>
+          <li><a href="/categories/gaming-zone-setup.html">Gaming Zone Setup</a></li>
+          <li><a href="/categories/children-family-safety.html">Children &amp; Family Safety</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>More</h4>
+        <ul class="footer-links">
+          <li><a href="/categories/cybersecurity-basics.html">Cybersecurity Basics</a></li>
+          <li><a href="/categories/buying-guides.html">Buying Guides</a></li>
+          <li><a href="/checklists.html">Checklists</a></li>
+          <li><a href="/start-here.html">Start Here</a></li>
+          <li><a href="/guides/index.html">All Guides</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>AIBS</h4>
+        <ul class="footer-links">
+          <li><a href="/about.html">About AIBS</a></li>
+          <li><a href="/contact.html">Contact / Request Help</a></li>
+          <li><a href="/disclaimer.html">Disclaimer</a></li>
+          <li><a href="/privacy.html">Privacy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-disclaimer">This website provides public educational guidance only. It does not replace professional technical, legal, cybersecurity incident response, or child protection advice. This website uses public-source information and practical PNG ICT delivery knowledge.</p>
+      <p class="footer-copy">&copy; 2026 AI Digital Bridge Solutions PNG</p>
+    </div>
+  </div>
+</footer>
+
+<script src="/site.js"></script>
 </body>
 </html>
