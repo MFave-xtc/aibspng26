@@ -25,6 +25,10 @@
   <url><loc>https://[DOMAIN]/guides/start-internet-cafe-png.html</loc><lastmod>2026-06-04</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://[DOMAIN]/guides/internet-cafe-hardware-png.html</loc><lastmod>2026-06-04</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
 
+  <!-- Tools & Interactive Pages -->
+  <url><loc>https://[DOMAIN]/agent-checklist.html</loc><lastmod>2026-06-11</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://[DOMAIN]/flipbook.html</loc><lastmod>2026-06-11</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+
   <!-- Category Pages -->
   <url><loc>https://[DOMAIN]/categories/home-internet-safety.html</loc><lastmod>2026-06-04</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://[DOMAIN]/categories/small-office-setup.html</loc><lastmod>2026-06-04</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>

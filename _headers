@@ -1,0 +1,30 @@
+# Cloudflare Pages — HTTP Headers
+
+# Security headers on every route
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=()
+
+# Long-lived cache for immutable assets
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Daily cache for CSS/JS (no hash versioning on this project)
+/styles.css
+  Cache-Control: public, max-age=86400
+
+/site.js
+  Cache-Control: public, max-age=86400
+
+# Always revalidate HTML pages
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/guides/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/categories/*.html
+  Cache-Control: public, max-age=0, must-revalidate
