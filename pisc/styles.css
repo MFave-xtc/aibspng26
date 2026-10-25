@@ -331,6 +331,9 @@ h1, h2, h3, h4 { font-family: var(--font-head); font-weight: 700; letter-spacing
 .card h4 { font-size: 16px; margin-bottom: 8px; }
 .card p { font-size: 14px; color: var(--grey); }
 
+.solution-card h4 { font-size: 15px; line-height: 1.3; }
+.solution-card p { font-size: 13.5px; line-height: 1.5; }
+
 /* ── partners ── */
 .tier-label {
   display: inline-flex; align-items: center; gap: 8px;
