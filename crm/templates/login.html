@@ -1,0 +1,15 @@
+{% extends "auth_base.html" %}
+{% block title %}Log in · PISC CRM{% endblock %}
+{% block auth_content %}
+<h1>Log in</h1>
+<p class="auth-lede">Internal CRM &mdash; PISC staff only.</p>
+<form method="post" class="form">
+  <label>Username
+    <input type="text" name="username" required autofocus>
+  </label>
+  <label>Password
+    <input type="password" name="password" required>
+  </label>
+  <button type="submit" class="btn btn-primary btn-block">Log in</button>
+</form>
+{% endblock %}

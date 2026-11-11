@@ -1,0 +1,6 @@
+crm/crm.db
+crm/.secret_key
+__pycache__/
+*.pyc
+venv/
+.venv/

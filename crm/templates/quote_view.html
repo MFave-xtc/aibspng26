@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}{{ quote.quote_number }} · PISC CRM{% endblock %}
+{% block page_title %}{{ quote.quote_number }}{% endblock %}
+{% block content %}
+<div class="page-head">
+  <form method="post" action="{{ url_for('quote_status_update', quote_id=quote.id) }}" class="form-actions">
+    {% for s in QUOTE_STATUSES %}
+    <button type="submit" name="status" value="{{ s }}" class="btn {{ 'btn-primary' if quote.status == s else 'btn-ghost' }} btn-sm">{{ s }}</button>
+    {% endfor %}
+  </form>
+  <div class="form-actions">
+    <a href="{{ url_for('quote_edit', quote_id=quote.id) }}" class="btn btn-ghost btn-sm">Edit</a>
+    <form method="post" action="{{ url_for('quote_delete', quote_id=quote.id) }}" class="inline-form" data-confirm="Delete this quote?">
+      <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+    </form>
+  </div>
+</div>
+
+<div class="quote-doc">
+  <div class="quote-doc-head">
+    <div>
+      <div class="logo-mark">P<span class="i-accent">I</span>SC</div>
+      <p class="muted" style="margin-top:6px;">PNG IT &amp; Security Consults Limited</p>
+    </div>
+    <div style="text-align:right;">
+      <h2>{{ quote.quote_number }}</h2>
+      <p class="muted">{{ quote.created_at.strftime('%d %B %Y') }}</p>
+    </div>
+  </div>
+
+  <div class="detail-grid">
+    <div>
+      <h3 class="section-title" style="margin-top:0;">Bill to</h3>
+      <p>{{ quote.company.name if quote.company else '—' }}</p>
+      {% if quote.contact %}<p class="muted">{{ quote.contact.full_name }}</p>{% endif %}
+      {% if quote.company and quote.company.address %}<p class="muted">{{ quote.company.address }}</p>{% endif %}
+    </div>
+    <div style="text-align:right;">
+      <h3 class="section-title" style="margin-top:0;">Status</h3>
+      <span class="pill pill-green">{{ quote.status }}</span>
+    </div>
+  </div>
+
+  <table class="data">
+    <thead><tr><th>Description</th><th>Qty</th><th>Unit Price</th><th>Total</th></tr></thead>
+    <tbody>
+      {% for li in quote.line_items %}
+      <tr>
+        <td>{{ li.description }}</td>
+        <td>{{ li.qty }}</td>
+        <td>K {{ "%.2f"|format(li.unit_price) }}</td>
+        <td>K {{ "%.2f"|format(li.line_total) }}</td>
+      </tr>
+      {% else %}
+      <tr class="empty-row"><td colspan="4">No line items.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="quote-total-row">
+    <span class="muted">Total</span>
+    <span>K {{ "%.2f"|format(quote.total) }}</span>
+  </div>
+
+  {% if quote.notes %}
+  <h3 class="section-title">Notes</h3>
+  <p class="muted">{{ quote.notes }}</p>
+  {% endif %}
+</div>
+{% endblock %}

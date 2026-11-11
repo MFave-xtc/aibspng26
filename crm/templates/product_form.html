@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit Product' if product else 'Add Product' }} · PISC CRM{% endblock %}
+{% block page_title %}{{ 'Edit Product' if product else 'Add Product' }}{% endblock %}
+{% block content %}
+<div class="card card-narrow">
+  <form method="post" class="form">
+    <label>Product name
+      <input type="text" name="name" value="{{ product.name if product else '' }}" required autofocus>
+    </label>
+    <div class="form-row">
+      <label>Brand
+        <input type="text" name="brand" value="{{ product.brand if product else '' }}" placeholder="e.g. Dahua">
+      </label>
+      <label>SKU
+        <input type="text" name="sku" value="{{ product.sku if product else '' }}">
+      </label>
+    </div>
+    <label>Unit price (Kina)
+      <input type="number" step="0.01" min="0" name="unit_price" value="{{ product.unit_price if product else 0 }}">
+    </label>
+    <label>Notes
+      <textarea name="notes">{{ product.notes if product else '' }}</textarea>
+    </label>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">{{ 'Save changes' if product else 'Add product' }}</button>
+      <a href="{{ url_for('products_list') }}" class="btn btn-ghost">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

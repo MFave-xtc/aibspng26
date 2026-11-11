@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Contacts · PISC CRM{% endblock %}
+{% block page_title %}Contacts{% endblock %}
+{% block content %}
+<div class="page-head">
+  <form class="search-box" method="get">
+    <input type="text" name="q" value="{{ q }}" placeholder="Search contacts...">
+    <button type="submit" class="btn btn-ghost btn-sm">Search</button>
+  </form>
+  <a href="{{ url_for('contact_new') }}" class="btn btn-primary">+ Add Contact</a>
+</div>
+<div class="table-wrap">
+  <table class="data">
+    <thead><tr><th>Name</th><th>Company</th><th>Title</th><th>Phone</th><th>Email</th></tr></thead>
+    <tbody>
+      {% for ct in contacts %}
+      <tr onclick="window.location='{{ url_for('contact_view', contact_id=ct.id) }}'" style="cursor:pointer;">
+        <td>{{ ct.full_name }}</td>
+        <td>{{ ct.company.name if ct.company else '—' }}</td>
+        <td>{{ ct.title or '—' }}</td>
+        <td>{{ ct.phone or '—' }}</td>
+        <td>{{ ct.email or '—' }}</td>
+      </tr>
+      {% else %}
+      <tr class="empty-row"><td colspan="5">No contacts found.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

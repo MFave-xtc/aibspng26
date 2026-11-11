@@ -1,0 +1,21 @@
+{% extends "auth_base.html" %}
+{% block title %}Set up · PISC CRM{% endblock %}
+{% block auth_content %}
+<h1>Create admin account</h1>
+<p class="auth-lede">First-time setup &mdash; this creates the first administrator for this CRM.</p>
+<form method="post" class="form">
+  <label>Full name
+    <input type="text" name="full_name" required autofocus>
+  </label>
+  <label>Username
+    <input type="text" name="username" required>
+  </label>
+  <label>Password
+    <input type="password" name="password" required minlength="6">
+  </label>
+  <label>Confirm password
+    <input type="password" name="confirm" required minlength="6">
+  </label>
+  <button type="submit" class="btn btn-primary btn-block">Create account</button>
+</form>
+{% endblock %}

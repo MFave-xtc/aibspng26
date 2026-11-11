@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}{{ contact.full_name }} · PISC CRM{% endblock %}
+{% block page_title %}{{ contact.full_name }}{% endblock %}
+{% block content %}
+<div class="page-head">
+  <span class="muted">{{ contact.title or 'Contact' }}{% if contact.company %} &middot; {{ contact.company.name }}{% endif %}</span>
+  <div class="form-actions">
+    <a href="{{ url_for('contact_edit', contact_id=contact.id) }}" class="btn btn-ghost btn-sm">Edit</a>
+    <form method="post" action="{{ url_for('contact_delete', contact_id=contact.id) }}" class="inline-form" data-confirm="Delete this contact?">
+      <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+    </form>
+  </div>
+</div>
+
+<div class="detail-grid">
+  <div class="card">
+    <h3 class="section-title" style="margin-top:0;">Details</h3>
+    <div class="detail-list">
+      <div class="row"><span class="k">Company</span><span>{% if contact.company %}<a href="{{ url_for('company_view', company_id=contact.company.id) }}">{{ contact.company.name }}</a>{% else %}—{% endif %}</span></div>
+      <div class="row"><span class="k">Phone</span><span>{{ contact.phone or '—' }}</span></div>
+      <div class="row"><span class="k">Email</span><span>{{ contact.email or '—' }}</span></div>
+    </div>
+    {% if contact.notes %}
+    <h3 class="section-title">Notes</h3>
+    <p class="muted">{{ contact.notes }}</p>
+    {% endif %}
+  </div>
+  <div>
+    <div class="card">
+      <h3 class="section-title" style="margin-top:0;">Deals</h3>
+      {% if contact.deals %}
+      <div class="related-list">
+        {% for d in contact.deals %}
+        <a href="{{ url_for('deal_view', deal_id=d.id) }}">{{ d.title }} <span class="muted">&middot; {{ d.stage }}</span></a>
+        {% endfor %}
+      </div>
+      {% else %}<p class="muted">No deals yet.</p>{% endif %}
+    </div>
+    <div class="card">
+      <h3 class="section-title" style="margin-top:0;">Open tasks</h3>
+      {% set open_contact_tasks = contact.tasks|selectattr('status','equalto','Open')|list %}
+      {% if open_contact_tasks %}
+      <div class="related-list">
+        {% for t in open_contact_tasks %}
+        <a href="{{ url_for('tasks_list') }}">{{ t.title }}{% if t.due_date %} <span class="muted">&middot; {{ t.due_date.strftime('%d %b') }}</span>{% endif %}</a>
+        {% endfor %}
+      </div>
+      {% else %}<p class="muted">No open tasks.</p>{% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

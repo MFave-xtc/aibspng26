@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}Dashboard · PISC CRM{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+{% block content %}
+
+<div class="grid-cards">
+  <div class="stat-card accent"><div class="n">K {{ "%.2f"|format(open_value) }}</div><div class="l">Open Pipeline Value</div></div>
+  <div class="stat-card"><div class="n">{{ total_companies }}</div><div class="l">Companies</div></div>
+  <div class="stat-card"><div class="n">{{ total_contacts }}</div><div class="l">Contacts</div></div>
+  <div class="stat-card"><div class="n">{{ open_tasks|length }}</div><div class="l">Open Tasks</div></div>
+</div>
+
+<div class="detail-grid">
+  <div>
+    <h3 class="section-title">Pipeline by stage</h3>
+    <div class="card">
+      <div class="detail-list">
+        {% for stage in DEAL_STAGES %}
+        <div class="row">
+          <span class="k">{{ stage }}</span>
+          <span>{{ stage_counts.get(stage, 0) }} &middot; K {{ "%.2f"|format(stage_values.get(stage, 0)) }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="form-actions" style="margin-top:16px;">
+        <a href="{{ url_for('deals_board') }}" class="btn btn-ghost btn-sm">View pipeline board &rarr;</a>
+      </div>
+    </div>
+
+    <h3 class="section-title">Recent companies</h3>
+    <div class="card">
+      {% if recent_companies %}
+      <div class="related-list">
+        {% for c in recent_companies %}
+        <a href="{{ url_for('company_view', company_id=c.id) }}">{{ c.name }} <span class="muted">&middot; {{ c.type }}</span></a>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p class="muted">No companies yet. <a href="{{ url_for('company_new') }}">Add one</a>.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div>
+    <h3 class="section-title">Open tasks</h3>
+    <div class="card">
+      {% if open_tasks %}
+      {% for t in open_tasks %}
+      <div class="task-row {{ 'overdue' if t.is_overdue else '' }}">
+        <form method="post" action="{{ url_for('task_toggle', task_id=t.id) }}" class="inline-form">
+          <button type="submit" class="checkbox-btn" aria-label="Mark done"></button>
+        </form>
+        <span class="task-title">{{ t.title }}{% if t.due_date %} <span class="muted">&middot; {{ t.due_date.strftime('%d %b') }}</span>{% endif %}</span>
+      </div>
+      {% endfor %}
+      {% else %}
+      <p class="muted">No open tasks. <a href="{{ url_for('task_new') }}">Add one</a>.</p>
+      {% endif %}
+      <div class="form-actions" style="margin-top:16px;">
+        <a href="{{ url_for('tasks_list') }}" class="btn btn-ghost btn-sm">View all tasks &rarr;</a>
+      </div>
+    </div>
+
+    <h3 class="section-title">Recent quotes</h3>
+    <div class="card">
+      {% if recent_quotes %}
+      <div class="related-list">
+        {% for q in recent_quotes %}
+        <a href="{{ url_for('quote_view', quote_id=q.id) }}">{{ q.quote_number }} &middot; {{ q.company.name if q.company else 'No company' }} <span class="muted">&middot; K {{ "%.2f"|format(q.total) }}</span></a>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p class="muted">No quotes yet. <a href="{{ url_for('quote_new') }}">Create one</a>.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

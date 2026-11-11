@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Products · PISC CRM{% endblock %}
+{% block page_title %}Products{% endblock %}
+{% block content %}
+<div class="page-head">
+  <span class="page-sub" style="margin-top:0;">Catalog items used when building quotes.</span>
+  <a href="{{ url_for('product_new') }}" class="btn btn-primary">+ Add Product</a>
+</div>
+<div class="table-wrap">
+  <table class="data">
+    <thead><tr><th>Name</th><th>Brand</th><th>SKU</th><th>Unit price</th><th></th></tr></thead>
+    <tbody>
+      {% for p in products %}
+      <tr>
+        <td>{{ p.name }}</td>
+        <td>{{ p.brand or '—' }}</td>
+        <td>{{ p.sku or '—' }}</td>
+        <td>K {{ "%.2f"|format(p.unit_price or 0) }}</td>
+        <td style="text-align:right;">
+          <a href="{{ url_for('product_edit', product_id=p.id) }}" class="btn btn-ghost btn-sm">Edit</a>
+          <form method="post" action="{{ url_for('product_delete', product_id=p.id) }}" class="inline-form" data-confirm="Delete this product?">
+            <button type="submit" class="btn btn-ghost btn-sm">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% else %}
+      <tr class="empty-row"><td colspan="5">No products yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

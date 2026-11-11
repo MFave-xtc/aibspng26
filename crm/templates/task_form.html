@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Add Task · PISC CRM{% endblock %}
+{% block page_title %}Add Task{% endblock %}
+{% block content %}
+<div class="card card-narrow">
+  <form method="post" class="form">
+    <label>Task
+      <input type="text" name="title" required autofocus placeholder="e.g. Call back re: install date">
+    </label>
+    <div class="form-row">
+      <label>Due date
+        <input type="date" name="due_date">
+      </label>
+      <label>Assigned to
+        <select name="assigned_to_id">
+          {% for u in users %}
+          <option value="{{ u.id }}" {{ 'selected' if u.id == current_user.id else '' }}>{{ u.full_name }}</option>
+          {% endfor %}
+        </select>
+      </label>
+    </div>
+    <div class="form-row">
+      <label>Company
+        <select name="company_id">
+          <option value="">— None —</option>
+          {% for c in companies %}
+          <option value="{{ c.id }}">{{ c.name }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>Contact
+        <select name="contact_id">
+          <option value="">— None —</option>
+          {% for ct in contacts %}
+          <option value="{{ ct.id }}">{{ ct.full_name }}</option>
+          {% endfor %}
+        </select>
+      </label>
+    </div>
+    <label>Related deal
+      <select name="deal_id">
+        <option value="">— None —</option>
+        {% for d in deals %}
+        <option value="{{ d.id }}">{{ d.title }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>Notes
+      <textarea name="notes"></textarea>
+    </label>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Add task</button>
+      <a href="{{ url_for('tasks_list') }}" class="btn btn-ghost">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

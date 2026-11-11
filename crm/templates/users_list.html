@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Staff · PISC CRM{% endblock %}
+{% block page_title %}Staff Accounts{% endblock %}
+{% block content %}
+<div class="page-head">
+  <span></span>
+  <a href="{{ url_for('user_new') }}" class="btn btn-primary">+ Add Staff Account</a>
+</div>
+<div class="table-wrap">
+  <table class="data">
+    <thead><tr><th>Name</th><th>Username</th><th>Role</th><th>Status</th><th></th></tr></thead>
+    <tbody>
+      {% for u in users %}
+      <tr>
+        <td>{{ u.full_name }}</td>
+        <td>{{ u.username }}</td>
+        <td><span class="pill pill-grey">{{ u.role }}</span></td>
+        <td><span class="pill {{ 'pill-green' if u.is_active else 'pill-red' }}">{{ 'Active' if u.is_active else 'Disabled' }}</span></td>
+        <td style="text-align:right;">
+          {% if u.id != current_user.id %}
+          <form method="post" action="{{ url_for('user_toggle', user_id=u.id) }}" class="inline-form">
+            <button type="submit" class="btn btn-ghost btn-sm">{{ 'Disable' if u.is_active else 'Enable' }}</button>
+          </form>
+          {% else %}
+          <span class="muted">(you)</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

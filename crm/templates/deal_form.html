@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit Deal' if deal else 'Add Deal' }} · PISC CRM{% endblock %}
+{% block page_title %}{{ 'Edit Deal' if deal else 'Add Deal' }}{% endblock %}
+{% block content %}
+<div class="card card-narrow">
+  <form method="post" class="form">
+    <label>Deal title
+      <input type="text" name="title" value="{{ deal.title if deal else '' }}" required autofocus placeholder="e.g. Office CCTV upgrade">
+    </label>
+    <div class="form-row">
+      <label>Company
+        <select name="company_id">
+          <option value="">— None —</option>
+          {% for c in companies %}
+          <option value="{{ c.id }}" {{ 'selected' if deal and deal.company_id == c.id else '' }}>{{ c.name }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>Contact
+        <select name="contact_id">
+          <option value="">— None —</option>
+          {% for ct in contacts %}
+          <option value="{{ ct.id }}" {{ 'selected' if deal and deal.contact_id == ct.id else '' }}>{{ ct.full_name }}</option>
+          {% endfor %}
+        </select>
+      </label>
+    </div>
+    <div class="form-row">
+      <label>Stage
+        <select name="stage">
+          {% for s in DEAL_STAGES %}
+          <option value="{{ s }}" {{ 'selected' if deal and deal.stage == s else ('selected' if not deal and s == 'Lead' else '') }}>{{ s }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>Value (Kina)
+        <input type="number" step="0.01" min="0" name="value" value="{{ deal.value if deal else 0 }}">
+      </label>
+    </div>
+    <label>Assigned to
+      <select name="assigned_to_id">
+        <option value="">— Unassigned —</option>
+        {% for u in users %}
+        <option value="{{ u.id }}" {{ 'selected' if deal and deal.assigned_to_id == u.id else '' }}>{{ u.full_name }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>Notes
+      <textarea name="notes">{{ deal.notes if deal else '' }}</textarea>
+    </label>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">{{ 'Save changes' if deal else 'Add deal' }}</button>
+      <a href="{{ url_for('deal_view', deal_id=deal.id) if deal else url_for('deals_board') }}" class="btn btn-ghost">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

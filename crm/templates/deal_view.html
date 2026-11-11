@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}{{ deal.title }} · PISC CRM{% endblock %}
+{% block page_title %}{{ deal.title }}{% endblock %}
+{% block content %}
+<div class="page-head">
+  <span class="pill pill-green">{{ deal.stage }}</span>
+  <div class="form-actions">
+    <a href="{{ url_for('deal_edit', deal_id=deal.id) }}" class="btn btn-ghost btn-sm">Edit</a>
+    <form method="post" action="{{ url_for('deal_delete', deal_id=deal.id) }}" class="inline-form" data-confirm="Delete this deal?">
+      <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+    </form>
+  </div>
+</div>
+
+<div class="card">
+  <h3 class="section-title" style="margin-top:0;">Move stage</h3>
+  <form method="post" action="{{ url_for('deal_stage_update', deal_id=deal.id) }}" class="form-actions" style="flex-wrap:wrap;">
+    {% for s in DEAL_STAGES %}
+    <button type="submit" name="stage" value="{{ s }}" class="btn {{ 'btn-primary' if deal.stage == s else 'btn-ghost' }} btn-sm">{{ s }}</button>
+    {% endfor %}
+  </form>
+</div>
+
+<div class="detail-grid">
+  <div class="card">
+    <h3 class="section-title" style="margin-top:0;">Details</h3>
+    <div class="detail-list">
+      <div class="row"><span class="k">Company</span><span>{% if deal.company %}<a href="{{ url_for('company_view', company_id=deal.company.id) }}">{{ deal.company.name }}</a>{% else %}—{% endif %}</span></div>
+      <div class="row"><span class="k">Contact</span><span>{% if deal.contact %}<a href="{{ url_for('contact_view', contact_id=deal.contact.id) }}">{{ deal.contact.full_name }}</a>{% else %}—{% endif %}</span></div>
+      <div class="row"><span class="k">Value</span><span>K {{ "%.2f"|format(deal.value or 0) }}</span></div>
+      <div class="row"><span class="k">Assigned to</span><span>{{ deal.assigned_to.full_name if deal.assigned_to else 'Unassigned' }}</span></div>
+    </div>
+    {% if deal.notes %}
+    <h3 class="section-title">Notes</h3>
+    <p class="muted">{{ deal.notes }}</p>
+    {% endif %}
+  </div>
+  <div>
+    <div class="card">
+      <div class="page-head" style="margin-bottom:10px;">
+        <h3 class="section-title" style="margin:0;">Quotes</h3>
+        <a href="{{ url_for('quote_new') }}" class="btn btn-ghost btn-sm">+ New quote</a>
+      </div>
+      {% if deal.quotes %}
+      <div class="related-list">
+        {% for q in deal.quotes %}
+        <a href="{{ url_for('quote_view', quote_id=q.id) }}">{{ q.quote_number }} <span class="muted">&middot; {{ q.status }} &middot; K {{ "%.2f"|format(q.total) }}</span></a>
+        {% endfor %}
+      </div>
+      {% else %}<p class="muted">No quotes yet.</p>{% endif %}
+    </div>
+    <div class="card">
+      <h3 class="section-title" style="margin-top:0;">Tasks</h3>
+      {% if deal.tasks %}
+      <div class="related-list">
+        {% for t in deal.tasks %}
+        <a href="{{ url_for('tasks_list') }}">{{ t.title }} <span class="muted">&middot; {{ t.status }}</span></a>
+        {% endfor %}
+      </div>
+      {% else %}<p class="muted">No tasks yet.</p>{% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

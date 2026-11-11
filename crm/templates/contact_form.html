@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit Contact' if contact else 'Add Contact' }} · PISC CRM{% endblock %}
+{% block page_title %}{{ 'Edit Contact' if contact else 'Add Contact' }}{% endblock %}
+{% block content %}
+<div class="card card-narrow">
+  <form method="post" class="form">
+    <div class="form-row">
+      <label>First name
+        <input type="text" name="first_name" value="{{ contact.first_name if contact else '' }}" required autofocus>
+      </label>
+      <label>Last name
+        <input type="text" name="last_name" value="{{ contact.last_name if contact else '' }}">
+      </label>
+    </div>
+    <label>Company
+      <select name="company_id">
+        <option value="">— None —</option>
+        {% for c in companies %}
+        <option value="{{ c.id }}" {{ 'selected' if contact and contact.company_id == c.id else '' }}>{{ c.name }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>Title / Role
+      <input type="text" name="title" value="{{ contact.title if contact else '' }}">
+    </label>
+    <div class="form-row">
+      <label>Phone
+        <input type="text" name="phone" value="{{ contact.phone if contact else '' }}">
+      </label>
+      <label>Email
+        <input type="email" name="email" value="{{ contact.email if contact else '' }}">
+      </label>
+    </div>
+    <label>Notes
+      <textarea name="notes">{{ contact.notes if contact else '' }}</textarea>
+    </label>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">{{ 'Save changes' if contact else 'Add contact' }}</button>
+      <a href="{{ url_for('contact_view', contact_id=contact.id) if contact else url_for('contacts_list') }}" class="btn btn-ghost">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

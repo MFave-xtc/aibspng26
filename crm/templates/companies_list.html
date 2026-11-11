@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Companies · PISC CRM{% endblock %}
+{% block page_title %}Companies{% endblock %}
+{% block content %}
+<div class="page-head">
+  <form class="search-box" method="get">
+    <input type="text" name="q" value="{{ q }}" placeholder="Search companies...">
+    <button type="submit" class="btn btn-ghost btn-sm">Search</button>
+  </form>
+  <a href="{{ url_for('company_new') }}" class="btn btn-primary">+ Add Company</a>
+</div>
+<div class="table-wrap">
+  <table class="data">
+    <thead><tr><th>Name</th><th>Type</th><th>Phone</th><th>Email</th><th>Contacts</th></tr></thead>
+    <tbody>
+      {% for c in companies %}
+      <tr onclick="window.location='{{ url_for('company_view', company_id=c.id) }}'" style="cursor:pointer;">
+        <td>{{ c.name }}</td>
+        <td><span class="pill pill-grey">{{ c.type }}</span></td>
+        <td>{{ c.phone or '—' }}</td>
+        <td>{{ c.email or '—' }}</td>
+        <td>{{ c.contacts|length }}</td>
+      </tr>
+      {% else %}
+      <tr class="empty-row"><td colspan="5">No companies found.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

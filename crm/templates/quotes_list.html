@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Quotes · PISC CRM{% endblock %}
+{% block page_title %}Quotes{% endblock %}
+{% block content %}
+<div class="page-head">
+  <span></span>
+  <a href="{{ url_for('quote_new') }}" class="btn btn-primary">+ New Quote</a>
+</div>
+<div class="table-wrap">
+  <table class="data">
+    <thead><tr><th>Quote #</th><th>Company</th><th>Status</th><th>Total</th><th>Created</th></tr></thead>
+    <tbody>
+      {% for q in quotes %}
+      <tr onclick="window.location='{{ url_for('quote_view', quote_id=q.id) }}'" style="cursor:pointer;">
+        <td>{{ q.quote_number }}</td>
+        <td>{{ q.company.name if q.company else '—' }}</td>
+        <td>
+          {% set pill = {'Draft':'pill-grey','Sent':'pill-blue','Accepted':'pill-green','Declined':'pill-red'}.get(q.status, 'pill-grey') %}
+          <span class="pill {{ pill }}">{{ q.status }}</span>
+        </td>
+        <td>K {{ "%.2f"|format(q.total) }}</td>
+        <td>{{ q.created_at.strftime('%d %b %Y') }}</td>
+      </tr>
+      {% else %}
+      <tr class="empty-row"><td colspan="5">No quotes yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

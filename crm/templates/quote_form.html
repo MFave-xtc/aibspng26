@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit Quote' if quote else 'New Quote' }} · PISC CRM{% endblock %}
+{% block page_title %}{{ quote.quote_number if quote else 'New Quote' }}{% endblock %}
+{% block content %}
+<div class="card">
+  <form method="post" class="form">
+    <div class="form-row">
+      <label>Company
+        <select name="company_id">
+          <option value="">— None —</option>
+          {% for c in companies %}
+          <option value="{{ c.id }}" {{ 'selected' if quote and quote.company_id == c.id else '' }}>{{ c.name }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>Contact
+        <select name="contact_id">
+          <option value="">— None —</option>
+          {% for ct in contacts %}
+          <option value="{{ ct.id }}" {{ 'selected' if quote and quote.contact_id == ct.id else '' }}>{{ ct.full_name }}</option>
+          {% endfor %}
+        </select>
+      </label>
+    </div>
+    <label>Linked deal
+      <select name="deal_id">
+        <option value="">— None —</option>
+        {% for d in deals %}
+        <option value="{{ d.id }}" {{ 'selected' if quote and quote.deal_id == d.id else '' }}>{{ d.title }}</option>
+        {% endfor %}
+      </select>
+    </label>
+
+    <h3 class="section-title">Line items</h3>
+    <div id="lineItems"></div>
+    <button type="button" id="addLineItem" class="btn btn-ghost btn-sm" style="align-self:flex-start;">+ Add line</button>
+
+    <label>Notes
+      <textarea name="notes">{{ quote.notes if quote else '' }}</textarea>
+    </label>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">{{ 'Save changes' if quote else 'Create quote' }}</button>
+      <a href="{{ url_for('quote_view', quote_id=quote.id) if quote else url_for('quotes_list') }}" class="btn btn-ghost">Cancel</a>
+    </div>
+  </form>
+</div>
+
+<script>
+  window.PRODUCTS = [
+    {% for p in products %}{ id: {{ p.id }}, name: {{ p.name|tojson }}, unit_price: {{ p.unit_price or 0 }} }{{ ',' if not loop.last }}{% endfor %}
+  ];
+  window.EXISTING_LINE_ITEMS = [
+    {% if quote %}{% for li in quote.line_items %}{ description: {{ li.description|tojson }}, product_id: {{ li.product_id or 'null' }}, qty: {{ li.qty or 1 }}, unit_price: {{ li.unit_price or 0 }} }{{ ',' if not loop.last }}{% endfor %}{% endif %}
+  ];
+</script>
+{% endblock %}

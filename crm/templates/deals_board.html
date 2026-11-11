@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Deals · PISC CRM{% endblock %}
+{% block page_title %}Sales Pipeline{% endblock %}
+{% block content %}
+<div class="page-head">
+  <span class="page-sub" style="margin-top:0;">Drag isn't supported yet &mdash; open a deal and change its stage from there.</span>
+  <a href="{{ url_for('deal_new') }}" class="btn btn-primary">+ Add Deal</a>
+</div>
+<div class="board">
+  {% for stage in DEAL_STAGES %}
+  <div class="board-col">
+    <div class="board-col-head">
+      <h4>{{ stage }}</h4>
+      <span class="count">{{ deals_by_stage.get(stage, [])|length }}</span>
+    </div>
+    {% for d in deals_by_stage.get(stage, []) %}
+    <a href="{{ url_for('deal_view', deal_id=d.id) }}" class="deal-card">
+      <div class="title">{{ d.title }}</div>
+      <div class="meta">{{ d.company.name if d.company else 'No company' }}</div>
+      <div class="value">K {{ "%.2f"|format(d.value or 0) }}</div>
+    </a>
+    {% endfor %}
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

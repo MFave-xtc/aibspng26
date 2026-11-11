@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}{{ company.name }} · PISC CRM{% endblock %}
+{% block page_title %}{{ company.name }}{% endblock %}
+{% block content %}
+<div class="page-head">
+  <span class="pill pill-grey">{{ company.type }}</span>
+  <div class="form-actions">
+    <a href="{{ url_for('company_edit', company_id=company.id) }}" class="btn btn-ghost btn-sm">Edit</a>
+    <form method="post" action="{{ url_for('company_delete', company_id=company.id) }}" class="inline-form" data-confirm="Delete this company? This cannot be undone.">
+      <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+    </form>
+  </div>
+</div>
+
+<div class="detail-grid">
+  <div class="card">
+    <h3 class="section-title" style="margin-top:0;">Details</h3>
+    <div class="detail-list">
+      <div class="row"><span class="k">Phone</span><span>{{ company.phone or '—' }}</span></div>
+      <div class="row"><span class="k">Email</span><span>{{ company.email or '—' }}</span></div>
+      <div class="row"><span class="k">Address</span><span>{{ company.address or '—' }}</span></div>
+    </div>
+    {% if company.notes %}
+    <h3 class="section-title">Notes</h3>
+    <p class="muted">{{ company.notes }}</p>
+    {% endif %}
+  </div>
+
+  <div>
+    <div class="card">
+      <div class="page-head" style="margin-bottom:10px;">
+        <h3 class="section-title" style="margin:0;">Contacts</h3>
+        <a href="{{ url_for('contact_new') }}" class="btn btn-ghost btn-sm">+ Add</a>
+      </div>
+      {% if company.contacts %}
+      <div class="related-list">
+        {% for ct in company.contacts %}
+        <a href="{{ url_for('contact_view', contact_id=ct.id) }}">{{ ct.full_name }} {% if ct.title %}<span class="muted">&middot; {{ ct.title }}</span>{% endif %}</a>
+        {% endfor %}
+      </div>
+      {% else %}<p class="muted">No contacts yet.</p>{% endif %}
+    </div>
+
+    <div class="card">
+      <h3 class="section-title" style="margin-top:0;">Deals</h3>
+      {% if company.deals %}
+      <div class="related-list">
+        {% for d in company.deals %}
+        <a href="{{ url_for('deal_view', deal_id=d.id) }}">{{ d.title }} <span class="muted">&middot; {{ d.stage }}</span></a>
+        {% endfor %}
+      </div>
+      {% else %}<p class="muted">No deals yet.</p>{% endif %}
+    </div>
+
+    <div class="card">
+      <h3 class="section-title" style="margin-top:0;">Quotes</h3>
+      {% if company.quotes %}
+      <div class="related-list">
+        {% for q in company.quotes %}
+        <a href="{{ url_for('quote_view', quote_id=q.id) }}">{{ q.quote_number }} <span class="muted">&middot; {{ q.status }} &middot; K {{ "%.2f"|format(q.total) }}</span></a>
+        {% endfor %}
+      </div>
+      {% else %}<p class="muted">No quotes yet.</p>{% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
