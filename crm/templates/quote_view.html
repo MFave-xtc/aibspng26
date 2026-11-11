@@ -10,6 +10,9 @@
   </form>
   <div class="form-actions">
     <a href="{{ url_for('quote_edit', quote_id=quote.id) }}" class="btn btn-ghost btn-sm">Edit</a>
+    <form method="post" action="{{ url_for('quote_to_invoice', quote_id=quote.id) }}" class="inline-form">
+      <button type="submit" class="btn btn-primary btn-sm">Convert to Invoice</button>
+    </form>
     <form method="post" action="{{ url_for('quote_delete', quote_id=quote.id) }}" class="inline-form" data-confirm="Delete this quote?">
       <button type="submit" class="btn btn-danger btn-sm">Delete</button>
     </form>

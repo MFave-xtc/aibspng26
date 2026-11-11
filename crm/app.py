@@ -4,10 +4,13 @@ from datetime import datetime, date
 from functools import wraps
 
 from flask import Flask, render_template, request, redirect, url_for, session, flash, g
+from sqlalchemy import inspect, text
 
 from models import (
     db, User, Company, Contact, Deal, Product, Quote, QuoteLineItem, Task,
+    Invoice, InvoiceLineItem,
     COMPANY_TYPES, DEAL_STAGES, OPEN_DEAL_STAGES, QUOTE_STATUSES, USER_ROLES,
+    INVOICE_STATUSES,
 )
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -28,8 +31,31 @@ else:
 
 db.init_app(app)
 
+
+def _ensure_columns():
+    """Add any new columns to existing tables (lightweight substitute for a
+    full migration tool — new tables are handled by db.create_all())."""
+    inspector = inspect(db.engine)
+    existing_tables = set(inspector.get_table_names())
+    added_columns = {
+        "product": [
+            ("stock_qty", "INTEGER DEFAULT 0"),
+            ("low_stock_threshold", "INTEGER DEFAULT 0"),
+        ],
+    }
+    for table, columns in added_columns.items():
+        if table not in existing_tables:
+            continue
+        existing_cols = {c["name"] for c in inspector.get_columns(table)}
+        for name, ddl in columns:
+            if name not in existing_cols:
+                db.session.execute(text(f"ALTER TABLE {table} ADD COLUMN {name} {ddl}"))
+    db.session.commit()
+
+
 with app.app_context():
     db.create_all()
+    _ensure_columns()
 
 
 # ───────────────────────── auth helpers ─────────────────────────
@@ -69,6 +95,7 @@ def inject_globals():
         "DEAL_STAGES": DEAL_STAGES,
         "QUOTE_STATUSES": QUOTE_STATUSES,
         "USER_ROLES": USER_ROLES,
+        "INVOICE_STATUSES": INVOICE_STATUSES,
     }
 
 
@@ -76,6 +103,12 @@ def next_quote_number():
     year = datetime.utcnow().year
     count = Quote.query.filter(Quote.quote_number.like(f"Q{year}-%")).count() + 1
     return f"Q{year}-{count:04d}"
+
+
+def next_invoice_number():
+    year = datetime.utcnow().year
+    count = Invoice.query.filter(Invoice.invoice_number.like(f"INV{year}-%")).count() + 1
+    return f"INV{year}-{count:04d}"
 
 
 # ───────────────────────── setup / auth routes ─────────────────────────
@@ -177,6 +210,10 @@ def dashboard():
     )
     recent_quotes = Quote.query.order_by(Quote.created_at.desc()).limit(6).all()
     recent_companies = Company.query.order_by(Company.created_at.desc()).limit(5).all()
+    low_stock_products = [p for p in Product.query.all() if p.is_low_stock]
+    outstanding_total = sum(
+        inv.balance_due for inv in Invoice.query.filter(Invoice.status != "Paid").all()
+    )
     return render_template(
         "dashboard.html",
         stage_counts=stage_counts,
@@ -188,6 +225,8 @@ def dashboard():
         today=date.today(),
         total_companies=Company.query.count(),
         total_contacts=Contact.query.count(),
+        low_stock_products=low_stock_products,
+        outstanding_total=outstanding_total,
     )
 
 
@@ -524,6 +563,81 @@ def quote_delete(quote_id):
     return redirect(url_for("quotes_list"))
 
 
+@app.route("/quotes/<int:quote_id>/convert", methods=["POST"])
+@login_required
+def quote_to_invoice(quote_id):
+    quote = Quote.query.get_or_404(quote_id)
+    invoice = Invoice(
+        invoice_number=next_invoice_number(),
+        quote_id=quote.id,
+        company_id=quote.company_id,
+        contact_id=quote.contact_id,
+        deal_id=quote.deal_id,
+        status="Unpaid",
+    )
+    for li in quote.line_items:
+        invoice.line_items.append(
+            InvoiceLineItem(description=li.description, qty=li.qty, unit_price=li.unit_price)
+        )
+    db.session.add(invoice)
+    db.session.commit()
+    flash(f"Invoice {invoice.invoice_number} created from this quote.", "success")
+    return redirect(url_for("invoice_edit", invoice_id=invoice.id))
+
+
+# ───────────────────────── invoices ─────────────────────────
+
+@app.route("/invoices")
+@login_required
+def invoices_list():
+    invoices = Invoice.query.order_by(Invoice.created_at.desc()).all()
+    return render_template("invoices_list.html", invoices=invoices)
+
+
+@app.route("/invoices/<int:invoice_id>")
+@login_required
+def invoice_view(invoice_id):
+    invoice = Invoice.query.get_or_404(invoice_id)
+    return render_template("invoice_view.html", invoice=invoice)
+
+
+@app.route("/invoices/<int:invoice_id>/edit", methods=["GET", "POST"])
+@login_required
+def invoice_edit(invoice_id):
+    invoice = Invoice.query.get_or_404(invoice_id)
+    if request.method == "POST":
+        due = request.form.get("due_date") or None
+        invoice.due_date = date.fromisoformat(due) if due else None
+        invoice.amount_paid = float(request.form.get("amount_paid") or 0)
+        invoice.notes = request.form.get("notes", "").strip()
+        db.session.commit()
+        flash("Invoice updated.", "success")
+        return redirect(url_for("invoice_view", invoice_id=invoice.id))
+    return render_template("invoice_form.html", invoice=invoice)
+
+
+@app.route("/invoices/<int:invoice_id>/status", methods=["POST"])
+@login_required
+def invoice_status_update(invoice_id):
+    invoice = Invoice.query.get_or_404(invoice_id)
+    status = request.form.get("status")
+    if status in INVOICE_STATUSES:
+        invoice.status = status
+        db.session.commit()
+        flash("Invoice status updated.", "success")
+    return redirect(url_for("invoice_view", invoice_id=invoice.id))
+
+
+@app.route("/invoices/<int:invoice_id>/delete", methods=["POST"])
+@login_required
+def invoice_delete(invoice_id):
+    invoice = Invoice.query.get_or_404(invoice_id)
+    db.session.delete(invoice)
+    db.session.commit()
+    flash("Invoice deleted.", "success")
+    return redirect(url_for("invoices_list"))
+
+
 # ───────────────────────── tasks ─────────────────────────
 
 @app.route("/tasks")
@@ -604,6 +718,8 @@ def product_new():
             brand=request.form.get("brand", "").strip(),
             sku=request.form.get("sku", "").strip(),
             unit_price=float(request.form.get("unit_price") or 0),
+            stock_qty=int(request.form.get("stock_qty") or 0),
+            low_stock_threshold=int(request.form.get("low_stock_threshold") or 0),
             notes=request.form.get("notes", "").strip(),
         )
         db.session.add(p)
@@ -622,6 +738,8 @@ def product_edit(product_id):
         product.brand = request.form.get("brand", "").strip()
         product.sku = request.form.get("sku", "").strip()
         product.unit_price = float(request.form.get("unit_price") or 0)
+        product.stock_qty = int(request.form.get("stock_qty") or 0)
+        product.low_stock_threshold = int(request.form.get("low_stock_threshold") or 0)
         product.notes = request.form.get("notes", "").strip()
         db.session.commit()
         flash("Product updated.", "success")

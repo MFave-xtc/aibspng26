@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}{{ invoice.invoice_number }} · PISC CRM{% endblock %}
+{% block page_title %}{{ invoice.invoice_number }}{% endblock %}
+{% block content %}
+<div class="page-head">
+  <form method="post" action="{{ url_for('invoice_status_update', invoice_id=invoice.id) }}" class="form-actions">
+    {% for s in INVOICE_STATUSES %}
+    <button type="submit" name="status" value="{{ s }}" class="btn {{ 'btn-primary' if invoice.status == s else 'btn-ghost' }} btn-sm">{{ s }}</button>
+    {% endfor %}
+  </form>
+  <div class="form-actions">
+    <a href="{{ url_for('invoice_edit', invoice_id=invoice.id) }}" class="btn btn-ghost btn-sm">Edit</a>
+    <form method="post" action="{{ url_for('invoice_delete', invoice_id=invoice.id) }}" class="inline-form" data-confirm="Delete this invoice?">
+      <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+    </form>
+  </div>
+</div>
+
+<div class="quote-doc">
+  <div class="quote-doc-head">
+    <div>
+      <div class="logo-mark">P<span class="i-accent">I</span>SC</div>
+      <p class="muted" style="margin-top:6px;">PNG IT &amp; Security Consults Limited</p>
+    </div>
+    <div style="text-align:right;">
+      <h2>{{ invoice.invoice_number }}</h2>
+      <p class="muted">Issued {{ invoice.issued_date.strftime('%d %B %Y') if invoice.issued_date else '—' }}</p>
+      {% if invoice.due_date %}<p class="muted">Due {{ invoice.due_date.strftime('%d %B %Y') }}</p>{% endif %}
+      {% if invoice.quote %}<p class="muted">From quote {{ invoice.quote.quote_number }}</p>{% endif %}
+    </div>
+  </div>
+
+  <div class="detail-grid">
+    <div>
+      <h3 class="section-title" style="margin-top:0;">Bill to</h3>
+      <p>{{ invoice.company.name if invoice.company else '—' }}</p>
+      {% if invoice.contact %}<p class="muted">{{ invoice.contact.full_name }}</p>{% endif %}
+    </div>
+    <div style="text-align:right;">
+      <h3 class="section-title" style="margin-top:0;">Status</h3>
+      {% set pill = {'Unpaid':'pill-red','Partial':'pill-amber','Paid':'pill-green'}.get(invoice.status, 'pill-grey') %}
+      <span class="pill {{ pill }}">{{ invoice.status }}</span>
+      {% if invoice.is_overdue %}<br><span class="pill pill-red" style="margin-top:6px;">Overdue</span>{% endif %}
+    </div>
+  </div>
+
+  <table class="data">
+    <thead><tr><th>Description</th><th>Qty</th><th>Unit Price</th><th>Total</th></tr></thead>
+    <tbody>
+      {% for li in invoice.line_items %}
+      <tr>
+        <td>{{ li.description }}</td>
+        <td>{{ li.qty }}</td>
+        <td>K {{ "%.2f"|format(li.unit_price) }}</td>
+        <td>K {{ "%.2f"|format(li.line_total) }}</td>
+      </tr>
+      {% else %}
+      <tr class="empty-row"><td colspan="4">No line items.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="detail-list" style="max-width:280px; margin-left:auto;">
+    <div class="row"><span class="k">Total</span><span>K {{ "%.2f"|format(invoice.total) }}</span></div>
+    <div class="row"><span class="k">Paid</span><span>K {{ "%.2f"|format(invoice.amount_paid or 0) }}</span></div>
+    <div class="row"><span class="k">Balance due</span><span>K {{ "%.2f"|format(invoice.balance_due) }}</span></div>
+  </div>
+
+  {% if invoice.notes %}
+  <h3 class="section-title">Notes</h3>
+  <p class="muted">{{ invoice.notes }}</p>
+  {% endif %}
+</div>
+{% endblock %}

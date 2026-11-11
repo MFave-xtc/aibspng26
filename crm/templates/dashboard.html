@@ -5,8 +5,8 @@
 
 <div class="grid-cards">
   <div class="stat-card accent"><div class="n">K {{ "%.2f"|format(open_value) }}</div><div class="l">Open Pipeline Value</div></div>
+  <div class="stat-card"><div class="n">K {{ "%.2f"|format(outstanding_total) }}</div><div class="l">Outstanding Invoices</div></div>
   <div class="stat-card"><div class="n">{{ total_companies }}</div><div class="l">Companies</div></div>
-  <div class="stat-card"><div class="n">{{ total_contacts }}</div><div class="l">Contacts</div></div>
   <div class="stat-card"><div class="n">{{ open_tasks|length }}</div><div class="l">Open Tasks</div></div>
 </div>
 
@@ -71,6 +71,19 @@
       </div>
       {% else %}
       <p class="muted">No quotes yet. <a href="{{ url_for('quote_new') }}">Create one</a>.</p>
+      {% endif %}
+    </div>
+
+    <h3 class="section-title">Low stock alerts</h3>
+    <div class="card">
+      {% if low_stock_products %}
+      <div class="related-list">
+        {% for p in low_stock_products %}
+        <a href="{{ url_for('product_edit', product_id=p.id) }}">{{ p.name }} <span class="pill pill-red" style="margin-left:6px;">{{ p.stock_qty or 0 }} left</span></a>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p class="muted">No low-stock items.</p>
       {% endif %}
     </div>
   </div>

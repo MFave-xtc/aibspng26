@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Edit {{ invoice.invoice_number }} · PISC CRM{% endblock %}
+{% block page_title %}Edit {{ invoice.invoice_number }}{% endblock %}
+{% block content %}
+<div class="card card-narrow">
+  <form method="post" class="form">
+    <label>Due date
+      <input type="date" name="due_date" value="{{ invoice.due_date.isoformat() if invoice.due_date else '' }}">
+    </label>
+    <label>Amount paid (Kina)
+      <input type="number" step="0.01" min="0" name="amount_paid" value="{{ invoice.amount_paid or 0 }}">
+    </label>
+    <p class="muted">Total: K {{ "%.2f"|format(invoice.total) }}</p>
+    <label>Notes
+      <textarea name="notes">{{ invoice.notes or '' }}</textarea>
+    </label>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Save changes</button>
+      <a href="{{ url_for('invoice_view', invoice_id=invoice.id) }}" class="btn btn-ghost">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

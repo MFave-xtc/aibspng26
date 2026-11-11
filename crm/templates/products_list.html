@@ -8,7 +8,7 @@
 </div>
 <div class="table-wrap">
   <table class="data">
-    <thead><tr><th>Name</th><th>Brand</th><th>SKU</th><th>Unit price</th><th></th></tr></thead>
+    <thead><tr><th>Name</th><th>Brand</th><th>SKU</th><th>Unit price</th><th>Stock</th><th></th></tr></thead>
     <tbody>
       {% for p in products %}
       <tr>
@@ -16,6 +16,13 @@
         <td>{{ p.brand or '—' }}</td>
         <td>{{ p.sku or '—' }}</td>
         <td>K {{ "%.2f"|format(p.unit_price or 0) }}</td>
+        <td>
+          {% if p.is_low_stock %}
+          <span class="pill pill-red">{{ p.stock_qty or 0 }} low</span>
+          {% else %}
+          <span class="pill pill-grey">{{ p.stock_qty or 0 }}</span>
+          {% endif %}
+        </td>
         <td style="text-align:right;">
           <a href="{{ url_for('product_edit', product_id=p.id) }}" class="btn btn-ghost btn-sm">Edit</a>
           <form method="post" action="{{ url_for('product_delete', product_id=p.id) }}" class="inline-form" data-confirm="Delete this product?">
@@ -24,7 +31,7 @@
         </td>
       </tr>
       {% else %}
-      <tr class="empty-row"><td colspan="5">No products yet.</td></tr>
+      <tr class="empty-row"><td colspan="6">No products yet.</td></tr>
       {% endfor %}
     </tbody>
   </table>

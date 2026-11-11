@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Invoices · PISC CRM{% endblock %}
+{% block page_title %}Invoices{% endblock %}
+{% block content %}
+<div class="page-head">
+  <span class="page-sub" style="margin-top:0;">Created by converting an accepted quote.</span>
+  <span></span>
+</div>
+<div class="table-wrap">
+  <table class="data">
+    <thead><tr><th>Invoice #</th><th>Company</th><th>Status</th><th>Total</th><th>Balance due</th><th>Due date</th></tr></thead>
+    <tbody>
+      {% for inv in invoices %}
+      <tr onclick="window.location='{{ url_for('invoice_view', invoice_id=inv.id) }}'" style="cursor:pointer;">
+        <td>{{ inv.invoice_number }}</td>
+        <td>{{ inv.company.name if inv.company else '—' }}</td>
+        <td>
+          {% set pill = {'Unpaid':'pill-red','Partial':'pill-amber','Paid':'pill-green'}.get(inv.status, 'pill-grey') %}
+          <span class="pill {{ pill }}">{{ inv.status }}</span>
+        </td>
+        <td>K {{ "%.2f"|format(inv.total) }}</td>
+        <td>K {{ "%.2f"|format(inv.balance_due) }}</td>
+        <td>{{ inv.due_date.strftime('%d %b %Y') if inv.due_date else '—' }}{% if inv.is_overdue %} <span class="pill pill-red">Overdue</span>{% endif %}</td>
+      </tr>
+      {% else %}
+      <tr class="empty-row"><td colspan="6">No invoices yet — convert an accepted quote to create one.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
